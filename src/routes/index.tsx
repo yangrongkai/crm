@@ -7,15 +7,12 @@ import { renderRoutes } from "react-router-config";
 import { paths } from 'routes/paths';
 
 
-export namespace Router {
-  export interface Props {
-  }
+export interface RouterProps {
 }
 
-
-export class RouterHelper extends React.Component<Router.Props> {
+export class RouterHelper extends React.Component<RouterProps> {
     
-    static defaultProps: Partial<Router.Props> = {
+    static defaultProps: Partial<RouterProps> = {
     };
 
     render() {

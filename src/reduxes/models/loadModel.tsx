@@ -6,9 +6,7 @@ export interface LoadModel {
     isLoading: boolean
 }
 
-export namespace LoadModel {
-    export enum Filter {
-    }
+export enum LoadFilter {
 }
 
 

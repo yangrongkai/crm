@@ -8,8 +8,6 @@ export interface AccountModel {
     token: string;
 }
 
-export namespace AccountModel {
-    export enum Filter {
-    }
+export enum AccountFilter {
 }
 

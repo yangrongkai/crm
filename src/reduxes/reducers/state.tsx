@@ -3,15 +3,12 @@
 
 import * as models from 'reduxes/models';
 
+export type LoadState = Partial<models.LoadModel>;
+export type LoginState = Partial<models.AccountModel> & LoadState;
 
 export interface RootState {
-    load: RootState.LoadState
-    login: RootState.LoginState;
+    load: LoadState;
+    login: LoginState;
     router?: any;
 }
 
-export namespace RootState {
-    // export type TodoState = models.TodoModel[];
-    export type LoadState = Partial<models.LoadModel>;
-    export type LoginState = Partial<models.AccountModel>;
-}

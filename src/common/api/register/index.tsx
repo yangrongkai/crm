@@ -20,7 +20,6 @@ export const apiConfigs = [
         response:[
             {attr: 'result', type: fields.NumberField},
         ]
-
     }
 ]
 
@@ -37,25 +36,45 @@ export class ApiRouter{
         return this.serverRegister.serverHelper[serverFlag].apiRegister.apiHelper[apiName]
     }
 
+    checkApi(api: any){
+        let fields = [ 'name', 'descriptions', 'servers', 'type', 'request', 'response']
+        let loseFields = [];
+        for(let field of fields){
+            if(!api.hasOwnProperty(field)){
+                console.log(field, api, api.hasOwnProperty(field))
+                loseFields.push(field);
+            }
+        }
+        return loseFields;
+    }
+
     loadApi(apiConfig: any){
         for(let api of apiConfig){
-            for(let serverName of api.servers){
-                let serverHelper = this.serverRegister.serverHelper;
-                let { server, apiRegister } = serverHelper[serverName];
-                let apiObj = new api.type(api.name, server, api.descriptions);
-                api.request.map(
-                    (item: any) => {
-                        let fieldObj = new item.type();
-                        apiObj.parmsHelper.addField(item.attr, fieldObj);
+            let loseFields = this.checkApi(api);
+            if(loseFields.length){
+                throw new Error(`[ notes ] api losed paramter !!! -> ${loseFields.toString()}`)
+            } else {
+                for(let serverName of api.servers){
+                    let serverHelper = this.serverRegister.serverHelper;
+                    if( !serverHelper.hasOwnProperty(serverName) ){
+                        throw new Error(`[ notes ] ${serverName} was not registed ...`)
                     }
-                );
-                api.response.map(
-                    (item: any) => {
-                        let fieldObj = new item.type();
-                        apiObj.returnHelper.addField(item.attr, fieldObj);
-                    }
-                );
-                apiRegister.register(apiObj);
+                    let { server, apiRegister } = serverHelper[serverName];
+                    let apiObj = new api.type(api.name, server, api.descriptions);
+                    api.request.map(
+                        (item: any) => {
+                            let fieldObj = new item.type();
+                            apiObj.parmsHelper.addField(item.attr, fieldObj);
+                        }
+                    );
+                    api.response.map(
+                        (item: any) => {
+                            let fieldObj = new item.type();
+                            apiObj.returnHelper.addField(item.attr, fieldObj);
+                        }
+                    );
+                    apiRegister.register(apiObj);
+                }
             }
         }
     }

@@ -4,9 +4,9 @@
 /** load model definitions **/
 import { handleActions } from 'redux-actions';
 
-import { LoadActions } from 'reduxes/actions';
+import { LoadType } from 'reduxes/actions';
 import { LoadModel } from 'reduxes/models';
-import { RootState } from './state';
+import * as RootState from './state';
 
 
 const initialState: RootState.LoadState = {
@@ -15,15 +15,15 @@ const initialState: RootState.LoadState = {
 
 export const LoadReducer = handleActions<RootState.LoadState, LoadModel>(
     {
-        [LoadActions.Type.LOADING]: (state, action) => {
-            console.info('loading --------- ', state, action, '----------')
-            state.isLoading = true;
-            return state;
+        [LoadType.LOADING]: (state, action) => {
+            return Object.assign({}, state, {
+                isLoading: true
+            });
         },
-        [LoadActions.Type.LOADED]: (state, action) => {
-            console.info('loaded --------- ', state, action, '----------')
-            state.isLoading = false;
-            return state;
+        [LoadType.LOADED]: (state, action) => {
+            return Object.assign({}, state, {
+                isLoading: false
+            });
         }
     },
     initialState

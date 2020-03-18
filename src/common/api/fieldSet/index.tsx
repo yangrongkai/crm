@@ -25,7 +25,6 @@ export class FieldSetHelper{
                 } catch (e) {
                     throw new Error("[notes] parse parameter <" + attrKey + "> failure!")
                 }
-
             } else {
                 throw new Error("[ notes ] lose parameter <" + attrKey + "> !")
             }

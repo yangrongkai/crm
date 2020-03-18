@@ -61,10 +61,12 @@ export abstract class BaseApi {
         let header = this._generateProtocolHeader();
         let request = Object.assign({}, header, requestParms)
         request['sign'] = signatureHelper.getSignature(request)
+        console.log("我正在请求服务器")
         return HttpRequest.post(
             this.accessUrl,
             request
         ).then( (res) => {
+            console.log("我得到了服务器的结果")
             let { isSuccess, result } = this._parseResponseHeader(res)
             if( !isSuccess ){
                 message.warn(result.msg)

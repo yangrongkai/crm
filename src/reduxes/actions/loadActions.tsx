@@ -1,16 +1,15 @@
 'use strict';
 
 
-import { createAction } from 'redux-actions';
+import { createAction } from 'redux-promise-middleware-actions';
 
 
-export namespace LoadActions {
-    export enum Type {
-        LOADING = 'LOADING',
-        LOADED = 'LOADED'
-    }
-    export const loading = createAction(Type.LOADING);
-    export const loaded = createAction(Type.LOADED);
+export enum LoadType {
+    LOADING = 'LOADING',
+    LOADED = 'LOADED'
 }
 
-export type LoadActions = Omit<typeof LoadActions, 'Type'>;
+export const LoadActions = {
+    loading: createAction(LoadType.LOADING),
+    loaded: createAction(LoadType.LOADED)
+};

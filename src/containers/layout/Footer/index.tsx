@@ -4,14 +4,12 @@ import './index.less';
 import * as globalConfig from '&/config.js';
 
 
-export namespace Footer {
-    export interface Props {
-    }
+export interface FooterProps {
 }
 
-export class Footer extends React.PureComponent<Footer.Props> {
+export class Footer extends React.PureComponent<FooterProps> {
 
-    static defaultProps: Partial<Footer.Props> = {
+    static defaultProps: Partial<FooterProps> = {
     };
 
     render() {

@@ -1,22 +1,46 @@
 {
     "compilerOptions": {
-        "sourceMap": true,
-        "target": "es5",
-        "jsx": "react",
-        "module": "es6",
-        "moduleResolution": "node",
-        "experimentalDecorators": true,
-        "declaration": false,
-        "removeComments": true,
-        "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "strict": true,
-        "outDir": "./dist",
-        "lib": ["es6", "es7", "dom"],
+        "baseUrl": "./", // enables relative imports to root
         "baseUrl": "./src",
         "paths": {
             "src/*": ["./src"]
         }
+        "noUnusedLocals": true,
+        "strict": true,
+        "outDir": "./dist",
+        "allowJs": true, // include js files
+        "checkJs": true, // typecheck js files
+        "declaration": false, // don't emit declarations
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "importHelpers": true, // importing helper functions from tslib
+        "noEmitHelpers": true, // disable emitting inline helper functions
+        "jsx": "react", // process JSX
+        "lib": [
+            "dom",
+            "es2015",
+            "es2016",
+            "es2017.object"
+        ],
+        "allowSyntheticDefaultImports": true,
+        "target": "es6",
+        "module": "es6",
+        "moduleResolution": "node",
+        "noEmit": true, // no emit in dev, only when bundling for prod, which is usually handled by bundlers like webpack / fuse-box / jspm
+        "noEmitOnError": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "strictNullChecks": false,
+        "pretty": true,
+        "removeComments": true,
+        "sourceMap": true
     },
     "include": ["src", "types"]
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
 }

@@ -1,0 +1,21 @@
+{
+    "presets": [
+        "@babel/env",
+        "@babel/typescript",
+        "@babel/react"
+    ],
+    "plugins": [
+        ["@babel/plugin-transform-typescript", { "allowNamespaces": true }],
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
+        [
+            "import",
+            {
+                "libraryName": "antd",
+                "style": true,
+                "libraryDirectory": "es"
+            }
+        ],
+        ["@babel/plugin-proposal-class-properties", { "loose": true }],
+        ["@babel/proposal-object-rest-spread"]
+    ]
+}

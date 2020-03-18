@@ -1,5 +1,5 @@
 'use strict'
 
 
-export { LoginActions } from './loginActions';
-export { LoadActions } from './loadActions';
+export { LoginType, LoginActions } from './loginActions';
+export { LoadType, LoadActions } from './loadActions';

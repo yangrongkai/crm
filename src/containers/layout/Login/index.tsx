@@ -1,50 +1,46 @@
 'use strict'
 
 import * as React from 'react';
-import { connect } from 'react-redux'
-import { bindActionCreators, Dispatch } from 'redux'
-import { message } from 'antd';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
+// import { bindActionCreators } from 'redux';
+// import { message } from 'antd';
+import { message, Button, notification } from 'antd';
 
 
 import * as classNames from 'classnames';
 import * as globalConfig from '&/config.js';
 import { RootState } from 'reduxes/reducers';
 import { omit } from 'common/utils';
-import { LoginActions, LoadActions } from 'reduxes/actions';
+import { LoginActions } from 'reduxes/actions';
 import * as style from './index.less';
 
-import * as log from 'common/utils/log/Logger.js';
-const logger = log.Logger.getLogger('Login');
+import { localStorage } from 'common/utils/persistence'
+// import * as log from 'common/utils/log/Logger.js';
+// const logger = log.Logger.getLogger('Login');
 
-export namespace Login{
-    export interface Props{
-        login: RootState.LoginState,
-        load: RootState.LoadState,
-        loginHelper: LoginActions,
-        loadHelper: LoadActions
-    }
-    export interface State{
-        requesting: boolean,
-    }
+export interface LoginProps{
+    login: RootState.LoginState,
+    loginHelper: any,
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<Login.Props, 'login' | 'load'> => {
-        return { login: state.login,  load: state.load};
+    (state: RootState.RootState, ownProps): Pick<LoginProps, 'login'> => {
+        console.log("数据回流到这里-----》》》》》 ", state, ownProps)
+        return { login: state.login };
     },
-    (dispatch: Dispatch): Pick<Login.Props, 'loginHelper' | 'loadHelper'> => {
+    (dispatch: Dispatch): Pick<LoginProps, 'loginHelper'> => {
         return {
             loginHelper: bindActionCreators(omit(LoginActions, 'Type'), dispatch),
-            loadHelper: bindActionCreators(omit(LoadActions, 'Type'), dispatch)
         };
     }
 )
-export class Login extends React.PureComponent<Login.Props, Login.State> {
+export class Login extends React.PureComponent<LoginProps> {
   
-    static defaultProps: Partial<Login.Props> = {
+    static defaultProps: Partial<LoginProps> = {
     };
 
-    constructor(props: Login.Props, context?: any) {
+    constructor(props: LoginProps, context?: any) {
         super(props, context);
         this.state = { requesting: false };
         this.handleUsernameInput = this.handleUsernameInput.bind(this);
@@ -53,27 +49,34 @@ export class Login extends React.PureComponent<Login.Props, Login.State> {
     }
 
     handleUsernameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        logger.info(event.target.value)
+        // logger.info(event.target.value)
         this.props.login.username = event.target.value;
     };
   
     handlePasswordInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        logger.info(event.target.value)
+        // logger.info(event.target.value)
         this.props.login.password = event.target.value;
     };
   
     handleSubmit = async(event: React.KeyboardEvent<HTMLFormElement>) => {  // async可以配合箭头函数
         event.preventDefault();
-        // this.setState({requesting: true});
-        const hide = message.loading('正在验证...', 0);
+        // const hide = message.loading('正在验证...', 0);
     
-        const { login , loginHelper, loadHelper } = this.props;
-        logger.debug('username = %s, password = %s', login.username, login.password);
-        console.log(loginHelper.loginAccount)
-        loginHelper.loginAccount(login)
-        loadHelper.loading()
-        loadHelper.loaded()
+        const { login , loginHelper } = this.props;
+        let params = {'yrk':'a'};
+        let api = "demo.test";
+        localStorage.sync('username', login.username)
+        localStorage.sync('password', login.password)
+        // logger.debug('username = %s, password = %s', login.username, login.password);
+        console.log('loginHelper : loginAccount --------->>> ', loginHelper.loginAccount(api, params).then(
+            (res: any) => {
+                console.log('------ result --->>>> ', res)
+                console.log('------ result --->>>> ', res.value)
+                message.success('登录成功');
+            }
+        ))
     
+        /*
         try {
             // 服务端验证
             // const res = await ajax.login(username, password);
@@ -95,10 +98,22 @@ export class Login extends React.PureComponent<Login.Props, Login.State> {
             // logger.error('login error, %o', exception);
             this.setState({requesting: false});
         }
+        */
+    };
+
+    openNotification = () => {
+      const args = {
+        message: 'Notification Title',
+        description:
+          'I will never close automatically. This is a purposely very very long description that has many many characters and words.',
+        duration: 0,
+      };
+      notification.open(args);
     };
   
     render() {
         // 整个组件被一个id="loginDIV"的div包围, 样式都设置到这个div中
+        console.log(' 我进行了渲染 ', this.props.login.isLoading)
         return (
             <div id="loginDIV">
       
@@ -119,11 +134,14 @@ export class Login extends React.PureComponent<Login.Props, Login.State> {
                         <input className={classNames(style['login-input'])} type="password" value={this.props.login.password}
                                onChange={this.handlePasswordInput} placeholder="密码" />
                         <button className={classNames(style['btn-large'], style['btn'])}
-                                type="submit" disabled={this.state.requesting}>
-                          登录
+                                type="submit" disabled={this.props.login.isLoading}>
+                                登录
                         </button>
                     </form>
                 </div>
+            <Button type="primary" onClick={this.openNotification}>
+                Open the notification box
+              </Button>
       
             </div>
         );

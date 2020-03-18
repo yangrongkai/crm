@@ -1,15 +1,18 @@
 'use strict';
 
 
-import { createAction } from 'redux-actions';
+// import { Dispatch } from 'redux';
+import { apiRouter } from 'common/api';
+import { createAsyncAction } from 'redux-promise-middleware-actions';
 
-
-export namespace LoginActions {
-    export enum Type {
-        LOGIN_ACCOUNT = 'LOGIN_ACCOUNT'
-    }
-    // export const loginAccount= (dispath: any) => createAction(Type.LOGIN_ACCOUNT);
-    export const loginAccount= createAction(Type.LOGIN_ACCOUNT);
+export enum LoginType {
+    LOGIN_ACCOUNT = 'LOGIN_ACCOUNT'
 }
 
-export type LoginActions = Omit<typeof LoginActions, 'Type'>;
+const loginAccount = createAsyncAction(LoginType.LOGIN_ACCOUNT, (api: string, params: any) => {
+    return apiRouter.router('crm', api).request(params);
+});
+
+export const LoginActions = {
+    loginAccount 
+};

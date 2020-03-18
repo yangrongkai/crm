@@ -3,28 +3,48 @@
 
 import { handleActions } from 'redux-actions';
 
-import { apiRouter } from 'common/api'
 import { LoginActions } from 'reduxes/actions';
 import { AccountModel } from 'reduxes/models';
-import { RootState } from './state';
+import * as RootState from './state';
 
 
 const initialState: RootState.LoginState = {
     username: "",
     password: "",
+    isLoading: false
 }
 
 export const LoginReducer = handleActions<RootState.LoginState, AccountModel>(
     {
-        [LoginActions.Type.LOGIN_ACCOUNT]: (state, action) => {
-            let params = {'yrk':'a'};
-            let api = "demo.test";
-            apiRouter.router('crm', api).request(params)
-                .then( (result: any) => {
-                    console.log(' result =======>>>>>>>>>   ', result)
-                } );
+        [LoginActions.loginAccount.pending.toString()]: (state, action) => {
+            console.log('action进行中')
+            state = Object.assign({}, state, {
+                isLoading: true
+            })
+            console.log("============>>>>>>>  ", state)
+            console.log("============>>>>>>>  ", action)
+            console.log("============>>>>>>>  ", action.payload)
+            console.log(' &&&&&========>>>>> login account pending end <<<<<=============&&&&')
             return state;
-        }
+        },
+        [LoginActions.loginAccount.fulfilled.toString()]: (state, action) => {
+            console.log('action成功了')
+            console.log("============>>>>>>>  ", state)
+            console.log("============>>>>>>>  ", action)
+            console.log("============>>>>>>>  ", action.payload)
+            state = Object.assign({}, state, {
+                isLoading: false
+            })
+            return state;
+        },
+        [LoginActions.loginAccount.rejected.toString()]: (state, action) => {
+            console.log('action失败了')
+            console.log("============>>>>>>>  ", state)
+            console.log("============>>>>>>>  ", action)
+            console.log("============>>>>>>>  ", action.payload)
+            console.log(' &&&&&========>>>>> login account pending end <<<<<=============&&&&')
+            return state;
+        },
     },
     initialState
 );

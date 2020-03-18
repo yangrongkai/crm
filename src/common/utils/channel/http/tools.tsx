@@ -35,13 +35,12 @@ export class HttpRequest {
                 }
             })
             .catch(( err: any ) => {
-                console.log(err)
-                message.warn(msg)
+                message.warn(msg);
+                throw new Error(msg + "< " + err +" >");
             })
         
     }
 
-    
     static file(url: string , formData: any, msg: string = '网络传输异常'){
         let headers: any = {'Content-Type': 'multipart/form-data'}
         return this.post(url, formData, headers, false)
