@@ -1,7 +1,7 @@
 'use strict'
 
 
-// import globalConfig from '&/config.js';
+import * as config from '&/config.js';
 import { message } from 'antd';
 import { HttpRequest } from 'common/utils/channel/http';
 import { signatureHelper } from 'common/api/tools';
@@ -11,12 +11,13 @@ import { IServer } from 'common/api/server'
 
 export abstract class BaseApi {
 
-    server: IServer;
     name: string;
     description: string;
+    accessUrl: string;
+    server: IServer;
     parmsHelper: FieldSetHelper;
     returnHelper: FieldSetHelper;
-    accessUrl: string;
+    mockData: any;
 
     constructor(name: string, server: IServer, description: string = ""){
         this.name = name;
@@ -62,19 +63,49 @@ export abstract class BaseApi {
         let request = Object.assign({}, header, requestParms)
         request['sign'] = signatureHelper.getSignature(request)
         console.log("我正在请求服务器")
-        return HttpRequest.post(
-            this.accessUrl,
-            request
-        ).then( (res) => {
-            console.log("我得到了服务器的结果")
-            let { isSuccess, result } = this._parseResponseHeader(res)
-            if( !isSuccess ){
-                message.warn(result.msg)
-            } else {
-                result = this.receive(result);
-            }
-            return result;
-        });
+        if( config.debug ){
+            return new Promise(
+                (resolve, reject) => {
+                    var timeOut = Math.random() * 2;
+                    setTimeout(function () {
+                        console.log("我得到了假数据返回的结果")
+                        if (timeOut < 1) {
+                            resolve('200 OK');
+                        }
+                        else {
+                            reject('timeout in ' + timeOut + ' seconds.');
+                        }
+                    }, timeOut * 1000);
+                }
+            ).then( 
+                (res) => {
+                    return this.mockData;
+                }
+            ).catch( 
+                (res) => {
+                    let result = {code: 9999, msg: "mock api 时间超时"};
+                    message.warn(result.msg);
+                    // interrupt promise list
+                    throw new Error(result.msg);
+                    // return result
+                }
+            );
+        } else {
+            return HttpRequest.post(
+                this.accessUrl,
+                request
+            ).then( (res) => {
+                console.log("我得到了服务器的结果")
+                let { isSuccess, result } = this._parseResponseHeader(res)
+                if( !isSuccess ){
+                    message.warn(result.msg)
+                    throw new Error(result.msg);
+                } else {
+                    result = this.receive(result);
+                }
+                return result;
+            });
+        }
     }
     
     receive(result: any): any{

@@ -43,6 +43,9 @@ export const LoginReducer = handleActions<RootState.LoginState, AccountModel>(
             console.log("============>>>>>>>  ", action)
             console.log("============>>>>>>>  ", action.payload)
             console.log(' &&&&&========>>>>> login account pending end <<<<<=============&&&&')
+            state = Object.assign({}, state, {
+                isLoading: false
+            })
             return state;
         },
     },

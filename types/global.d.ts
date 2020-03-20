@@ -2,8 +2,8 @@
 
 // for style loader
 declare module '*.css' {
-  const content: { [key: string]: any }
-  export = content;
+    const content: { [key: string]: any }
+    export = content;
 }
 
 declare module '*.less' {
@@ -13,7 +13,7 @@ declare module '*.less' {
 
 declare module '*.js' {
     const content: { [key: string]: any };
-  export = content;
+    export = content;
 }
 
 // Omit type https://github.com/Microsoft/TypeScript/issues/12215#issuecomment-377567046

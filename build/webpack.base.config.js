@@ -2,7 +2,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
-// var lessToJs = require('less-vars-to-js');
+var lessToJs = require('less-vars-to-js');
 
 // import project modules
 var package = require('../package.json');
@@ -22,7 +22,7 @@ const PATHS = {
 };
 
 // for ant style overrides
-// const themeVariables = lessToJs(fs.readFileSync(path.join(PATHS.styles, './ant-theme-vars.less'), 'utf8'));
+const themeVariables = lessToJs(fs.readFileSync(path.join(PATHS.assets, './style/ant-theme-vars.less'), 'utf8'));
 
 // plugins
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -30,16 +30,6 @@ var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 
 // loaders
-const CssLoader = {
-    loader: 'css-loader',
-    query: {
-        modules: true,
-        sourceMap: !isProduction,
-        importLoaders: 1,
-        localIdentName: isProduction ? '[hash:base64:5].css' : '[local]__[hash:base64:5].css'
-    }
-};
-
 const PostcssLoader = {
     loader: 'postcss-loader',
     options: {
@@ -82,6 +72,17 @@ module.exports = (( process ) => {
         clientLogLevel: 'warning'
     };
 
+    const CssLoader = {
+        loader: 'css-loader',
+        query: {
+            modules: true,
+            sourceMap: !isProd,
+            importLoaders: 1,
+            // localIdentName: isProd ? '[hash:base64:5].css' : '[local]__[hash:base64:5].css'
+            localIdentName: isProd ? '[hash:base64:5].css' : '[local]'
+        }
+    };
+
     const config = {
         mode,
         target,
@@ -110,6 +111,7 @@ module.exports = (( process ) => {
                 containers: PATHS.containers,
                 routes: PATHS.routes,
                 schema: PATHS.schema,
+                assets: PATHS.assets,
                 '&': sourcePath
             }
         },
@@ -123,15 +125,6 @@ module.exports = (( process ) => {
                     loader: 'babel-loader',
                     options: require('../babelrc.json'),
                 },
-                /*
-                // .ts, .tsx
-                {
-                    test: /\.tsx?$/,
-                    use: [
-                        'ts-loader'
-                    ].filter(Boolean)
-                },
-                */
                 // css
                 {
                     test: /\.css$/,
@@ -151,10 +144,16 @@ module.exports = (( process ) => {
                         {
                             loader: 'less-loader',
                             options: {
-                                // modifyVars: themeVariables,
+                                modifyVars: themeVariables,
                                 javascriptEnabled: true,
                             },
-                        }
+                        },
+                        {
+                            loader: 'style-resources-loader',
+                            options: {
+                                patterns: path.resolve(PATHS.assets, './style/global.less')
+                            }
+                    }
                     ]
                 },
                 // static assets

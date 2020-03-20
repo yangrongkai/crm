@@ -7,7 +7,8 @@ import { Provider } from 'react-redux';
 import { configureStore } from 'reduxes/store';
 import { RouterHelper } from 'routes';
 
-import 'antd/dist/antd.css';
+import 'assets/style/global.less';
+
 
 // prepare store
 const store = configureStore();

@@ -10,16 +10,24 @@ import * as apiTypes from 'common/api/core';
 // const logger = log.Logger.getLogger('serverRegister')
 export const apiConfigs = [
     { 
-        name: "demo.test", 
-        descriptions: "this is a test api",
-        servers: ["crm", "test"],
+        name: "user.login", 
+        descriptions: "it will login by username and password",
+        servers: ["crm"],
         type: apiTypes.UnAuthorizationApi,
         request: [
-            {attr: 'yrk', type: fields.StringField},
+            {attr: 'username', type: fields.StringField},
+            {attr: 'password', type: fields.StringField},
         ],
         response:[
-            {attr: 'result', type: fields.NumberField},
-        ]
+            {attr: 'access_token', type: fields.StringField},
+            {attr: 'renew_flag', type: fields.StringField},
+            {attr: 'expirt_time', type: fields.StringField},
+        ],
+        mock:{
+            access_token: '123456',
+            renew_flag: '654321',
+            expirt_time: '2019-01-02',
+        }
     }
 ]
 
@@ -73,6 +81,7 @@ export class ApiRouter{
                             apiObj.returnHelper.addField(item.attr, fieldObj);
                         }
                     );
+                    apiObj.mockData =  apiObj.receive(api.mock);
                     apiRegister.register(apiObj);
                 }
             }
