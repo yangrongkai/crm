@@ -3,15 +3,18 @@
 
 import { RouteConfig } from 'react-router-config';
 // import { App } from 'containers/app';
-// import { Footer } from 'containers/layout/Footer';
+import { Footer } from 'containers/layout/Footer';
 import * as layout from 'containers/layout';
 
 
 export const paths: RouteConfig[] = [
     {
-        path: "/",
-        // component: App as any,
+        path: "/login",
         component: layout.Login as any,
+    },
+    {
+        path: "/",
+        component: Footer as any,
         /*
         routes:[
             {
@@ -32,4 +35,5 @@ export const paths: RouteConfig[] = [
         ]
         */
     },
+
 ]

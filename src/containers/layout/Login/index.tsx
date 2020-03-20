@@ -62,14 +62,10 @@ export class Login extends React.PureComponent<LoginProps> {
         // const hide = message.loading('正在验证...', 0);
     
         const { login , loginHelper } = this.props;
-        let api = "user.login";
-        localStorage.sync('username', login.username)
-        localStorage.sync('password', login.password)
-        console.log(" ]]]]]]]>>>>>>>>>>>> start ---->>> ", login)
-        loginHelper.loginAccount(api, login).then(
+        loginHelper.loginAccount("user.login", login).then(
             (res: any) => {
                 localStorage.sync('token', res.value);
-                message.success('登录成功');
+                this.props.history.push("/");
             }
         )
     

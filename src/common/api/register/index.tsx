@@ -23,10 +23,16 @@ export const apiConfigs = [
             {attr: 'renew_flag', type: fields.StringField},
             {attr: 'expirt_time', type: fields.StringField},
         ],
-        mock:{
-            access_token: '123456',
-            renew_flag: '654321',
-            expirt_time: '2019-01-02',
+        mock: {
+            success:{
+                access_token: '123456',
+                renew_flag: '654321',
+                expirt_time: '2019-01-02',
+            },
+            failure:{
+                code: '9999',
+                msg: '账号密码错误',
+            }
         }
     }
 ]
@@ -81,7 +87,7 @@ export class ApiRouter{
                             apiObj.returnHelper.addField(item.attr, fieldObj);
                         }
                     );
-                    apiObj.mockData =  apiObj.receive(api.mock);
+                    apiObj.mockData =  api.mock;
                     apiRegister.register(apiObj);
                 }
             }

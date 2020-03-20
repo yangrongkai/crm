@@ -79,14 +79,13 @@ export abstract class BaseApi {
                 }
             ).then( 
                 (res) => {
-                    return this.mockData;
+                    return this.receive(this.mockData.success);
                 }
             ).catch( 
                 (res) => {
-                    let result = {code: 9999, msg: "mock api 时间超时"};
-                    message.warn(result.msg);
+                    message.warn(this.mockData.failure.msg);
                     // interrupt promise list
-                    throw new Error(result.msg);
+                    throw new Error(this.mockData);
                     // return result
                 }
             );
