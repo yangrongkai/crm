@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { message, Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox } from 'antd';
 
 
 import * as config from '&/config.js';
@@ -13,7 +13,7 @@ import { omit } from 'common/utils';
 import { LoginActions } from 'reduxes/actions';
 // import * as classNames from 'classnames';
 // import * as style from './index.less';
-import { localStorage } from 'common/utils/persistence';
+import { TokenEnum, TokenConstant } from 'common/utils/persistence';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import './index.less';
@@ -49,12 +49,10 @@ export class Login extends React.PureComponent<LoginProps> {
     }
 
     handleUsernameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.info(event.target.value)
         this.props.login.username = event.target.value;
     };
   
     handlePasswordInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.info(event.target.value)
         this.props.login.password = event.target.value;
     };
   
@@ -64,34 +62,14 @@ export class Login extends React.PureComponent<LoginProps> {
         const { login , loginHelper } = this.props;
         loginHelper.loginAccount("user.login", login).then(
             (res: any) => {
-                localStorage.sync('token', res.value);
+                TokenConstant.save({
+                    [TokenEnum.ACCESS_TOKEN]: res.value.access_token,
+                    [TokenEnum.RENEW_FLAG]: res.value.renew_flag,
+                    [TokenEnum.EXPIRE_TIME]: res.value.expire_time,
+                });
                 this.props.history.push("/");
             }
         )
-    
-        /*
-        try {
-            // 服务端验证
-            // const res = await ajax.login(username, password);
-            hide();
-            // logger.debug('login validate return: result %o', res);
-      
-            // if (res.success) {
-            if (true) {
-                message.success('登录成功');
-                // 如果登录成功, 触发一个loginSuccess的action, payload就是登录后的用户名
-                // this.props.handleLoginSuccess(res.data);
-            } else {
-                // message.error(`登录失败: ${res.message}, 请联系管理员`);
-                this.setState({requesting: false});
-            }
-        } catch (exception) {
-            hide();
-            message.error(`网络请求出错: ${exception.message}`);
-            // logger.error('login error, %o', exception);
-            this.setState({requesting: false});
-        }
-        */
     };
 
     render() {

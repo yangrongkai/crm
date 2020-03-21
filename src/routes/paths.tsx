@@ -3,18 +3,19 @@
 
 import { RouteConfig } from 'react-router-config';
 // import { App } from 'containers/app';
-import { Footer } from 'containers/layout/Footer';
-import * as layout from 'containers/layout';
+// import { Footer } from 'containers/app/layout/footer';
+import { App } from 'containers/app';
+import { Login } from 'containers/pages/login';
 
 
 export const paths: RouteConfig[] = [
     {
         path: "/login",
-        component: layout.Login as any,
+        component: Login as any,
     },
     {
         path: "/",
-        component: Footer as any,
+        component: App as any,
         /*
         routes:[
             {

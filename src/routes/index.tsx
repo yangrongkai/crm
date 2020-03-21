@@ -15,7 +15,7 @@ export class RouterHelper extends React.Component<RouterProps> {
     static defaultProps: Partial<RouterProps> = {
     };
 
-    render() {
+    render(): any{
         return (
             <BrowserRouter>
                 {renderRoutes(paths)}

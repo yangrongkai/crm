@@ -21,13 +21,13 @@ export const apiConfigs = [
         response:[
             {attr: 'access_token', type: fields.StringField},
             {attr: 'renew_flag', type: fields.StringField},
-            {attr: 'expirt_time', type: fields.StringField},
+            {attr: 'expire_time', type: fields.StringField},
         ],
         mock: {
             success:{
                 access_token: '123456',
                 renew_flag: '654321',
-                expirt_time: '2019-01-02',
+                expire_time: '2019-01-02',
             },
             failure:{
                 code: '9999',

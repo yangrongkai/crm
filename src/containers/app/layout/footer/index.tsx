@@ -3,11 +3,13 @@ import * as React from 'react';
 import './index.less';
 import * as globalConfig from '&/config.js';
 
+import { wrapper } from 'containers/components/base';
+
 
 export interface FooterProps {
 }
 
-export class Footer extends React.PureComponent<FooterProps> {
+class FooterComponent extends React.PureComponent<FooterProps> {
 
     static defaultProps: Partial<FooterProps> = {
     };
@@ -25,3 +27,6 @@ export class Footer extends React.PureComponent<FooterProps> {
     }
 
 }
+
+
+export const Footer = wrapper({component: FooterComponent});
