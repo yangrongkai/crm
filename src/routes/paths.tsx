@@ -2,10 +2,10 @@
 
 
 import { RouteConfig } from 'react-router-config';
-// import { App } from 'containers/app';
-// import { Footer } from 'containers/app/layout/footer';
 import { App } from 'containers/app';
 import { Login } from 'containers/pages/login';
+import { One } from 'containers/pages/one';
+import { Two } from 'containers/pages/two';
 
 
 export const paths: RouteConfig[] = [
@@ -16,25 +16,18 @@ export const paths: RouteConfig[] = [
     {
         path: "/",
         component: App as any,
-        /*
         routes:[
             {
-                path: "/",
+                path: "/one",
                 exact: true,
-                component: Welcome
+                component: One as any,
             },
             {
-                path: "/hello",
+                path: "/two",
                 exact: true,
-                component: Hello
-            },
-            {
-                path: "/error",
-                exact: true,
-                component: Error
+                component: Two as any,
             },
         ]
-        */
     },
 
 ]

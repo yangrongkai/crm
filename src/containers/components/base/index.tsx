@@ -18,7 +18,6 @@ class Wrapper {
             }
 
             render(): any{
-                console.log("===========>>>>>>>>>>>>      ", wrapper.component)
                 return <wrapper.component {...this.props}/>
             }
 
@@ -29,4 +28,4 @@ class Wrapper {
 
 }
 
-export const wrapper = new Wrapper().decorate;
+export const wrapper = (new Wrapper()).decorate;

@@ -2,4 +2,4 @@
 
 
 export { LoginType, LoginActions } from './loginActions';
-export { LoadType, LoadActions } from './loadActions';
+export { AppType, AppActions } from './appActions';

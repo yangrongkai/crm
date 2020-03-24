@@ -57,8 +57,6 @@ export class Login extends React.PureComponent<LoginProps> {
     };
   
     handleSubmit = async () => {
-        // const hide = message.loading('正在验证...', 0);
-    
         const { login , loginHelper } = this.props;
         loginHelper.loginAccount("user.login", login).then(
             (res: any) => {
@@ -121,5 +119,4 @@ export class Login extends React.PureComponent<LoginProps> {
             </div>
         );
     }
-  
 };

@@ -3,11 +3,11 @@
 
 import * as models from 'reduxes/models';
 
-export type LoadState = Partial<models.LoadModel>;
-export type LoginState = Partial<models.AccountModel> & LoadState;
+export type AppState = Partial<models.AppModel>;
+export type LoginState = Partial<models.AccountModel>;
 
 export interface RootState {
-    load: LoadState;
+    app: AppState;
     login: LoginState;
     router?: any;
 }

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Layout } from 'antd';
 
 import './index.less';
 import * as globalConfig from '&/config.js';
@@ -20,9 +21,7 @@ class FooterComponent extends React.PureComponent<FooterProps> {
         // backtop如果不设置target会有问题
         // footer的字可以有html标签, 有一定XSS的风险, 不过问题不大
         return (
-            <div>
-                <div className="ant-layout-footer" dangerouslySetInnerHTML={{ __html: text }}/>
-            </div>
+            <Layout.Footer dangerouslySetInnerHTML={{ __html: text }} />
         );
     }
 
