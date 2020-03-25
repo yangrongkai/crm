@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators, Dispatch } from 'redux';
-import { Menu, Layout } from 'antd';
+import { Row, Col, Menu, Layout } from 'antd';
 import * as icons from '@ant-design/icons';
 
 
@@ -32,7 +32,7 @@ export interface HeaderState{
 
 @connect(
     (state: RootState.RootState, ownProps): Pick<HeaderProps, 'app'> => {
-        console.log("数据回流到这里-----》》》》》 ", state, ownProps)
+        console.log(" header 数据回流到这里-----》》》》》 ", state, ownProps)
         return { app: state.app };
     },
     (dispatch: Dispatch): Pick<HeaderProps, 'appHelper'> => {
@@ -41,7 +41,7 @@ export interface HeaderState{
         };
     }
 )
-class HeaderComponent extends React.PureComponent<HeaderProps>{
+class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState>{
 
     constructor(props: HeaderProps, context?: any){
         super(props, context);
@@ -49,7 +49,8 @@ class HeaderComponent extends React.PureComponent<HeaderProps>{
         let { userMenu, menuJSX } = this.establishMenu(menuHelper);
         this.state = {
             userMenu,
-            menuJSX
+            menuJSX,
+            menuHelper
         }
 
         this.toggle = this.toggle.bind(this);
@@ -140,13 +141,19 @@ class HeaderComponent extends React.PureComponent<HeaderProps>{
     render() {
         return (
             <Layout.Header className="site-layout-background" style={{ padding: 0 }}>
-                    { this.props.app.isCollapsed ? 
-                        <icons.MenuUnfoldOutlined className="trigger" onClick={this.toggle}/> : 
-                        <icons.MenuFoldOutlined className="trigger" onClick={this.toggle}/> }
-                <Menu className="header-menu" mode="horizontal">
-                    {this.state.menuJSX}
-                    {this.state.userMenu}
-                </Menu>
+                <Row>
+                    <Col flex="32px">
+                        { this.props.app.isCollapsed ? 
+                            <icons.MenuUnfoldOutlined className="trigger" onClick={this.toggle}/> : 
+                            <icons.MenuFoldOutlined className="trigger" onClick={this.toggle}/> }
+                    </Col>
+                    <Col flex="auto" style={{ textAlign: "end" }}>
+                        <Menu className="header-menu" mode="horizontal">
+                            {this.state.menuJSX}
+                            {this.state.userMenu}
+                        </Menu>
+                    </Col>
+                </Row>
             </Layout.Header>
         );
     }

@@ -64,12 +64,6 @@ export const headerMenu: MenuElementInterface[] = [
         ],
     },
     {
-        key: 'headerMenu3',
-        name: '我没有子菜单',
-        icon: icons.UserOutlined,
-        url: 'http://jxy.me',
-    },
-    {
         key: 'headerMenu4',
         name: '我也没有子菜单',
         icon: icons.UserOutlined,

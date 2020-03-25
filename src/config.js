@@ -10,7 +10,7 @@ const config = {
   
     tabMode: {  // tab模式相关配置
         enable: true,  // 是否开启tab模式
-        allowDuplicate: false,  // 同一个菜单项只允许一个tab
+        allowDuplicate: true,  // 同一个菜单项只允许一个tab
     },
   
     log: {
@@ -23,7 +23,7 @@ const config = {
     },
 
     sidebar: {  // 侧边栏相关配置
-        collapsible: true,  // 是否显示折叠侧边栏的按钮
+        collapsible: false,  // 是否显示折叠侧边栏的按钮
         autoMenuSwitch: true,  // 只展开一个顶级菜单, 其他顶级菜单自动折叠
     },
   

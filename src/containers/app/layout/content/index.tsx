@@ -13,6 +13,7 @@ import { AppActions } from 'reduxes/actions';
 import { wrapper } from 'containers/components/base';
 import * as globalConfig from '&/config.js';
 import { sidebarMenu, headerMenu } from 'schema/menu';
+import { MenuElement, MenuElementHelper} from 'common/interface';
 
 import { Welcome } from 'containers/pages/welcome';
 
@@ -21,9 +22,9 @@ import './index.less';
 
 
 export interface ContentProps{
-    app: RootState.AppState;
     route: any;
     history: any;
+    app: RootState.AppState;
     appHelper: any;
     collapse: boolean;
 }
@@ -31,6 +32,8 @@ export interface ContentProps{
 export interface ContentState{
     currentTabKey: string;
     tabPanes: any[];
+    tabTitleMap: Map<string, JSX.Element>;
+    tabCounter: number;
 }
 
 @connect(
@@ -46,126 +49,110 @@ export interface ContentState{
 )
 class ContentComponet extends React.Component<ContentProps, ContentState>{
 
-    tabTitleMap: any;
-    tabCounter: number;
 
     constructor(props: ContentProps, context?: any){
         super(props, context);
         this.state = {
             currentTabKey: "",
             tabPanes: [],
+            tabTitleMap: this.parseTabTitle(),
+            tabCounter: 0
         };
 
+        this.onTabChange = this.onTabChange.bind(this);
         this.onTabRemove = this.onTabRemove.bind(this);
     }
 
     componentWillMount() {
-        if (globalConfig.tabMode.enable !== true) {
-            return;
-        }
-    
-        this.tabTitleMap = this.parseTabTitle();
         this.updateTab(this.props);
     }
   
-    componentWillReceiveProps(nextProps: any) {
-        if (globalConfig.tabMode.enable !== true) {
-            return;
-        }
-    
-        const action = this.props.history.action;
-        console.log(" location  ------>>>>>> ", this.props, action)
-        /*
-        if (action === 'PUSH') {
-            return;
-        }
-    
-        if (this.props.app.isCollapsed === nextProps.app.isCollapsed) {
-            this.updateTab(nextProps);
-        }
-        */
+    componentWillReceiveProps(nextProps: ContentProps) {
         this.updateTab(nextProps);
     }
 
     parseTabTitle() {
         const tabTitleMap = new Map();
     
-        const addItem = ( item: any ) => {
-            if (item.url) {  // 对于直接跳转的菜单项, 直接忽略, 只有headerMenu中可能有这种
-              return;
+        let addItem = ( item: MenuElement ) => {
+            if (item.url) {
+                return;
             }
             if (item.icon) {
-                tabTitleMap.set(item.key, <span className="ant-layout-tab-text"><item.icon />{item.name}</span>);
+                tabTitleMap.set(item.router, <span className="ant-layout-tab-text"><item.icon />{item.name}</span>);
             } else {
-                tabTitleMap.set(item.key, <span className="ant-layout-tab-text">{item.name}</span>);
+                tabTitleMap.set(item.router, <span className="ant-layout-tab-text">{item.name}</span>);
             }
         };
-        const browseMenu = ( item: any ) => {
-            if (item.child) {
-                item.child.forEach(browseMenu);
+        let browseMenu = ( item: MenuElement ) => {
+            let child = item.getChild();
+            if (child.length > 0) {
+                child.forEach(browseMenu);
             } else {
                 addItem(item);
             }
         };
     
-        // 又是dfs, 每次用js写这种就觉得很神奇...
-        sidebarMenu.forEach(browseMenu);
-        headerMenu.forEach(browseMenu);
+        (new MenuElementHelper(sidebarMenu)).elementMap.forEach(browseMenu);
+        (new MenuElementHelper(headerMenu)).elementMap.forEach(browseMenu);
     
-        // 最后要手动增加一个key, 对应于404页面
-        tabTitleMap.set('*', <span className="ant-layout-tab-text">Error</span>);
+        // add 404 page for system
+        tabTitleMap.set('/404', <span className="ant-layout-tab-text">Error</span>);
         return tabTitleMap;
     }
   
-    updateTab(props: any) {
-        console.log('---->> update tab ----->    ', props)
-        const routes = props.route.routes;
+    getRouteComponent(pathName: string): null | React.Component{
+        let root = this.props.route;
+        let prefix = root.path === "/" ? "" : root.path;
+        for( let route of root.routes ){
+            let routePath = prefix + route.path;
+            if(routePath === pathName){
+                return route.component;
+            }
+        }
+        return null;
+    }
 
-        let pathName = this.props.location.pathname;
-        let path = pathName.substr(pathName.lastIndexOf('/'));
-        let key = path.replace("/","");  // react-router传入的key
-        let route = routes.filter((item: any) => item.path === path)[0]
-    
-        console.log(" updateTabe ---------->>>>>>  key = ", pathName, path, key, route)
-        if (!key || !this.tabTitleMap.has(key)) {
+    updateTab(nextProps: ContentProps) {
+        if (globalConfig.tabMode.enable !== true) {
+            return;
+        }
+
+        let pathName = nextProps.history.location.pathname;
+        if (!this.state.tabTitleMap.has(pathName)) {
             this.state.tabPanes.length = 0;
             return;
         }
-    
-        const tabTitle = this.tabTitleMap.get(key);
+
+        let tabTitle = this.state.tabTitleMap.get(pathName);
+        let component = this.getRouteComponent(pathName)
+
     
         if (globalConfig.tabMode.allowDuplicate === true) {
-            if (!this.tabCounter) {
-                this.tabCounter = 0;
-            }
-      
-            this.tabCounter++;
-            key = key + this.tabCounter;
+            this.setState({ tabCounter: this.state.tabCounter + 1 });
+            pathName = pathName + this.state.tabCounter;
         }
     
-        this.setState({ currentTabKey: key });
+        this.setState({ currentTabKey: pathName });
     
         let exist = false;
-        for (const pane of this.state.tabPanes) {
-            if (pane.key === key) {
+        for (let pane of this.state.tabPanes) {
+            if (pane.key === pathName) {
                 exist = true;
                 break;
             }
         }
     
-        if (!exist) {
+        if (!exist && component !== null) {
             this.state.tabPanes.push({
-                key,
+                key: pathName,
                 title: tabTitle,
-                content: route.component,
+                content: component,
             });
         }
     }
 
     onTabRemove(targetKey: any){
-        // 如果关闭的是当前tab, 要激活哪个tab?
-        // 首先尝试激活左边的, 再尝试激活右边的
-        console.log('------------>>>>> remove ', targetKey, this.state)
         let nextTabKey = this.state.currentTabKey;
         if (this.state.currentTabKey === targetKey) {
             let currentTabIndex = -1;
@@ -175,20 +162,14 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
                 }
             });
   
-            // 如果当前tab左边还有tab, 就激活左边的
             if (currentTabIndex > 0) {
                 nextTabKey = this.state.tabPanes[currentTabIndex - 1].key;
-            }
-            // 否则就激活右边的tab
-            else if (currentTabIndex === 0 && this.state.tabPanes.length > 1) {
+            } else if (currentTabIndex === 0 && this.state.tabPanes.length > 1) {
                 nextTabKey = this.state.tabPanes[currentTabIndex + 1].key;
             }
-  
-          // 其实还有一种情况, 就是只剩最后一个tab, 但这里不用处理
         }
 
-        // 过滤panes
-        const newTabPanes = this.state.tabPanes.filter( (pane: any) => pane.key !== targetKey);
+        let newTabPanes = this.state.tabPanes.filter( (pane: any) => pane.key !== targetKey);
         this.setState({tabPanes: newTabPanes, currentTabKey: nextTabKey});
     }
 

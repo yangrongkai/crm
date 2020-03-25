@@ -25,7 +25,7 @@ export interface SidebarProps {
 
 export interface SidebarState{
     openKeys: string[];
-    menu: JSX.Element[];
+    menuJSX: JSX.Element[];
     level1KeySet: any;
     level2KeyMap: any;
     menuHelper: MenuElementHelper;
@@ -50,7 +50,7 @@ export class Sidebar extends React.PureComponent<SidebarProps, SidebarState> {
         let menuHelper = new MenuElementHelper(sidebarMenu);
         let firstKey: string = (menuHelper.root.getChild()[0]).path || "";
         let openKeys = firstKey === "" ? [] : [firstKey];
-        let menu = this.establishMenu(menuHelper);
+        let menuJSX = this.establishMenu(menuHelper);
         let elementLevel1 = menuHelper.getElementByLevel(1);
         let level1KeySet = new Set(elementLevel1.map( (item: MenuElement) => item.path ));
         let level2KeyMap = new Map();
@@ -67,7 +67,7 @@ export class Sidebar extends React.PureComponent<SidebarProps, SidebarState> {
 
         this.state = {
             openKeys,
-            menu,
+            menuJSX,
             level1KeySet,
             level2KeyMap,
             menuHelper
@@ -168,7 +168,7 @@ export class Sidebar extends React.PureComponent<SidebarProps, SidebarState> {
                     onOpenChange={this.handleOpenChange}
                     onSelect={this.handleSelect}
                     openKeys={this.props.app.isCollapsed ? [] : this.state.openKeys}>
-                    {this.state.menu}
+                    {this.state.menuJSX}
                 </Menu>
             </Layout.Sider>
         );
