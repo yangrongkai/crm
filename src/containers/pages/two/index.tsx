@@ -10,7 +10,7 @@ export class Two extends React.PureComponent {
         console.log(' two component --------------->>>>  props', this.props)
         return (
             <div>
-                two pages
+                 第二个页面 
             </div>
         )
     }

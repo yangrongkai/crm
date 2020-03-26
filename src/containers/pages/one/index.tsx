@@ -9,7 +9,7 @@ export class One extends React.PureComponent {
     render() {
         return (
             <div>
-                One pages
+                 第一个页面 
             </div>
         )
     }
