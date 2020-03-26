@@ -6,7 +6,7 @@ import { message } from 'antd';
 import { HttpRequest } from 'common/utils/channel/http';
 import { signatureHelper } from 'common/api/tools';
 import { FieldSetHelper } from 'common/api/fieldSet';
-import { IServer } from 'common/api/server'
+import { Server } from 'common/api/server'
 
 
 export abstract class BaseApi {
@@ -14,12 +14,12 @@ export abstract class BaseApi {
     name: string;
     description: string;
     accessUrl: string;
-    server: IServer;
+    server: Server;
     parmsHelper: FieldSetHelper;
     returnHelper: FieldSetHelper;
     mockData: any;
 
-    constructor(name: string, server: IServer, description: string = ""){
+    constructor(name: string, server: Server, description: string = ""){
         this.name = name;
         this.description = description;
         this.parmsHelper = new FieldSetHelper();
@@ -29,7 +29,7 @@ export abstract class BaseApi {
     }
 
     _getApiUrl(): string{
-        return "http://localhost:8011/interface/"
+        return this.server.url;
     }
     
     _generateProtocolHeader(): any{

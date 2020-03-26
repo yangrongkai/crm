@@ -1,16 +1,16 @@
 'use strict'
 
 
+import { ApiInterface } from 'common/interface';
 import * as fields from 'common/api/fields';
-import * as apiTypes from 'common/api/core';
+import * as api from 'common/api/core';
 
-
-export const userApi = [
+export const userApi: ApiInterface[] = [
     { 
         name: "user.login", 
         descriptions: "it will login by username and password",
-        servers: ["crm"],
-        type: apiTypes.UnAuthorizationApi,
+        servers: ["crm", 'test'],
+        type: api.UnAuthorizationApi,
         request: [
             {attr: 'username', type: fields.StringField},
             {attr: 'password', type: fields.StringField},

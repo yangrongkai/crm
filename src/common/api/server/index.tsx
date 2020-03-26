@@ -1,29 +1,48 @@
 'use strict'
 
 
-export interface IServer{
+import { ServerInterface } from 'common/interface';
+import { serverConfig } from 'schema/server';
+
+
+export class Server implements ServerInterface{
     flag: string;
-    getDescription(): string;
-}
-
-export  class CrmServer implements IServer{
-    flag = "crm";
+    description: string;
+    url: string;
+    
+    constructor(server: ServerInterface){
+        this.flag = server.flag;
+        this.description = server.description;
+        this.url = server.url;
+    }
 
     getDescription(): string{
-        return "crm 服务接口调用"
+        return this.description;
     }
 }
 
-export  class TestServer implements IServer{
-    flag = "test";
+export class ServerHelper {
 
-    getDescription(): string{
-        return "user 服务接口调用"
+    serverMap: Map<string, Server>;
+
+    constructor(serverConfig: ServerInterface[]){
+        this.serverMap = this.initializeServerMap(serverConfig)
     }
+
+    initializeServerMap(serverConfig: ServerInterface[]){
+        let serverMap = new Map();
+        for(let server of serverConfig){
+            serverMap.set(server.flag, new Server(server));
+        }
+        return serverMap; 
+    }
+
+    getServerMap(): Map<string, Server>{
+        return this.serverMap;
+    }
+
 }
 
 
-export const servers = [
-    new CrmServer(),
-    new TestServer(),
-]
+
+export const servers = (new ServerHelper(serverConfig)).getServerMap().values();
