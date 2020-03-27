@@ -9,9 +9,7 @@ import { Row, Col, Menu, Layout } from 'antd';
 import * as icons from '@ant-design/icons';
 
 
-import { RootState } from 'reduxes/reducers';
-import { omit } from 'common/utils';
-import { AppActions } from 'reduxes/actions';
+import { RootState, appRedux } from 'reduxes';
 import { wrapper } from 'containers/components/base';
 import * as globalConfig from '&/config.js';
 import { headerMenu } from 'schema/menu';
@@ -37,7 +35,7 @@ export interface HeaderState{
     },
     (dispatch: Dispatch): Pick<HeaderProps, 'appHelper'> => {
         return {
-            appHelper: bindActionCreators(omit(AppActions, 'Type'), dispatch),
+            appHelper: bindActionCreators(appRedux.actions(), dispatch),
         };
     }
 )

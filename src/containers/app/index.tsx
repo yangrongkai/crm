@@ -7,8 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { Layout } from 'antd';
 
 
-import { RootState } from 'reduxes/reducers';
-import { AppActions } from 'reduxes/actions';
+import { RootState, appRedux } from 'reduxes';
 import { wrapper } from 'containers/components/base';
 import { Header, Sidebar, Content, Footer } from 'containers/app/layout'
 import { TokenEnum, TokenConstant } from 'common/utils/persistence';
@@ -30,7 +29,7 @@ export interface AppProps{
     },
     (dispatch: Dispatch): Pick<AppProps, 'appHelper'> => {
         return {
-            appHelper: bindActionCreators(AppActions, dispatch),
+            appHelper: bindActionCreators(appRedux.actions(), dispatch),
         };
     }
 )

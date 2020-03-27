@@ -10,10 +10,8 @@ import { Menu, Layout } from 'antd';
 
 import { sidebarMenu } from 'schema/menu';
 import { MenuElement, MenuElementHelper } from 'common/interface';
+import { RootState, appRedux } from 'reduxes';
 import * as globalConfig from '&/config.js';
-import { RootState } from 'reduxes/reducers';
-import { omit } from 'common/utils';
-import { AppActions } from 'reduxes/actions';
 import './index.less';
 
 
@@ -38,7 +36,7 @@ export interface SidebarState{
     },
     (dispatch: Dispatch): Pick<SidebarProps, 'appHelper'> => {
         return {
-            appHelper: bindActionCreators(omit(AppActions, 'Type'), dispatch),
+            appHelper: bindActionCreators(appRedux.actions(), dispatch),
         };
     }
 )

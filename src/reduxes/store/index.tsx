@@ -6,7 +6,9 @@ import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { logger } from 'reduxes/middleware';
-import { RootState, rootReducer } from 'reduxes/reducers';
+
+
+import { RootState, rootReducer } from './reducer';
 
 
 export function configureStore(initialState?: RootState): Store<RootState> {
@@ -20,12 +22,14 @@ export function configureStore(initialState?: RootState): Store<RootState> {
         RootState
     >;
   
+    /*
     if (module.hot) {
-        module.hot.accept('reduxes/reducers', () => {
-            const nextReducer = require('reduxes/reducers');
+        module.hot.accept('reduxes/reducer', () => {
+            const nextReducer = require('reduxes/reducer');
             store.replaceReducer(nextReducer);
         });
     }
+    */
   
     return store;
 }

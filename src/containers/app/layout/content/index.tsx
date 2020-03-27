@@ -7,8 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { Tabs, Breadcrumb, Layout } from 'antd';
 
 
-import { RootState } from 'reduxes/reducers';
-import { AppActions } from 'reduxes/actions';
+import { RootState, appRedux } from 'reduxes';
 import { wrapper } from 'containers/components/base';
 import * as globalConfig from '&/config.js';
 import { sidebarMenu, headerMenu } from 'schema/menu';
@@ -42,7 +41,7 @@ export interface ContentState{
     },
     (dispatch: Dispatch): Pick<ContentProps, 'appHelper'> => {
         return {
-            appHelper: bindActionCreators(AppActions, dispatch),
+            appHelper: bindActionCreators(appRedux.actions(), dispatch),
         };
     }
 )

@@ -8,8 +8,7 @@ import { Form, Input, Button, Checkbox } from 'antd';
 
 
 import * as config from '&/config.js';
-import { RootState } from 'reduxes/reducers';
-import { LoginActions } from 'reduxes/actions';
+import { RootState, loginRedux } from 'reduxes';
 // import * as classNames from 'classnames';
 // import * as style from './index.less';
 import { TokenEnum, TokenConstant } from 'common/utils/persistence';
@@ -30,7 +29,7 @@ export interface LoginProps{
     },
     (dispatch: Dispatch): Pick<LoginProps, 'loginHelper'> => {
         return {
-            loginHelper: bindActionCreators(LoginActions, dispatch),
+            loginHelper: bindActionCreators(loginRedux.actions(), dispatch),
         };
     }
 )
