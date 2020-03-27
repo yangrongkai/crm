@@ -8,7 +8,6 @@ import { Tabs, Breadcrumb, Layout } from 'antd';
 
 
 import { RootState } from 'reduxes/reducers';
-import { omit } from 'common/utils';
 import { AppActions } from 'reduxes/actions';
 import { wrapper } from 'containers/components/base';
 import * as globalConfig from '&/config.js';
@@ -43,7 +42,7 @@ export interface ContentState{
     },
     (dispatch: Dispatch): Pick<ContentProps, 'appHelper'> => {
         return {
-            appHelper: bindActionCreators(omit(AppActions, 'Type'), dispatch),
+            appHelper: bindActionCreators(AppActions, dispatch),
         };
     }
 )

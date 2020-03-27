@@ -10,7 +10,7 @@ const config = {
   
     tabMode: {  // tab模式相关配置
         enable: true,  // 是否开启tab模式
-        allowDuplicate: true,  // 同一个菜单项只允许一个tab
+        allowDuplicate: false,  // 同一个菜单项只允许一个tab，因为react机制，很少会使用true
     },
   
     log: {

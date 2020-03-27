@@ -8,14 +8,12 @@ import { Layout } from 'antd';
 
 
 import { RootState } from 'reduxes/reducers';
-import { omit } from 'common/utils';
 import { AppActions } from 'reduxes/actions';
 import { wrapper } from 'containers/components/base';
 import { Header, Sidebar, Content, Footer } from 'containers/app/layout'
 import { TokenEnum, TokenConstant } from 'common/utils/persistence';
 
 import './index.less';
-
 
 
 export interface AppProps{
@@ -32,7 +30,7 @@ export interface AppProps{
     },
     (dispatch: Dispatch): Pick<AppProps, 'appHelper'> => {
         return {
-            appHelper: bindActionCreators(omit(AppActions, 'Type'), dispatch),
+            appHelper: bindActionCreators(AppActions, dispatch),
         };
     }
 )

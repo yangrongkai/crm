@@ -9,7 +9,6 @@ import { Form, Input, Button, Checkbox } from 'antd';
 
 import * as config from '&/config.js';
 import { RootState } from 'reduxes/reducers';
-import { omit } from 'common/utils';
 import { LoginActions } from 'reduxes/actions';
 // import * as classNames from 'classnames';
 // import * as style from './index.less';
@@ -31,7 +30,7 @@ export interface LoginProps{
     },
     (dispatch: Dispatch): Pick<LoginProps, 'loginHelper'> => {
         return {
-            loginHelper: bindActionCreators(omit(LoginActions, 'Type'), dispatch),
+            loginHelper: bindActionCreators(LoginActions, dispatch),
         };
     }
 )
@@ -42,7 +41,7 @@ export class Login extends React.PureComponent<LoginProps> {
 
     constructor(props: LoginProps, context?: any) {
         super(props, context);
-        this.state = { visible: false, placement: 'left' };
+
         this.handleUsernameInput = this.handleUsernameInput.bind(this);
         this.handlePasswordInput = this.handlePasswordInput.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -71,8 +70,6 @@ export class Login extends React.PureComponent<LoginProps> {
     };
 
     render() {
-        // 整个组件被一个id="loginDIV"的div包围, 样式都设置到这个div中
-        console.log(' 我进行了渲染 ', this.props.login.isLoading)
         return (
             <div id="login-component">
                 <Form
