@@ -5,6 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Tabs, Breadcrumb, Layout } from 'antd';
+import { HomeOutlined } from '@ant-design/icons';
 
 
 import { RootState, appRedux } from 'reduxes';
@@ -32,6 +33,8 @@ export interface ContentState{
     tabPanes: any[];
     tabTitleMap: Map<string, JSX.Element>;
     tabCounter: number;
+    breadcrumb: any;
+    menuHelper: MenuElementHelper;
 }
 
 @connect(
@@ -50,11 +53,20 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
 
     constructor(props: ContentProps, context?: any){
         super(props, context);
+
+        let menuList = [
+            ...sidebarMenu,
+            ...headerMenu
+        ];
+        let menuHelper = new MenuElementHelper(menuList);
+
         this.state = {
             currentTabKey: "",
             tabPanes: [],
-            tabTitleMap: this.parseTabTitle(),
-            tabCounter: 0
+            tabTitleMap: this.parseTabTitle(menuHelper),
+            tabCounter: 0,
+            breadcrumb: {},
+            menuHelper: menuHelper,
         };
 
         this.onTabChange = this.onTabChange.bind(this);
@@ -69,7 +81,7 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
         this.updateTab(nextProps);
     }
 
-    parseTabTitle() {
+    parseTabTitle(menuHelper: MenuElementHelper): Map<string, JSX.Element> {
         const tabTitleMap = new Map();
     
         let addItem = ( item: MenuElement ) => {
@@ -82,6 +94,7 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
                 tabTitleMap.set(item.router, <span className="ant-layout-tab-text">{item.name}</span>);
             }
         };
+
         let browseMenu = ( item: MenuElement ) => {
             let child = item.getChild();
             if (child.length > 0) {
@@ -91,8 +104,7 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
             }
         };
     
-        (new MenuElementHelper(sidebarMenu)).elementMap.forEach(browseMenu);
-        (new MenuElementHelper(headerMenu)).elementMap.forEach(browseMenu);
+        menuHelper.elementMap.forEach(browseMenu);
     
         // add 404 page for system
         tabTitleMap.set('/404', <span className="ant-layout-tab-text">Error</span>);
@@ -102,7 +114,8 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
     getRouteComponent(pathName: string): null | React.Component{
         let root = this.props.route;
         let prefix = root.path === "/" ? "" : root.path;
-        for( let route of root.routes ){
+        let forRoutes = [...root.routes];
+        for( let route of forRoutes ){
             let routePath = prefix + route.path;
             if(routePath === pathName){
                 return route.component;
@@ -112,41 +125,50 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
     }
 
     updateTab(nextProps: ContentProps) {
-        if (globalConfig.tabMode.enable !== true) {
-            return;
-        }
-
         let pathName = nextProps.history.location.pathname;
-        if (!this.state.tabTitleMap.has(pathName)) {
-            this.state.tabPanes.length = 0;
-            return;
-        }
+        let component = this.getRouteComponent(pathName);
 
-        let tabTitle = this.state.tabTitleMap.get(pathName);
-        let component = this.getRouteComponent(pathName)
-
-    
-        if (globalConfig.tabMode.allowDuplicate === true) {
-            this.setState({ tabCounter: this.state.tabCounter + 1 });
-            pathName = pathName + this.state.tabCounter;
-        }
-    
-        this.setState({ currentTabKey: pathName });
-    
-        let exist = false;
-        for (let pane of this.state.tabPanes) {
-            if (pane.key === pathName) {
-                exist = true;
-                break;
+        if (globalConfig.tabMode.enable !== true) {
+            let routeMap = this.state.menuHelper.getRouteMap();
+            let current = routeMap.get(pathName);
+            let parents = current.getParents();
+            this.setState({
+                breadcrumb: {
+                    content: component,
+                    parents: parents,
+                    current: current
+                }
+            })
+        } else {
+            if (!this.state.tabTitleMap.has(pathName)) {
+                this.state.tabPanes.length = 0;
+                return;
             }
-        }
-    
-        if (!exist && component !== null) {
-            this.state.tabPanes.push({
-                key: pathName,
-                title: tabTitle,
-                content: component,
-            });
+
+            let tabTitle = this.state.tabTitleMap.get(pathName);
+        
+            if (globalConfig.tabMode.allowDuplicate === true) {
+                this.setState({ tabCounter: this.state.tabCounter + 1 });
+                pathName = pathName + this.state.tabCounter;
+            }
+        
+            this.setState({ currentTabKey: pathName });
+        
+            let exist = false;
+            for (let pane of this.state.tabPanes) {
+                if (pane.key === pathName) {
+                    exist = true;
+                    break;
+                }
+            }
+        
+            if (!exist && component !== null) {
+                this.state.tabPanes.push({
+                    key: pathName,
+                    title: tabTitle,
+                    content: component,
+                });
+            }
         }
     }
 
@@ -175,7 +197,38 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
         this.setState({currentTabKey: activeKey});
     }
 
-    renderBody() {
+    renderBreadCrumbItem(){
+        let itemArray = [];
+
+        for (let element of this.state.breadcrumb.parents) {
+            let name = element.name;
+            if (name) {
+                itemArray.push(
+                    <Breadcrumb.Item key={name} href={element.router}>
+                        { element.icon && <element.icon /> }
+                        {name}
+                    </Breadcrumb.Item>
+                );
+            }
+        }
+
+        return (
+            <div>
+                <Breadcrumb>
+                    {itemArray}
+                </Breadcrumb>
+                <div className="ant-layout-container">
+                    { 
+                        this.state.breadcrumb.content && 
+                        <this.state.breadcrumb.content {...this.props}/>
+                    }
+                </div>
+            </div>
+
+        )
+    }
+
+    renderBody(): JSX.Element {
         if (globalConfig.tabMode.enable === true) {
             if (this.state.tabPanes.length === 0) {
                 return <div className="ant-layout-container"><Welcome /></div>;
@@ -197,14 +250,7 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
             }
         }
         else {
-            return (
-                <div>
-                    <Breadcrumb routes={this.props.route.routes}/>
-                    <div className="ant-layout-container">
-                        {this.props.children}
-                    </div>
-                </div>
-            )
+            return this.renderBreadCrumbItem();
         }
     }
   

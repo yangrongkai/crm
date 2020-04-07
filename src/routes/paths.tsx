@@ -6,6 +6,7 @@ import { App } from 'containers/app';
 import { Login } from 'containers/pages/login';
 import { One } from 'containers/pages/one';
 import { Two } from 'containers/pages/two';
+import { Welcome } from 'containers/pages/welcome';
 
 
 export const paths: RouteConfig[] = [
@@ -26,6 +27,11 @@ export const paths: RouteConfig[] = [
                 path: "/two",
                 exact: true,
                 component: Two as any,
+            },
+            {
+                path: "/welcome",
+                exact: true,
+                component: Welcome as any,
             },
         ]
     },

@@ -62,7 +62,6 @@ export class Sidebar extends React.PureComponent<SidebarProps, SidebarState> {
 
         }
         
-
         this.state = {
             openKeys,
             menuJSX,

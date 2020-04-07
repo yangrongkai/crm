@@ -47,6 +47,24 @@ export class MenuElement implements MenuElementInterface{
         return this.child;
     }
 
+    getParent(): MenuElement{
+        return this.parent;
+    }
+
+    getParents(){
+        let parents = [this];
+        let last = (element: MenuElement|null) => {
+            let parent = element.getParent();
+            if(parent !== null){
+                parents.push(parent);
+                last(element.parent);
+            }
+        }
+        last(this);
+        parents.reverse();
+        return parents;
+    }
+
 };
 
 
@@ -54,15 +72,18 @@ export class MenuElementHelper {
 
     root: MenuElement;
     elementMap: Map<string, MenuElement>;
+    routeMap: Map<string, MenuElement>;
 
     constructor(menuList: MenuElementInterface[]){
-        let { rootElement, elementMap } = this.load(menuList);
+        let { rootElement, elementMap, routeMap } = this.load(menuList);
         this.root = rootElement;
         this.elementMap = elementMap;
+        this.routeMap = routeMap;
     }
 
     load(menuList: MenuElementInterface[]): any {
         let elementMap = new Map();
+        let routeMap = new Map();
         let unitLoad = (element: MenuElement, item: MenuElementInterface, level: number) => {
             let menuElement = new MenuElement(
                 item.key,
@@ -77,6 +98,10 @@ export class MenuElementHelper {
             menuElement.setParent(element);
             elementMap.set(menuElement.path, menuElement);
 
+            if( menuElement.router ){
+                routeMap.set(menuElement.router, menuElement);
+            }
+
             if( item.child ){
                 for( let subItem of item.child ){
                     unitLoad(menuElement, subItem, menuElement.level + 1);
@@ -84,14 +109,27 @@ export class MenuElementHelper {
             }
         }
 
-        const rootElement = new MenuElement("root", "根节点", '/root', 0);
+        const rootElement = new MenuElement("root", "首页", '/webcome', 0);
         for( let menu of menuList ){
             unitLoad(rootElement, menu, rootElement.level + 1);
         }
         return {
             rootElement,
-            elementMap
+            elementMap,
+            routeMap
         };
+    }
+
+    getParent(element: MenuElement): MenuElement | null{
+        return element.getParent();
+    }
+
+    getParents(element: MenuElement): MenuElement[]{
+        return element.getParents();
+    }
+
+    getRouteMap(): Map<string, MenuElement>{
+        return this.routeMap;
     }
 
     getElementByLevel(level: number): MenuElement[]{

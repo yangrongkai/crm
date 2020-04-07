@@ -119,7 +119,7 @@ class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState>{
         })
 
         const userMenu = (
-                <Menu.SubMenu title={<span><icons.LogoutOutlined /> 丢失用户信息 </span>}>
+                <Menu.SubMenu title={<icons.GithubFilled style={{ fontSize: "24px" }}/> }>
                     {userMenuItems && userMenuItems[0] ? userMenuItems : null}
                     <Menu.Divider />
                     {logoutMenuItem}

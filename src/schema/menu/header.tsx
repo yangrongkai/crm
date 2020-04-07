@@ -11,101 +11,81 @@ export const headerMenu: MenuElementInterface[] = [
         name: "用户菜单",
         child: [
             {
-                key: 'modifyUser',
-                name: '修改用户信息',
-                icon: icons.UserOutlined,
-                url: 'http://jxy.me',
-            },
-            {
-                key: 'user222',
-                name: '药药切克闹',
-                icon: icons.UserOutlined,
-            },
-            {
-                key: 'user333',
-                name: '选项3',
+                key: 'account',
+                name: '账户',
                 child: [
                     {
-                        key: 'user333aaa',
-                        name: 'user333aaa',
+                        key: 'detail',
+                        name: '账户详情',
+                        icon: icons.IdcardOutlined,
+                    },
+                    {
+                        key: 'reset-password',
+                        name: '修改密码',
+                        icon: icons.TagOutlined,
+                    },
+                ],
+            },
+            {
+                key: 'user',
+                name: '个人',
+                child: [
+                    {
+                        key: 'information',
+                        name: '个人详情',
                         icon: icons.UserOutlined,
                     },
                     {
-                        key: 'user333bbb',
-                        name: 'user333bbb',
-                        url: 'http://jxy.me',
+                        key: 'setting',
+                        name: '个人设置',
+                        icon: icons.SettingOutlined,
+                    },
+                    {
+                        key: 'modify',
+                        name: '修改信息',
+                        icon: icons.EditOutlined,
+                    },
+                ],
+            },
+            {
+                key: 'company',
+                name: '公司',
+                child: [
+                    {
+                        key: 'detail',
+                        name: '公司详情',
+                        icon: icons.HomeOutlined,
                     },
                 ],
             },
         ],
     },
     {
-        key: 'headerMenu2',
-        name: 'header菜单',
-        icon: icons.UserOutlined,
+        key: 'notice',
+        name: '公告',
+        icon: icons.SoundOutlined,
         child: [
             {
-                key: 'headerMenu111',
-                name: '菜单项1',
-                icon: icons.UserOutlined,
-                url: 'http://jxy.me',
+                key: 'system',
+                name: '系统公告',
+                icon: icons.ContainerOutlined,
             },
             {
-                key: '菜单项2',
-                name: '短信表管理',
-                url: 'http://jxy.me',
-            },
-            {
-                key: '菜单项3',
-                name: '选项3',
-                icon: icons.UserOutlined,
-                url: 'http://jxy.me',
+                key: 'person',
+                name: '个人消息',
+                icon: icons.MessageOutlined,
             },
         ],
     },
     {
-        key: 'headerMenu4',
-        name: '我也没有子菜单',
-        icon: icons.UserOutlined,
-    },
-    {
-        key: 'headerMenu5',
-        name: '我没有图标',
+        key: 'logger',
+        name: '操作日志',
+        icon: icons.ProfileOutlined,
         child: [
             {
-                key: 'headerMenu5000000',
-                name: '二级导航无子菜单',
-            },
-            {
-                key: 'headerMenu51111',
-                name: '三级导航',
-                icon: icons.UserOutlined,
-                child: [
-                    {
-                        key: 'headerMenu51111aa',
-                        name: '选项6',
-                        icon: icons.UserOutlined,
-                    },
-                    {
-                        key: 'headerMenu51111bb',
-                        name: '选项7',
-                        icon: 'inbox',
-                    },
-                ],
-            },
-            {
-                key: 'headerMenu52222',
-                name: '三级导航无图标',
-                child: [
-                    {
-                        key: 'headerMenu52222aa',
-                        name: '选项8',
-                    },
-                    {
-                        key: 'headerMenu52222bb',
-                        name: '选项9',
-                    },
-                ],
+                key: 'system',
+                name: '系统日志',
+                icon: icons.HddOutlined,
             },
         ],
     },
