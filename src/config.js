@@ -6,7 +6,8 @@ const config = {
     favicon: '',  // 设置网页的favicon, 可以是外链, 也可以是本地
     footer: '<a target="_blank" href="http://www.baidu.com">foolbear</a>版权所有 © 2015-2099',  // footer中显示的字, 可以嵌入html标签
   
-    debug: true,  // 是否开启debug模式, 不会请求后端接口, 使用mock的数据
+    debug: false,  // 是否开启debug模式, 不会请求后端接口, 使用mock的数据
+    defaultFlag: "controller-pc", // api默认服务
   
     tabMode: {  // tab模式相关配置
         enable: true,  // 是否开启tab模式

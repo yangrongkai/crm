@@ -12,6 +12,7 @@ import { RootState, loginRedux } from 'reduxes';
 // import * as classNames from 'classnames';
 // import * as style from './index.less';
 import { TokenEnum, TokenConstant } from 'common/utils/persistence';
+import { hex_md5 } from 'common/utils/security/CryptoMd5.js';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import './index.less';
@@ -51,12 +52,12 @@ export class Login extends React.PureComponent<LoginProps> {
     };
   
     handlePasswordInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.login.password = event.target.value;
+        this.props.login.password = hex_md5(event.target.value);
     };
   
     handleSubmit = async () => {
         const { login , loginHelper } = this.props;
-        loginHelper.loginAccount("user.login", login).then(
+        loginHelper.loginAccount("staff.account.login", login).then(
             (res: any) => {
                 TokenConstant.save({
                     [TokenEnum.ACCESS_TOKEN]: res.value.access_token,

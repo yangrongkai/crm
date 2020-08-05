@@ -56,7 +56,7 @@ class AppComponet extends React.Component<AppProps>{
             <Layout style={{ height: "100%" }}>
                 <Sidebar />
                 <Layout className="site-layout">
-                    <Header /> 
+                    <Header {...this.props}/> 
                     <Content {...this.props}/>
                     <Footer/>
                 </Layout>

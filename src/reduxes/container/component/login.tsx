@@ -7,6 +7,7 @@ import { handleActions } from 'redux-actions';
 import { BaseContainer } from '../base';
 import { RootState } from '../state';
 import * as models from 'reduxes/models';
+import * as config from  '&/config.js';
 
 export enum LoginType {
     LOGIN_ACCOUNT = 'LOGIN_ACCOUNT'
@@ -20,7 +21,7 @@ export class LoginContainer extends BaseContainer {
         super(initialState);
 
         this.initialState = initialState;
-        this.loginAccount = this.createAsynchronizationAction('crm', LoginType.LOGIN_ACCOUNT);
+        this.loginAccount = this.createAsynchronizationAction(config.defaultFlag, LoginType.LOGIN_ACCOUNT);
     }
 
     actions(): any{

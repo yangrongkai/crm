@@ -11,6 +11,7 @@ import * as icons from '@ant-design/icons';
 
 import { RootState, appRedux } from 'reduxes';
 import { wrapper } from 'containers/components/base';
+import { TokenConstant } from 'common/utils/persistence';
 import * as globalConfig from '&/config.js';
 import { headerMenu } from 'schema/menu';
 import { MenuElement, MenuElementHelper } from 'common/interface';
@@ -63,11 +64,22 @@ class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState>{
         );
     }
 
+    logout = async () => {
+        const { app , appHelper } = this.props;
+        appHelper.logoutAccount("staff.account.logout", app).then(
+            (res: any) => {
+                TokenConstant.remove()
+                this.props.history.push("/login");
+            }
+        )
+
+    }
+
     establishMenu(menuHelper: MenuElementHelper): any{
         let logoutMenuItem = (
             <Menu.Item key="logout">
                 <icons.LogoutOutlined />
-                <a href={`${globalConfig.getAPIPath()}${globalConfig.login.logout}`}>注销</a>
+                <a onClick={this.logout}>注销</a>
             </Menu.Item>
         );
 

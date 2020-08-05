@@ -24,7 +24,11 @@ export abstract class BaseContainer implements BaseContainerInterface {
 
     createAsynchronizationAction(serverFlag: string, actionType: string){
         return createAsyncAction(actionType, (api: string, params: any) => {
-            return apiRouter.router(serverFlag, api).request(params);
+            try {
+                return apiRouter.router(serverFlag, api).request(params);
+            } catch (e) {
+                console.error("[error] api is not to registed!", serverFlag, api)
+            }
         });
     }
 

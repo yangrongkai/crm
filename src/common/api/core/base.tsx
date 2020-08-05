@@ -4,6 +4,7 @@
 import * as config from '&/config.js';
 import { message } from 'antd';
 import { HttpRequest } from 'common/utils/channel/http';
+import { TokenEnum, TokenConstant } from 'common/utils/persistence';
 import { signatureHelper } from 'common/api/tools';
 import { FieldSetHelper } from 'common/api/fieldSet';
 import { Server } from 'common/api/server'
@@ -57,10 +58,16 @@ export abstract class BaseApi {
         }
     }
 
-    request(params: any){
+    _request(params: any, is_auth=true){
         let requestParms = this.parmsHelper.parse(params)
-        let header = this._generateProtocolHeader();
-        let request = Object.assign({}, header, requestParms)
+        let header = this._generateProtocolHeader()
+        let other = {}
+        if(is_auth){
+            other = {
+                auth: TokenConstant.get()[TokenEnum.ACCESS_TOKEN]
+            }
+        }
+        let request = Object.assign({}, header, other, requestParms)
         request['sign'] = signatureHelper.getSignature(request)
         console.log("我正在请求服务器")
         if( config.debug ){
@@ -90,6 +97,7 @@ export abstract class BaseApi {
                 }
             );
         } else {
+            console.log(this.accessUrl)
             return HttpRequest.post(
                 this.accessUrl,
                 request
