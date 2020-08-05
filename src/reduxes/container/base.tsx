@@ -23,7 +23,7 @@ export abstract class BaseContainer implements BaseContainerInterface {
     }
 
     createAsynchronizationAction(serverFlag: string, actionType: string){
-        return createAsyncAction(actionType, (api: string, params: any) => {
+        return createAsyncAction(actionType, (api: string, params: any):any => {
             try {
                 return apiRouter.router(serverFlag, api).request(params);
             } catch (e) {

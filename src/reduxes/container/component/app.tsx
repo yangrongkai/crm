@@ -5,7 +5,7 @@ import { handleActions } from 'redux-actions';
 
 
 import { BaseContainer } from '../base';
-import { RootState } from '../state';
+import { AppState } from '../state';
 import * as models from 'reduxes/models';
 import * as config from  '&/config.js';
 
@@ -17,6 +17,7 @@ export enum AppType {
 export class AppContainer extends BaseContainer {
     initialState: any;
     changeCollapse: any;
+    logoutAccount: any;
 
     constructor(initialState: any){
         super(initialState);
@@ -34,7 +35,7 @@ export class AppContainer extends BaseContainer {
     }
 
     reducer(): any{
-        return handleActions<RootState.LoginState, models.AccountModel>(
+        return handleActions<AppState, models.AppModel>(
             {
                 [AppType.COLLAPSED]: (state, action) => {
                     return Object.assign({}, state ,{

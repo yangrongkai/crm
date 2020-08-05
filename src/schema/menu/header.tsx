@@ -15,14 +15,10 @@ export const headerMenu: MenuElementInterface[] = [
                 name: '账户',
                 child: [
                     {
-                        key: 'detail',
-                        name: '账户详情',
+                        key: 'account-manager',
+                        name: '账号管理',
                         icon: icons.IdcardOutlined,
-                    },
-                    {
-                        key: 'reset-password',
-                        name: '修改密码',
-                        icon: icons.TagOutlined,
+                        router:"/account",
                     },
                 ],
             },
@@ -31,19 +27,10 @@ export const headerMenu: MenuElementInterface[] = [
                 name: '个人',
                 child: [
                     {
-                        key: 'information',
-                        name: '个人详情',
+                        key: 'person-manager',
+                        name: '个人中心',
                         icon: icons.UserOutlined,
-                    },
-                    {
-                        key: 'setting',
-                        name: '个人设置',
-                        icon: icons.SettingOutlined,
-                    },
-                    {
-                        key: 'modify',
-                        name: '修改信息',
-                        icon: icons.EditOutlined,
+                        router:"/centre",
                     },
                 ],
             },
@@ -53,7 +40,7 @@ export const headerMenu: MenuElementInterface[] = [
                 child: [
                     {
                         key: 'detail',
-                        name: '公司详情',
+                        name: '公司信息',
                         icon: icons.HomeOutlined,
                     },
                 ],

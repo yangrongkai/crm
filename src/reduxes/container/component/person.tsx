@@ -5,47 +5,51 @@ import { handleActions } from 'redux-actions';
 
 
 import { BaseContainer } from '../base';
-import { LoginState } from '../state';
+import { PersonState } from '../state';
 import * as models from 'reduxes/models';
 import * as config from  '&/config.js';
 
-export enum LoginType {
-    LOGIN_ACCOUNT = 'LOGIN_ACCOUNT'
+export enum PersonType {
+    UPDATA = 'UPDATA',
+    GET = 'GET'
 }
 
-export class LoginContainer extends BaseContainer {
+export class PersonContainer extends BaseContainer {
     initialState: any;
-    loginAccount: any;
+    updatePerson: any;
+    getPerson: any;
 
     constructor(initialState: any){
         super(initialState);
 
         this.initialState = initialState;
-        this.loginAccount = this.createAsynchronizationAction(config.defaultFlag, LoginType.LOGIN_ACCOUNT);
+        this.updatePerson = this.createAsynchronizationAction(config.defaultFlag, PersonType.UPDATA);
+        this.getPerson = this.createAsynchronizationAction(config.defaultFlag, PersonType.GET);
     }
 
     actions(): any{
         return {
-            loginAccount: this.loginAccount,
+            updatePerson: this.updatePerson,
+            getPerson: this.getPerson,
         }
     }
 
     reducer(): any{
-        return handleActions<LoginState, models.AccountModel>(
+        return handleActions<PersonState, models.PersonModel>(
             {
-                [this.loginAccount.pending.toString()]: (state, action) => {
+                [this.updatePerson.pending.toString()]: (state, action) => {
                     console.log('action进行中')
                     return Object.assign({}, state, {
                         isLoading: true
                     });
                 },
-                [this.loginAccount.fulfilled.toString()]: (state, action) => {
+                [this.updatePerson.fulfilled.toString()]: (state, action) => {
                     console.log('action成功了')
                     return Object.assign({}, state, {
                         isLoading: false
                     })
                 },
-                [this.loginAccount.rejected.toString()]: (state, action) => {
+                [this.updatePerson.rejected.toString()]: (state, action) => {
                     console.log('action失败了')
                     return Object.assign({}, state, {
                         isLoading: false
@@ -58,4 +62,4 @@ export class LoginContainer extends BaseContainer {
 
 }
 
-export const loginRedux = new LoginContainer({});
+export const loginRedux = new PersonContainer({});

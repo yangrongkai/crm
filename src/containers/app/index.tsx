@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { Layout } from 'antd';
 
 
-import { RootState, appRedux } from 'reduxes';
+import { RootState, AppState, appRedux } from 'reduxes';
 import { wrapper } from 'containers/components/base';
 import { Header, Sidebar, Content, Footer } from 'containers/app/layout'
 import { TokenEnum, TokenConstant } from 'common/utils/persistence';
@@ -16,14 +16,15 @@ import './index.less';
 
 
 export interface AppProps{
-    app: RootState.AppState
-    location: any,
-    route: any;
+    location?: any,
+    route?: any;
+    history?: any;
+    app: AppState,
     appHelper: any;
 }
 
 @connect(
-    (state: RootState.RootState, ownProps): Pick<AppProps, 'app' | 'route' | 'location'> => {
+    (state: RootState, ownProps): Pick<AppProps, 'app' | 'route' | 'location'> => {
         console.log(" app 数据回流到这里-----》》》》》 ", state, ownProps)
         return { app: state.app, route: ownProps.route, location: ownProps.location};
     },
@@ -54,7 +55,7 @@ class AppComponet extends React.Component<AppProps>{
         }
         return (
             <Layout style={{ height: "100%" }}>
-                <Sidebar />
+                <Sidebar {...this.props}/>
                 <Layout className="site-layout">
                     <Header {...this.props}/> 
                     <Content {...this.props}/>

@@ -9,17 +9,17 @@ import { Row, Col, Menu, Layout } from 'antd';
 import * as icons from '@ant-design/icons';
 
 
-import { RootState, appRedux } from 'reduxes';
+import { RootState, AppState, appRedux } from 'reduxes';
 import { wrapper } from 'containers/components/base';
 import { TokenConstant } from 'common/utils/persistence';
-import * as globalConfig from '&/config.js';
 import { headerMenu } from 'schema/menu';
 import { MenuElement, MenuElementHelper } from 'common/interface';
 import './index.less';
 
 
 export interface HeaderProps{
-    app: RootState.AppState,
+    history?: any,
+    app: AppState,
     appHelper: any
 }
 
@@ -30,7 +30,7 @@ export interface HeaderState{
 }
 
 @connect(
-    (state: RootState.RootState, ownProps): Pick<HeaderProps, 'app'> => {
+    (state: RootState, ownProps): Pick<HeaderProps, 'app'> => {
         console.log(" header 数据回流到这里-----》》》》》 ", state, ownProps)
         return { app: state.app };
     },

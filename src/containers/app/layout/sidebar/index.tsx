@@ -10,14 +10,14 @@ import { Menu, Layout } from 'antd';
 
 import { sidebarMenu } from 'schema/menu';
 import { MenuElement, MenuElementHelper } from 'common/interface';
-import { RootState, appRedux } from 'reduxes';
+import { RootState, AppState, appRedux } from 'reduxes';
 import * as globalConfig from '&/config.js';
 import './index.less';
 
 
 
 export interface SidebarProps {
-    app: RootState.AppState;
+    app: AppState;
     appHelper: any;
 }
 
@@ -30,7 +30,7 @@ export interface SidebarState{
 }
 
 @connect(
-    (state: RootState.RootState, ownProps): Pick<SidebarProps, 'app'> => {
+    (state: RootState, ownProps): Pick<SidebarProps, 'app'> => {
         console.log("sidebar 数据回流到这里-----》》》》》 ", state, ownProps)
         return { app: state.app };
     },

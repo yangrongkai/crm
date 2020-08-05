@@ -5,10 +5,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Tabs, Breadcrumb, Layout } from 'antd';
-import { HomeOutlined } from '@ant-design/icons';
 
 
-import { RootState, appRedux } from 'reduxes';
+import { RootState, AppState, appRedux } from 'reduxes';
 import { wrapper } from 'containers/components/base';
 import * as globalConfig from '&/config.js';
 import { sidebarMenu, headerMenu } from 'schema/menu';
@@ -23,7 +22,7 @@ import './index.less';
 export interface ContentProps{
     route: any;
     history: any;
-    app: RootState.AppState;
+    app: AppState;
     appHelper: any;
     collapse: boolean;
 }
@@ -38,7 +37,7 @@ export interface ContentState{
 }
 
 @connect(
-    (state: RootState.RootState, ownProps): Pick<ContentProps, 'app' | 'route' | 'history'> => {
+    (state: RootState, ownProps): Pick<ContentProps, 'app' | 'route' | 'history'> => {
         console.log("content 数据回流到这里-----》》》》》 ", state, ownProps)
         return { app: state.app, route: ownProps.route, history: ownProps.history};
     },

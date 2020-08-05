@@ -115,6 +115,10 @@ export abstract class BaseApi {
         }
     }
     
+    request(params: any){
+        throw new Error("need to implemented!");
+    }
+
     receive(result: any): any{
         let responseResult = this.returnHelper.parse(result);
         return responseResult;
