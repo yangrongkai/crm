@@ -35,6 +35,7 @@ export interface HeaderState{
         return { app: state.app };
     },
     (dispatch: Dispatch): Pick<HeaderProps, 'appHelper'> => {
+        console.log(" header 数据绑定到这里-----》》》》》 ", dispatch) 
         return {
             appHelper: bindActionCreators(appRedux.actions(), dispatch),
         };

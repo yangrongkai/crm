@@ -9,4 +9,4 @@ export interface AppModel {
 export enum AppFilter {
 }
 
-
+export type AppState = Partial<AppModel>;

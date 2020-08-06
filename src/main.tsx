@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import { configureStore } from 'reduxes/store';
+import { configureStore } from 'reduxes';
 import { RouterHelper } from 'routes';
 
 import 'assets/style/global.less';

@@ -8,29 +8,29 @@ import { Form, Input, Button, Checkbox } from 'antd';
 
 
 import * as config from '&/config.js';
-import { RootState, loginRedux } from 'reduxes';
+import { RootState, AccountState, accountRedux } from 'reduxes';
 // import * as classNames from 'classnames';
 // import * as style from './index.less';
 import { TokenEnum, TokenConstant } from 'common/utils/persistence';
-import { hex_md5 } from 'common/utils/security/CryptoMd5.js';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import './index.less';
 
 
 export interface LoginProps{
-    login: RootState.LoginState,
-    loginHelper: any,
+    account: AccountState,
+    accountHelper: any,
+    history: any,
 }
 
 @connect(
-    (state: RootState.RootState, ownProps): Pick<LoginProps, 'login'> => {
+    (state: RootState, ownProps): Pick<LoginProps, 'account'> =>{
         console.log("数据回流到这里-----》》》》》 ", state, ownProps)
-        return { login: state.login };
+        return { account: state.account };
     },
-    (dispatch: Dispatch): Pick<LoginProps, 'loginHelper'> => {
+    (dispatch: Dispatch): Pick<LoginProps, 'accountHelper'> => {
         return {
-            loginHelper: bindActionCreators(loginRedux.actions(), dispatch),
+            accountHelper: bindActionCreators(accountRedux.actions(), dispatch),
         };
     }
 )
@@ -41,23 +41,14 @@ export class Login extends React.PureComponent<LoginProps> {
 
     constructor(props: LoginProps, context?: any) {
         super(props, context);
-
-        this.handleUsernameInput = this.handleUsernameInput.bind(this);
-        this.handlePasswordInput = this.handlePasswordInput.bind(this);
+        
+        this.inputChange = this.inputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleUsernameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.login.username = event.target.value;
-    };
-  
-    handlePasswordInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.login.password = hex_md5(event.target.value);
-    };
-  
     handleSubmit = async () => {
-        const { login , loginHelper } = this.props;
-        loginHelper.loginAccount("staff.account.login", login).then(
+        const { account, accountHelper } = this.props;
+        accountHelper.loginAccount("staff.account.login", account).then(
             (res: any) => {
                 TokenConstant.save({
                     [TokenEnum.ACCESS_TOKEN]: res.value.access_token,
@@ -68,6 +59,14 @@ export class Login extends React.PureComponent<LoginProps> {
             }
         )
     };
+
+    inputChange =  (event: React.ChangeEvent<HTMLInputElement>) => {
+        let attr = event.target.name
+        let value = event.target.value
+        this.props.accountHelper.updateModel({
+            [attr]: value
+        })
+    }
 
     render() {
         return (
@@ -85,8 +84,9 @@ export class Login extends React.PureComponent<LoginProps> {
                     >
                         <Input 
                             prefix={<UserOutlined className="site-form-item-icon" />} 
-                            placeholder="Username" 
-                            onChange={this.handleUsernameInput}
+                            name="username"
+                            onChange={this.inputChange}
+                            value={this.props.account.username}
                         />
                     </Form.Item>
                     <Form.Item
@@ -95,9 +95,10 @@ export class Login extends React.PureComponent<LoginProps> {
                     >
                         <Input
                             prefix={<LockOutlined className="site-form-item-icon" />}
+                            name="password"
                             type="password"
-                            placeholder="Password"
-                            onChange={this.handlePasswordInput}
+                            onChange={this.inputChange}
+                            value={this.props.account.password}
                         />
                     </Form.Item>
                     <Form.Item>
@@ -108,7 +109,8 @@ export class Login extends React.PureComponent<LoginProps> {
       
                     <Form.Item>
                         <Button type="primary" htmlType="submit" className="login-form-button"
-                            disabled={this.props.login.isLoading}>
+                            // disabled={this.props.account.isLoading}
+                            >
                             Log in
                         </Button>
                     </Form.Item>

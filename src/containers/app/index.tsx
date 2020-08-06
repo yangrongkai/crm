@@ -29,6 +29,7 @@ export interface AppProps{
         return { app: state.app, route: ownProps.route, location: ownProps.location};
     },
     (dispatch: Dispatch): Pick<AppProps, 'appHelper'> => {
+        console.log(" app 数据绑定到这里-----》》》》》 ", dispatch) 
         return {
             appHelper: bindActionCreators(appRedux.actions(), dispatch),
         };

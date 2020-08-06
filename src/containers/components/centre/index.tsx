@@ -23,7 +23,7 @@ export class PersonCentreManager extends React.PureComponent {
                 <p className="site-description-item-profile-p">基本信息</p>
                   <Row>
                     <Col span={12}>
-                      <DescriptionItem title="Full Name" content="Lily" />
+                      <DescriptionItem title="姓名" content="Lily" />
                     </Col>
                     <Col span={12}>
                       <DescriptionItem title="Account" content="AntDesign@example.com" />

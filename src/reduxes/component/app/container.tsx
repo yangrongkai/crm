@@ -4,9 +4,8 @@
 import { handleActions } from 'redux-actions';
 
 
-import { BaseContainer } from '../base';
-import { AppState } from '../state';
-import * as models from 'reduxes/models';
+import { BaseContainer } from 'reduxes/tools/container';
+import { AppState } from './model';
 import * as config from  '&/config.js';
 
 export enum AppType {
@@ -35,14 +34,14 @@ export class AppContainer extends BaseContainer {
     }
 
     reducer(): any{
-        return handleActions<AppState, models.AppModel>(
+        return handleActions<AppState, any>(
             {
                 [AppType.COLLAPSED]: (state, action) => {
                     return Object.assign({}, state ,{
                         isCollapsed: !state.isCollapsed
                     });
                 },
-                [AppType.LOGOUT_ACCOUNT]: (state, action) => {
+                [this.logoutAccount.fulfilled.toString()]: (state, action) => {
                     console.log("注销完成。。。。。。")
                     return state
                 }
@@ -52,5 +51,3 @@ export class AppContainer extends BaseContainer {
     }
 
 }
-
-export const appRedux = new AppContainer({});

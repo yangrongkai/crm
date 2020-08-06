@@ -42,6 +42,7 @@ export interface ContentState{
         return { app: state.app, route: ownProps.route, history: ownProps.history};
     },
     (dispatch: Dispatch): Pick<ContentProps, 'appHelper'> => {
+        console.log(" content 数据绑定到这里-----》》》》》 ", dispatch) 
         return {
             appHelper: bindActionCreators(appRedux.actions(), dispatch),
         };

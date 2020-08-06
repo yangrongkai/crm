@@ -32,8 +32,14 @@ export abstract class BaseContainer implements BaseContainerInterface {
         });
     }
 
-    createAction(actionType: string){
-        return createAction(actionType);
+    createAction(actionType: string, payloadCreator?: any, metaCreator?: any){
+        if (payloadCreator == null && metaCreator == null){
+            return createAction(actionType);
+        } else if (metaCreator == null){
+            return createAction(actionType, payloadCreator);
+        } else{
+            return createAction(actionType, payloadCreator, metaCreator);
+        }
     }
 
     abstract actions(): any;

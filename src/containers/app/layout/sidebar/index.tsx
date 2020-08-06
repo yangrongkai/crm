@@ -35,6 +35,7 @@ export interface SidebarState{
         return { app: state.app };
     },
     (dispatch: Dispatch): Pick<SidebarProps, 'appHelper'> => {
+        console.log(" sidebar 数据绑定到这里-----》》》》》 ", dispatch) 
         return {
             appHelper: bindActionCreators(appRedux.actions(), dispatch),
         };

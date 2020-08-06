@@ -4,9 +4,8 @@
 import { handleActions } from 'redux-actions';
 
 
-import { BaseContainer } from '../base';
-import { PersonState } from '../state';
-import * as models from 'reduxes/models';
+import { BaseContainer } from 'reduxes/tools/container';
+import { PersonState } from './model';
 import * as config from  '&/config.js';
 
 export enum PersonType {
@@ -35,7 +34,7 @@ export class PersonContainer extends BaseContainer {
     }
 
     reducer(): any{
-        return handleActions<PersonState, models.PersonModel>(
+        return handleActions<PersonState, any>(
             {
                 [this.updatePerson.pending.toString()]: (state, action) => {
                     console.log('action进行中')
@@ -49,8 +48,8 @@ export class PersonContainer extends BaseContainer {
                         isLoading: false
                     })
                 },
-                [this.updatePerson.rejected.toString()]: (state, action) => {
-                    console.log('action失败了')
+                [this.getPerson.fulfilled.toString()]: (state, action) => {
+                    console.log('action成功')
                     return Object.assign({}, state, {
                         isLoading: false
                     })
@@ -61,5 +60,3 @@ export class PersonContainer extends BaseContainer {
     }
 
 }
-
-export const loginRedux = new PersonContainer({});

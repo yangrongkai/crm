@@ -1,11 +1,7 @@
 'use strict'
 
 
-export { 
-    RootState,
-    AppState,
-    LoginState,
-    PersonState,
-    loginRedux,
-    appRedux
-} from './container';
+export { configureStore } from './store';
+export { RootState, rootReducer } from './reducer';
+export * from './component';
+
