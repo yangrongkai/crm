@@ -8,7 +8,7 @@ import { Tabs, Breadcrumb, Layout } from 'antd';
 
 
 import { RootState, AppState, appRedux } from 'reduxes';
-import { wrapper } from 'containers/components/base';
+import { wrapper } from 'containers/tools/wrapper';
 import * as globalConfig from '&/config.js';
 import { sidebarMenu, headerMenu } from 'schema/menu';
 import { MenuElement, MenuElementHelper} from 'common/interface';

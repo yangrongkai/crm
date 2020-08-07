@@ -46,14 +46,12 @@ export class ApiRouter{
                     let apiObj = new api.type(api.name, server, api.descriptions);
                     api.request.map(
                         (item: any) => {
-                            let fieldObj = new item.type();
-                            apiObj.parmsHelper.addField(item.attr, fieldObj);
+                            apiObj.parmsHelper.addField(item.attr, item);
                         }
                     );
                     api.response.map(
                         (item: any) => {
-                            let fieldObj = new item.type();
-                            apiObj.returnHelper.addField(item.attr, fieldObj);
+                            apiObj.returnHelper.addField(item.attr, item);
                         }
                     );
                     apiObj.mockData =  api.mock;

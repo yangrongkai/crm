@@ -11,7 +11,6 @@ import * as config from '&/config.js';
 import { RootState, AccountState, accountRedux } from 'reduxes';
 // import * as classNames from 'classnames';
 // import * as style from './index.less';
-import { TokenEnum, TokenConstant } from 'common/utils/persistence';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import './index.less';
@@ -50,11 +49,6 @@ export class Login extends React.PureComponent<LoginProps> {
         const { account, accountHelper } = this.props;
         accountHelper.loginAccount("staff.account.login", account).then(
             (res: any) => {
-                TokenConstant.save({
-                    [TokenEnum.ACCESS_TOKEN]: res.value.access_token,
-                    [TokenEnum.RENEW_FLAG]: res.value.renew_flag,
-                    [TokenEnum.EXPIRE_TIME]: res.value.expire_time,
-                });
                 this.props.history.push("/");
             }
         )
@@ -109,7 +103,7 @@ export class Login extends React.PureComponent<LoginProps> {
       
                     <Form.Item>
                         <Button type="primary" htmlType="submit" className="login-form-button"
-                            // disabled={this.props.account.isLoading}
+                            disabled={this.props.account.isLoading}
                             >
                             Log in
                         </Button>

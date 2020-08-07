@@ -12,7 +12,7 @@ export interface AccountModel {
     password: string;
     accessToken: string;
     renewFlag: string;
-    expirteTime: string;
+    expireTime: string;
 
 }
 

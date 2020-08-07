@@ -4,6 +4,7 @@
 import { handleActions } from 'redux-actions';
 
 
+import { ApiFieldSet } from 'common/api/fieldSet';
 import { BaseContainer } from 'reduxes/tools/container';
 import { PersonState } from './model';
 import * as config from  '&/config.js';
@@ -34,7 +35,7 @@ export class PersonContainer extends BaseContainer {
     }
 
     reducer(): any{
-        return handleActions<PersonState, any>(
+        return handleActions<PersonState, ApiFieldSet>(
             {
                 [this.updatePerson.pending.toString()]: (state, action) => {
                     console.log('action进行中')

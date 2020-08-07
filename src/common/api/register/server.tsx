@@ -1,13 +1,13 @@
 'use strict'
 
 
-import { servers, IServer } from 'common/api/server';
+import { servers, Server } from 'common/api/server';
 import { ApiRegister } from './api';
 
 
 // Server register
 export interface ServerContainer{
-    server: IServer,
+    server: Server,
     apiRegister: ApiRegister,
 }
 

@@ -4,26 +4,35 @@
 import { handleActions } from 'redux-actions';
 
 
+import { ApiFieldSet } from 'common/api/fieldSet';
 import { hex_md5 } from 'common/utils/security/CryptoMd5.js';
+import { TokenEnum, TokenConstant } from 'common/utils/persistence';
 import { AccountState } from './model';
 import { BaseContainer } from 'reduxes/tools/container';
 import * as config from  '&/config.js';
 
 export enum AccountType {
     LOGIN_ACCOUNT = 'LOGIN_ACCOUNT',
+    LOGOUT_ACCOUNT = 'LOGOUT_ACCOUNT',
     UPDATE_INFORMATION = 'UPDATE_INFORMATION'
 }
 
 export class AccountContainer extends BaseContainer {
     initialState: any;
     loginAccount: any;
+    logoutAccount: any;
     updateModel: any;
 
     constructor(initialState: any){
         super(initialState);
 
         this.initialState = initialState;
-        this.loginAccount = this.createAsynchronizationAction(config.defaultFlag, AccountType.LOGIN_ACCOUNT);
+        this.loginAccount = this.createAsynchronizationAction(
+            config.defaultFlag, AccountType.LOGIN_ACCOUNT
+        );
+        this.logoutAccount = this.createAsynchronizationAction(
+            config.defaultFlag, AccountType.LOGOUT_ACCOUNT
+        );
         this.updateModel = this.createAction(
             AccountType.UPDATE_INFORMATION,
             (infos: any): any => infos
@@ -33,36 +42,41 @@ export class AccountContainer extends BaseContainer {
     actions(): any{
         return {
             loginAccount: this.loginAccount,
+            logoutAccount: this.logoutAccount,
             updateModel: this.updateModel,
         }
     }
 
     reducer(): any{
-        return handleActions<AccountState, any>(
+        return handleActions<AccountState, ApiFieldSet>(
             {
                 [this.loginAccount.pending.toString()]: (state, action) => {
-                    console.log('action进行中', state, action)
                     return Object.assign({}, state, {
                         isLoading: true
                     });
                 },
                 [this.loginAccount.fulfilled.toString()]: (state, action) => {
-                    console.log('action成功了', state, action)
                     let result = action.payload
+                    TokenConstant.save({
+                        [TokenEnum.ACCESS_TOKEN]: result.accessToken,
+                        [TokenEnum.RENEW_FLAG]: result.renewFlag,
+                        [TokenEnum.EXPIRE_TIME]: result.expireTime,
+                    });
                     return Object.assign({}, state, result, {
                         isLoading: false,
-                        test : result.accessToken,
-                        /*
-                        accessToken: result['access_token'],
-                        renewFlag: result['renew_flag'],
-                        expirteTime: result['expire_time'],
-                        */
                     })
                 },
                 [this.loginAccount.rejected.toString()]: (state, action) => {
-                    console.log('action失败了')
                     return Object.assign({}, state, {
                         isLoading: false
+                    })
+                },
+                [this.logoutAccount.fulfilled.toString()]: (state, action) => {
+                    TokenConstant.remove();
+                    return Object.assign({}, state, {
+                        accessToken: "",
+                        renewFlag: "",
+                        expireTime: "",
                     })
                 },
                 [AccountType.UPDATE_INFORMATION]: (state, action) => {

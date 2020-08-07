@@ -4,6 +4,7 @@
 import { handleActions } from 'redux-actions';
 
 
+import { ApiFieldSet } from 'common/api/fieldSet';
 import { BaseContainer } from 'reduxes/tools/container';
 import { AppState } from './model';
 import * as config from  '&/config.js';
@@ -34,7 +35,7 @@ export class AppContainer extends BaseContainer {
     }
 
     reducer(): any{
-        return handleActions<AppState, any>(
+        return handleActions<AppState, ApiFieldSet>(
             {
                 [AppType.COLLAPSED]: (state, action) => {
                     return Object.assign({}, state ,{

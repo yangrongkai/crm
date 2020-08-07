@@ -4,7 +4,7 @@ import { Layout } from 'antd';
 import './index.less';
 import * as globalConfig from '&/config.js';
 
-import { wrapper } from 'containers/components/base';
+import { wrapper } from 'containers/tools/wrapper';
 
 
 export interface FooterProps {

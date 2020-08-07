@@ -8,7 +8,7 @@ import { Layout } from 'antd';
 
 
 import { RootState, AppState, appRedux } from 'reduxes';
-import { wrapper } from 'containers/components/base';
+import { wrapper } from 'containers/tools/wrapper';
 import { Header, Sidebar, Content, Footer } from 'containers/app/layout'
 import { TokenEnum, TokenConstant } from 'common/utils/persistence';
 

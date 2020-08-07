@@ -13,5 +13,5 @@ export const accountRedux = new AccountContainer({
     password: "",
     accessToken: token == null ? "": token[TokenEnum.ACCESS_TOKEN], 
     renewFlag: token == null ? "": token[TokenEnum.RENEW_FLAG], 
-    expirteTime: token ==null? "": token[TokenEnum.EXPIRE_TIME], 
+    expireTime: token ==null? "": token[TokenEnum.EXPIRE_TIME], 
 });

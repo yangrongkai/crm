@@ -8,6 +8,10 @@ export class FieldSet<T extends BaseField<T>>{
     [key: string]: T
 }
 
+export class ApiFieldSet extends FieldSet<any>{
+    [key: string]: any
+}
+
 export class FieldSetHelper{
     fieldSet: FieldSet<any>;
 
@@ -18,10 +22,15 @@ export class FieldSetHelper{
     parse(parms: any){
         let result: any = {};
         for(let attrKey in this.fieldSet){
-            let field = this.fieldSet[attrKey];
+            let apiField = this.fieldSet[attrKey];
             if( parms.hasOwnProperty(attrKey) ){
                 try{
-                    result[attrKey] = field.parse(parms[attrKey])
+                    let value = (new apiField.type()).parse(parms[attrKey])
+                    if( apiField.hasOwnProperty('alias') ){
+                        result[apiField.alias] = value 
+                    } else {
+                        result[attrKey] = value
+                    }
                 } catch (e) {
                     throw new Error("[notes] parse parameter <" + attrKey + "> failure!")
                 }
@@ -32,9 +41,9 @@ export class FieldSetHelper{
         return result;
     }
 
-    addField(attrKey: string, field: any){
+    addField(attrKey: string, apiField: any){
         if(!this.fieldSet.hasOwnProperty(attrKey)){
-            this.fieldSet[attrKey] = field;
+            this.fieldSet[attrKey] = apiField;
         } else {
             // todo: it need to logger.
         }

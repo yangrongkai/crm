@@ -9,9 +9,14 @@ import { Row, Col, Menu, Layout } from 'antd';
 import * as icons from '@ant-design/icons';
 
 
-import { RootState, AppState, appRedux } from 'reduxes';
-import { wrapper } from 'containers/components/base';
-import { TokenConstant } from 'common/utils/persistence';
+import { 
+    RootState,
+    AppState,
+    appRedux,
+    AccountState,
+    accountRedux
+} from 'reduxes';
+import { wrapper } from 'containers/tools/wrapper';
 import { headerMenu } from 'schema/menu';
 import { MenuElement, MenuElementHelper } from 'common/interface';
 import './index.less';
@@ -21,6 +26,8 @@ export interface HeaderProps{
     history?: any,
     app: AppState,
     appHelper: any
+    account: AccountState,
+    accountHelper: any
 }
 
 export interface HeaderState{
@@ -30,14 +37,15 @@ export interface HeaderState{
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<HeaderProps, 'app'> => {
+    (state: RootState, ownProps): Pick<HeaderProps, 'app' | 'account'> => {
         console.log(" header 数据回流到这里-----》》》》》 ", state, ownProps)
-        return { app: state.app };
+        return { app: state.app, account: state.account};
     },
-    (dispatch: Dispatch): Pick<HeaderProps, 'appHelper'> => {
+    (dispatch: Dispatch): Pick<HeaderProps, 'appHelper' | 'accountHelper'> => {
         console.log(" header 数据绑定到这里-----》》》》》 ", dispatch) 
         return {
             appHelper: bindActionCreators(appRedux.actions(), dispatch),
+            accountHelper: bindActionCreators(accountRedux.actions(), dispatch),
         };
     }
 )
@@ -66,10 +74,9 @@ class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState>{
     }
 
     logout = async () => {
-        const { app , appHelper } = this.props;
-        appHelper.logoutAccount("staff.account.logout", app).then(
+        const { accountHelper } = this.props;
+        accountHelper.logoutAccount("staff.account.logout", {}).then(
             (res: any) => {
-                TokenConstant.remove()
                 this.props.history.push("/login");
             }
         )

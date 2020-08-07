@@ -4,7 +4,7 @@
 import React from 'react';
 
 export interface WrapperProps{
-    component: React.Component | React.PureComponent;
+    component: any;
 }
 
 class Wrapper {
@@ -18,7 +18,9 @@ class Wrapper {
             }
 
             render(): any{
-                return <wrapper.component {...this.props}/>
+                return (
+                    <wrapper.component {...this.props}/>
+                )
             }
 
         }

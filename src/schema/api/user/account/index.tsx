@@ -5,6 +5,7 @@ import { ApiInterface } from 'common/interface';
 import * as fields from 'common/api/fields';
 import * as api from 'common/api/core';
 
+
 export const accountApi: ApiInterface[] = [
     { 
         name: "staff.account.login", 
@@ -16,15 +17,15 @@ export const accountApi: ApiInterface[] = [
             {attr: 'password', type: fields.StringField},
         ],
         response:[
-            {attr: 'access_token', type: fields.StringField},
-            {attr: 'renew_flag', type: fields.StringField},
-            {attr: 'expire_time', type: fields.StringField},
+            {attr: 'access_token', alias: "accessToken", type: fields.StringField},
+            {attr: 'renew_flag', alias: "renewFlag", type: fields.StringField},
+            {attr: 'expire_time', alias: "expireTime", type: fields.StringField},
         ],
         mock: {
             success:{
-                access_token: '123456',
-                renew_flag: '654321',
-                expire_time: '2019-01-02',
+                access_token: "a5ffc062fee0634f",
+                renew_flag: "d6a22c4fd8262b04",
+                expire_time: '1596783223',
             },
             failure:{
                 code: '9999',
