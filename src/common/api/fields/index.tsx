@@ -2,5 +2,5 @@
 
 
 export { BaseField } from './baseField';
-export { NumberField } from './numberField';
+export { IntField, FloatField } from './numberField';
 export { StringField } from './stringField';

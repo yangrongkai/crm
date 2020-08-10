@@ -4,13 +4,13 @@
 /** Login model definitions **/
 export interface PersonModel {
     nick: string;
-    head_url: string;
+    headUrl: string;
     name: string;
     birthday: string;
     phone: string;
     email: string;
-    work_number: string;
-    is_admin: string;
+    workNumber: string;
+    isAdmin: string;
 }
 
 export enum PersonFilter {

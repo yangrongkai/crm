@@ -6,7 +6,7 @@ import { message } from 'antd';
 import { HttpRequest } from 'common/utils/channel/http';
 import { TokenEnum, TokenConstant } from 'common/utils/persistence';
 import { signatureHelper } from 'common/api/tools';
-import { FieldSetHelper } from 'common/api/fieldSet';
+import { ApiFieldHelper, ApiFieldSet } from 'common/api/fieldSet';
 import { Server } from 'common/api/server'
 
 
@@ -16,15 +16,24 @@ export abstract class BaseApi {
     description: string;
     accessUrl: string;
     server: Server;
-    parmsHelper: FieldSetHelper;
-    returnHelper: FieldSetHelper;
+    parmsHelper: ApiFieldHelper;
+    returnHelper: ApiFieldHelper;
     mockData: any;
 
-    constructor(name: string, server: Server, description: string = ""){
+    constructor(
+        name: string,
+        server: Server,
+        description: string = "",
+        parmsFmt: ApiFieldSet,
+        returnFmt: ApiFieldSet,
+        mockData: any
+    ){
         this.name = name;
         this.description = description;
-        this.parmsHelper = new FieldSetHelper();
-        this.returnHelper= new FieldSetHelper();
+        this.parmsHelper = new ApiFieldHelper(parmsFmt);
+        this.returnHelper= new ApiFieldHelper(returnFmt);
+        this.mockData = mockData;
+
         this.server = server;
         this.accessUrl = this._getApiUrl();
     }
@@ -59,7 +68,10 @@ export abstract class BaseApi {
     }
 
     _request(params: any, is_auth=true){
-        let requestParms = this.parmsHelper.parse(params)
+        let requestParms = this.parmsHelper.parse(
+            params,
+            this.parmsHelper.format
+        )
         let header = this._generateProtocolHeader()
         let other = {}
         if(is_auth){
@@ -78,8 +90,7 @@ export abstract class BaseApi {
                         console.log("我得到了假数据返回的结果")
                         if (timeOut < 1) {
                             resolve('200 OK');
-                        }
-                        else {
+                        } else {
                             reject('timeout in ' + timeOut + ' seconds.');
                         }
                     }, timeOut * 1000);
@@ -120,7 +131,10 @@ export abstract class BaseApi {
     }
 
     receive(result: any): any{
-        let responseResult = this.returnHelper.parse(result);
+        let responseResult = this.returnHelper.parse(
+            result,
+            this.returnHelper.format
+        );
         return responseResult;
     }
 

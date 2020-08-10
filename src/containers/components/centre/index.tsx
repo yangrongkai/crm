@@ -3,106 +3,128 @@
 
 import React from 'react';
 import { Drawer, List, Avatar, Divider, Col, Row } from 'antd';
+
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
+
+
+import { RootState, PersonState, personRedux } from 'reduxes';
+// import * as classNames from 'classnames';
+// import * as style from './index.less';
+
 import './index.less';
 
-const DescriptionItem = ({ title, content }) => (
-  <div className="site-description-item-profile-wrapper">
-    <p className="site-description-item-profile-p-label">{title}:</p>
-    {content}
-  </div>
-);
 
+export interface PersonProps {
+    person: PersonState,
+    personHelper: any,
+}
+
+@connect(
+    (state: RootState, ownProps): Pick<PersonProps, 'person'> =>{
+        console.log("数据回流到这里-----》》》》》 ", state, ownProps)
+        return { person: state.person };
+    },
+    (dispatch: Dispatch): Pick<PersonProps, 'personHelper'> => {
+        return {
+            personHelper: bindActionCreators(personRedux.actions(), dispatch),
+        };
+    }
+)
 export class PersonCentreManager extends React.PureComponent {
+
+    static defaultProps: Partial<PersonProps> = {
+    };
+
+    constructor(props: PersonProps, context?: any) {
+        super(props, context);
+    }
+
+    componentWillMount(){
+        let { personHelper } = this.props;
+        personHelper.getPerson('staff.myself.get')
+    }
 
     render(){
         return (
             <div>
-                <p className="site-description-item-profile-p" style={{ marginBottom: 24 }}>
-                    个人信息
-                </p>
+                <p className="site-description-item-profile-p">账号信息</p>
+                <Row>
+                    <Col span={12}>
+                        <div className="site-description-item-profile-wrapper">
+                            <p className="site-description-item-profile-p-label">
+                                昵称:
+                            </p>
+                            {this.props.person.nick}
+                        </div>
+                    </Col>
+                    <Col span={12}>
+                        <div className="site-description-item-profile-wrapper">
+                            <p className="site-description-item-profile-p-label">
+                                头像:
+                            </p>
+                            <img src={this.props.person.headUrl} style={{width:"40px", heigth:"40px"}}/>
+                        </div>
+                    </Col>
+                </Row>
+                <Divider />
                 <p className="site-description-item-profile-p">基本信息</p>
-                  <Row>
+                <Row>
                     <Col span={12}>
-                      <DescriptionItem title="姓名" content="Lily" />
-                    </Col>
-                    <Col span={12}>
-                      <DescriptionItem title="Account" content="AntDesign@example.com" />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col span={12}>
-                      <DescriptionItem title="City" content="HangZhou" />
+                        <div className="site-description-item-profile-wrapper">
+                            <p className="site-description-item-profile-p-label">
+                                姓名:
+                            </p>
+                            {this.props.person.name}
+                        </div>
                     </Col>
                     <Col span={12}>
-                      <DescriptionItem title="Country" content="China🇨🇳" />
+                        <div className="site-description-item-profile-wrapper">
+                            <p className="site-description-item-profile-p-label">
+                                生日:
+                            </p>
+                            {this.props.person.birthday}
+                        </div>
                     </Col>
-                  </Row>
-                  <Row>
+                </Row>
+                <Row>
                     <Col span={12}>
-                      <DescriptionItem title="Birthday" content="February 2,1900" />
-                    </Col>
-                    <Col span={12}>
-                      <DescriptionItem title="Website" content="-" />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col span={24}>
-                      <DescriptionItem
-                        title="Message"
-                        content="Make things as simple as possible but no simpler."
-                      />
-                    </Col>
-                  </Row>
-
-                  <Divider />
-                  <p className="site-description-item-profile-p">公司信息</p>
-                  <Row>
-                    <Col span={12}>
-                      <DescriptionItem title="Position" content="Programmer" />
+                        <div className="site-description-item-profile-wrapper">
+                            <p className="site-description-item-profile-p-label">
+                                手机号:
+                            </p>
+                            {this.props.person.phone}
+                        </div>
                     </Col>
                     <Col span={12}>
-                      <DescriptionItem title="Responsibilities" content="Coding" />
+                        <div className="site-description-item-profile-wrapper">
+                            <p className="site-description-item-profile-p-label">
+                                email:
+                            </p>
+                            {this.props.person.email}
+                        </div>
                     </Col>
-                  </Row>
-                  <Row>
+                </Row>
+                <Divider />
+                <p className="site-description-item-profile-p">公司信息</p>
+                <Row>
                     <Col span={12}>
-                      <DescriptionItem title="Department" content="XTech" />
-                    </Col>
-                    <Col span={12}>
-                      <DescriptionItem title="Supervisor" content={<a>Lin</a>} />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col span={24}>
-                      <DescriptionItem
-                        title="Skills"
-                        content="C / C + +, data structures, software engineering, operating systems, computer networks, databases, compiler theory, computer architecture, Microcomputer Principle and Interface Technology, Computer English, Java, ASP, etc."
-                      />
-                    </Col>
-                  </Row>
-                  <Divider />
-
-                  <p className="site-description-item-profile-p">联系信息</p>
-                  <Row>
-                    <Col span={12}>
-                      <DescriptionItem title="Email" content="AntDesign@example.com" />
+                        <div className="site-description-item-profile-wrapper">
+                            <p className="site-description-item-profile-p-label">
+                                工号:
+                            </p>
+                            {this.props.person.workNumber}
+                        </div>
                     </Col>
                     <Col span={12}>
-                      <DescriptionItem title="Phone Number" content="+86 181 0000 0000" />
+                        <div className="site-description-item-profile-wrapper">
+                            <p className="site-description-item-profile-p-label">
+                                是否是管理员:
+                            </p>
+                            {this.props.person.isAdmin}
+                        </div>
                     </Col>
-                  </Row>
-                  <Row>
-                    <Col span={24}>
-                      <DescriptionItem
-                        title="Github"
-                        content={
-                          <a href="http://github.com/ant-design/ant-design/">
-                            github.com/ant-design/ant-design/
-                          </a>
-                        }
-                      />
-                    </Col>
-                  </Row>
+                </Row>
             </div>
         )
     }

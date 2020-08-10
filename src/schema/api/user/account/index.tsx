@@ -12,15 +12,30 @@ export const accountApi: ApiInterface[] = [
         descriptions: "it will login by username and password",
         servers: ["controller-pc"],
         type: api.UnAuthorizationApi,
-        request: [
-            {attr: 'username', type: fields.StringField},
-            {attr: 'password', type: fields.StringField},
-        ],
-        response:[
-            {attr: 'access_token', alias: "accessToken", type: fields.StringField},
-            {attr: 'renew_flag', alias: "renewFlag", type: fields.StringField},
-            {attr: 'expire_time', alias: "expireTime", type: fields.StringField},
-        ],
+        request: {
+            username: {
+                transfer: "username",
+                type: fields.StringField,
+            },
+            password: {
+                transfer: 'password',
+                type: fields.StringField,
+            },
+        },
+        response:{
+            access_token:{
+                transfer: 'accessToken',
+                type: fields.StringField,
+            },
+            renew_flag:{
+                transfer: 'renewFlag',
+                type: fields.StringField,
+            },
+            expire_time:{
+                transfer: 'expireTime',
+                type: fields.StringField,
+            },
+        },
         mock: {
             success:{
                 access_token: "a5ffc062fee0634f",
@@ -38,10 +53,10 @@ export const accountApi: ApiInterface[] = [
         descriptions: "go to logout account",
         servers: ["controller-pc"],
         type: api.ControllerApi,
-        request: [
-        ],
-        response:[
-        ],
+        request: {
+        },
+        response:{
+        },
         mock: {
             success:{
             },

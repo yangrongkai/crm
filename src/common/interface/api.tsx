@@ -8,13 +8,7 @@
 // type ApiTypes = UnAuthorizationApi | ControllerApi;
 // type FieldTypes = NumberField | StringField;
 
-export interface ApiFiled {
-    attr: string;
-    alias?: string;
-    // type: FieldTypes;
-    type: any; // fields
-
-}
+import { ApiFieldSet } from 'common/api/fieldSet';
 
 export interface MockInterface {
     success: any;
@@ -27,7 +21,7 @@ export interface ApiInterface {
     servers: string[];
     // type: ApiTypes;
     type: any;
-    request: ApiFiled[];
-    response: ApiFiled[];
+    request: ApiFieldSet;
+    response: ApiFieldSet;
     mock: MockInterface;
 }

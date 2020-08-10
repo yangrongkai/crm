@@ -1,13 +1,13 @@
 'use strict'
 
 
-export abstract class BaseField<T>{
+export abstract class BaseField{
 
-    format(value: T): T{
+    format(value: any): any{
         return value;
     }
 
-    parse(value: T): T{
+    parse(value: any): any{
         return value;
     }
 

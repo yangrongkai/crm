@@ -43,18 +43,14 @@ export class ApiRouter{
                         throw new Error(`[ notes ] ${serverName} was not registed ...`)
                     }
                     let { server, apiRegister } = serverHelper[serverName];
-                    let apiObj = new api.type(api.name, server, api.descriptions);
-                    api.request.map(
-                        (item: any) => {
-                            apiObj.parmsHelper.addField(item.attr, item);
-                        }
+                    let apiObj = new api.type(
+                        api.name,
+                        server,
+                        api.descriptions,
+                        api.request,
+                        api.response,
+                        api.mock
                     );
-                    api.response.map(
-                        (item: any) => {
-                            apiObj.returnHelper.addField(item.attr, item);
-                        }
-                    );
-                    apiObj.mockData =  api.mock;
                     apiRegister.register(apiObj);
                 }
             }

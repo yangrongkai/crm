@@ -11,29 +11,63 @@ export const myselfApi: ApiInterface[] = [
         descriptions: "get myself information",
         servers: ["controller-pc"],
         type: api.ControllerApi,
-        request: [
-        ],
-        response:[
-            {attr: 'nick', type: fields.StringField},
-            {attr: 'head_url', type: fields.StringField},
-            {attr: 'name', type: fields.StringField},
-            {attr: 'gender', type: fields.StringField},
-            {attr: 'birthday', type: fields.StringField},
-            {attr: 'phone', type: fields.StringField},
-            {attr: 'email', type: fields.StringField},
-            {attr: 'work_number', type: fields.StringField},
-            {attr: 'is_admin', type: fields.StringField},
-        ],
+        request: {
+        },
+        response: {
+            staff_info:{
+                transfer: 'staffInfo',
+                dict:{
+                    nick: {
+                        transfer: 'nick',
+                        type: fields.StringField
+                    },
+                    head_url: {
+                        transfer: "headUrl",
+                        type: fields.StringField
+                    },
+                    name: {
+                        transfer: "name",
+                        type: fields.StringField
+                    },
+                    gender: {
+                        transfer: "gender",
+                        type: fields.StringField
+                    },
+                    birthday: {
+                        transfer: "birthday",
+                        type: fields.StringField
+                    },
+                    phone: {
+                        transfer: "phone",
+                        type: fields.StringField
+                    },
+                    email: {
+                        transfer: "email",
+                        type: fields.StringField
+                    },
+                    work_number: {
+                        transfer: "workNumber",
+                        type: fields.StringField
+                    },
+                    is_admin: {
+                        transfer: "isAdmin",
+                        type: fields.StringField
+                    },
+                }
+            }
+        },
         mock: {
             success:{
-                nick: 'Roy',
-                head_url: '',
-                name: 'Yang',
-                birthday: '2019-01-02',
-                phone: '15527703112',
-                email: '237818280@qq.com',
-                work_number: 'BQ0001',
-                is_admin: true,
+                staff_info:{
+                    nick: 'Roy',
+                    head_url: '',
+                    name: 'Yang',
+                    birthday: '2019-01-02',
+                    phone: '15527703112',
+                    email: '237818280@qq.com',
+                    work_number: 'BQ0001',
+                    is_admin: true,
+                }
             },
             failure:{
                 code: '9999',
