@@ -75,4 +75,44 @@ export const myselfApi: ApiInterface[] = [
             }
         }
     },
+    { 
+        name: "staff.myself.update", 
+        descriptions: "get myself information",
+        servers: ["controller-pc"],
+        type: api.ControllerApi,
+        request: {
+            myselfInfo:{
+                transfer: 'myself_info',
+                json: true,
+                dict:{
+                    name: {
+                        transfer: "name",
+                        type: fields.StringField
+                    },
+                    birthday: {
+                        transfer: "birthday",
+                        type: fields.StringField
+                    },
+                    phone: {
+                        transfer: "phone",
+                        type: fields.StringField
+                    },
+                    email: {
+                        transfer: "email",
+                        type: fields.StringField
+                    },
+                }
+            }
+        },
+        response: {
+        },
+        mock: {
+            success:{
+            },
+            failure:{
+                code: '9999',
+                msg: '更新客户信息失败',
+            }
+        }
+    },
 ]

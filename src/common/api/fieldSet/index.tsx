@@ -10,6 +10,7 @@ export interface ApiField{
     type?: any
     list?: ApiFieldSet;
     dict?: ApiFieldSet;
+    json?: boolean;
 }
 
 export interface ApiFieldSet{
@@ -30,17 +31,27 @@ export class ApiFieldHelper{
             apiField.attr = attrKey 
             let response= parms[apiField.attr] 
 
+            let isJSON = false;
+            if( apiField.hasOwnProperty('json') ){
+                isJSON = apiField.json;
+            }
+
             if( apiField.hasOwnProperty('dict') ){
-                result[apiField.transfer] = this.parse(response, apiField.dict) 
+                let value = this.parse(response, apiField.dict) 
+                value = isJSON ? JSON.stringify(value) : value 
+                result[apiField.transfer] = value
             } else if( apiField.hasOwnProperty('list') ){
                 result[apiField.transfer] = []
                 for(let index in response){
                     let item  = response[index]
-                    result[apiField.transfer][index] = this.parse(item, apiField.list)
+                    let value = this.parse(item, apiField.list)
+                    value = isJSON ? JSON.stringify(value) : value 
+                    result[apiField.transfer][index] = value
                 }
             } else {
                 let value = (new apiField.type()).parse(response)
-                result[apiField.transfer] = value 
+                value = isJSON ? JSON.stringify(value) : value 
+                result[apiField.transfer] = value
             }
         }
         return result;
