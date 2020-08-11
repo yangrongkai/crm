@@ -3,8 +3,8 @@
 
 import { createAction } from 'redux-promise-middleware-actions';
 import { createAsyncAction } from 'redux-promise-middleware-actions';
-
-
+import { handleActions } from 'redux-actions';
+import { ApiFieldSet } from 'common/api/fieldSet';
 import { apiRouter } from 'common/api';
 
 
@@ -14,12 +14,21 @@ export interface BaseContainerInterface {
     reducer(): any;
 }
 
+export enum BaseType {
+    UPDATE = 'UPDATE'
+}
+
 
 export abstract class BaseContainer implements BaseContainerInterface {
     initialState: any;
+    update: any;
 
     constructor(initialState: any){
         this.initialState = initialState;
+        this.update = this.createAction(
+            this.constructor.name + BaseType.UPDATE,
+            (infos: any): any => infos
+        )
     }
 
     createAsynchronizationAction(api: string, serverFlag: string, actionType: string){
@@ -42,6 +51,29 @@ export abstract class BaseContainer implements BaseContainerInterface {
         }
     }
 
-    abstract actions(): any;
-    abstract reducer(): any;
+    actions(): any{
+        const baseActions = {
+            update: this.update,
+        }
+        return Object.assign({}, this.loadActions(), baseActions)
+    }
+
+    baseReducer(): any{
+        return {
+            [this.constructor.name + BaseType.UPDATE]: (state: any, action: any) => {
+                return Object.assign({}, state, action.payload, {
+                })
+            }
+        }
+    }
+
+    reducer(): any{
+        return handleActions<any, ApiFieldSet>(
+            Object.assign({}, this.baseReducer(), this.loadReducer()),
+            this.initialState
+        );
+    }
+
+    abstract loadActions(): any;
+    abstract loadReducer(): any;
 }

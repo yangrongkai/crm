@@ -32,34 +32,40 @@ import {
 import './index.less';
 
 
-export interface PersonProps {
+export interface PersonCentreProps {
     person: PersonState,
     account: AccountState,
     personHelper: any,
     accountHelper: any,
 }
 
+export interface PersonCentreState {
+    visible: boolean,
+}
+
 @connect(
-    (state: RootState, ownProps): Pick<PersonProps, 'person' | 'account'> =>{
+    (state: RootState, ownProps): Pick<PersonCentreProps, 'person' | 'account'> =>{
         console.log("个人中心数据回流到这里-----》》》》》 ", state, ownProps)
         return { person: state.person, account: state.account};
     },
-    (dispatch: Dispatch): Pick<PersonProps, 'personHelper' | 'accountHelper'> => {
+    (dispatch: Dispatch): Pick<PersonCentreProps, 'personHelper' | 'accountHelper'> => {
         return {
             personHelper: bindActionCreators(personRedux.actions(), dispatch),
             accountHelper: bindActionCreators(accountRedux.actions(), dispatch),
         };
     }
 )
-export class PersonCentreManager extends React.PureComponent<PersonProps> {
+export class PersonCentreManager extends React.PureComponent<PersonCentreProps, PersonCentreState> {
     private formRef: any;
 
-    static defaultProps: Partial<PersonProps> = {
+    static defaultProps: Partial<PersonCentreProps> = {
     };
 
-    constructor(props: PersonProps, context?: any) {
+    constructor(props: PersonCentreProps, context?: any) {
         super(props, context);
-        this.state = { visible: false };
+        this.state = { 
+            visible: false 
+        };
 
         this.showDrawer = this.showDrawer.bind(this);
         this.onClose = this.onClose.bind(this);

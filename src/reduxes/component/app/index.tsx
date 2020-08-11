@@ -5,4 +5,6 @@ import { AppContainer } from './container';
 
 
 export { AppState } from './model';
-export const appRedux = new AppContainer({});
+export const appRedux = new AppContainer({
+    isCollapsed: false
+});
