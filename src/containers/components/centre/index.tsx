@@ -51,7 +51,7 @@ export interface PersonProps {
         };
     }
 )
-export class PersonCentreManager extends React.PureComponent {
+export class PersonCentreManager extends React.PureComponent<PersonProps> {
     private formRef: any;
 
     static defaultProps: Partial<PersonProps> = {
@@ -68,11 +68,11 @@ export class PersonCentreManager extends React.PureComponent {
     }
 
     componentWillMount(){
-        let { personHelper } = this.props;
-        personHelper.getPerson('staff.myself.get')
     }
 
     componentDidMount(){
+        const { personHelper } = this.props;
+        personHelper.getPerson()
     }
 
     showDrawer(){
@@ -96,16 +96,11 @@ export class PersonCentreManager extends React.PureComponent {
     updatePerson(){
         let { personHelper } = this.props;
         let fields = this.formRef.current.getFieldsValue()
-        let value = Object.assign(
-            {},
-            fields,
-            {
-                birthday: fields.birthday.format("YYYY-MM-DD")
-            }
-        )
+        let value = Object.assign({}, fields, {
+            birthday: fields.birthday.format("YYYY-MM-DD")
+        })
 
         personHelper.updatePerson(
-            'staff.myself.update',
             {
                 myselfInfo: value 
             }
@@ -129,7 +124,7 @@ export class PersonCentreManager extends React.PureComponent {
                             <p className="site-description-item-profile-p-label">
                                 头像:
                             </p>
-                            <img src={person.headUrl} style={{width:"40px", heigth:"40px"}}/>
+                            <img src={person.headUrl} style={{width:"40px", height:"40px"}}/>
                         </div>
                     </Row>
                     <Row>
@@ -187,7 +182,7 @@ export class PersonCentreManager extends React.PureComponent {
                         <Col span={12}>
                             <div className="site-description-item-profile-wrapper">
                                 <p className="site-description-item-profile-p-label">
-                                    email:
+                                    邮箱:
                                 </p>
                                 {person.email}
                             </div>

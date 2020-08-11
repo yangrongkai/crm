@@ -22,8 +22,8 @@ export abstract class BaseContainer implements BaseContainerInterface {
         this.initialState = initialState;
     }
 
-    createAsynchronizationAction(serverFlag: string, actionType: string){
-        return createAsyncAction(actionType, (api: string, params: any):any => {
+    createAsynchronizationAction(api: string, serverFlag: string, actionType: string){
+        return createAsyncAction(actionType, (params: any):any => {
             try {
                 return apiRouter.router(serverFlag, api).request(params);
             } catch (e) {

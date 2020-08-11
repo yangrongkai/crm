@@ -28,10 +28,14 @@ export class AccountContainer extends BaseContainer {
 
         this.initialState = initialState;
         this.loginAccount = this.createAsynchronizationAction(
-            config.defaultFlag, AccountType.LOGIN_ACCOUNT
+            "staff.account.login",
+            config.defaultFlag,
+            AccountType.LOGIN_ACCOUNT
         );
         this.logoutAccount = this.createAsynchronizationAction(
-            config.defaultFlag, AccountType.LOGOUT_ACCOUNT
+            "staff.account.logout",
+            config.defaultFlag,
+            AccountType.LOGOUT_ACCOUNT
         );
         this.updateModel = this.createAction(
             AccountType.UPDATE_INFORMATION,

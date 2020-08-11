@@ -47,7 +47,9 @@ export class Login extends React.PureComponent<LoginProps> {
 
     handleSubmit = async () => {
         const { account, accountHelper } = this.props;
-        accountHelper.loginAccount("staff.account.login", account).then(
+        accountHelper.loginAccount(
+            account
+        ).then(
             (res: any) => {
                 this.props.history.push("/");
             }

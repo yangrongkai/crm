@@ -75,7 +75,7 @@ class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState>{
 
     logout = async () => {
         const { accountHelper } = this.props;
-        accountHelper.logoutAccount("staff.account.logout", {}).then(
+        accountHelper.logoutAccount({}).then(
             (res: any) => {
                 this.props.history.push("/login");
             }

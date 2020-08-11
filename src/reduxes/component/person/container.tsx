@@ -23,8 +23,16 @@ export class PersonContainer extends BaseContainer {
         super(initialState);
 
         this.initialState = initialState;
-        this.updatePerson = this.createAsynchronizationAction(config.defaultFlag, PersonType.UPDATA);
-        this.getPerson = this.createAsynchronizationAction(config.defaultFlag, PersonType.GET);
+        this.updatePerson = this.createAsynchronizationAction(
+            'staff.myself.update',
+            config.defaultFlag,
+            PersonType.UPDATA
+        );
+        this.getPerson = this.createAsynchronizationAction(
+            'staff.myself.get',
+            config.defaultFlag,
+            PersonType.GET
+        );
     }
 
     actions(): any{
@@ -38,19 +46,18 @@ export class PersonContainer extends BaseContainer {
         return handleActions<PersonState, ApiFieldSet>(
             {
                 [this.updatePerson.pending.toString()]: (state, action) => {
-                    console.log('action进行中')
+                    console.log('update person action进行中', state, action)
                     return Object.assign({}, state, {
                         isLoading: true
                     });
                 },
                 [this.updatePerson.fulfilled.toString()]: (state, action) => {
-                    console.log('action成功了')
+                    console.log('update person action成功了', state, action)
                     return Object.assign({}, state, {
                         isLoading: false
                     })
                 },
                 [this.getPerson.fulfilled.toString()]: (state, action) => {
-                    console.log('get person action成功', state, action)
                     return Object.assign({}, state, action.payload.staffInfo, {
                         headUrl: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597053984761&di=f534be49bc87dabdddabc4b0d743129c&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201703%2F20%2F20170320112905_5zhQ3.jpeg"
                     })
