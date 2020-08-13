@@ -18,10 +18,10 @@ export interface TokenModel {
 
 export interface AccountModel {
     // 账号信息
-    username: string;
     nick: string;
     headUrl: string;
-    state: string;
+    username: string;
+    status: string;
     lastLoginTime: string;
     lastLoginIp: string;
     registerIp: string;

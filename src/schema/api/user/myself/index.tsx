@@ -1,6 +1,7 @@
 'use strict'
 
 
+import moment from 'moment';
 import { ApiInterface } from 'common/interface';
 import * as fields from 'common/api/fields';
 import * as api from 'common/api/core';
@@ -47,7 +48,7 @@ export const myselfApi: ApiInterface[] = [
                     },
                     is_admin: {
                         transfer: "isAdmin",
-                        type: fields.StringField
+                        type: fields.BooleanField
                     },
                     account_info:{
                         transfer: "account",
@@ -56,13 +57,17 @@ export const myselfApi: ApiInterface[] = [
                                 transfer: 'nick',
                                 type: fields.StringField
                             },
+                            username: {
+                                transfer: 'username',
+                                type: fields.StringField
+                            },
                             head_url: {
                                 transfer: "headUrl",
                                 type: fields.StringField
                             },
                             last_login_time: {
                                 transfer: "lastLoginTime",
-                                type: fields.StringField
+                                type: fields.DatetimeField
                             },
                             last_login_ip: {
                                 transfer: "lastLoginIp",
@@ -78,11 +83,11 @@ export const myselfApi: ApiInterface[] = [
                             },
                             update_time: {
                                 transfer: "updateTIme",
-                                type: fields.StringField
+                                type: fields.DatetimeField
                             },
                             create_time: {
                                 transfer: "createTime",
-                                type: fields.StringField
+                                type: fields.DatetimeField
                             },
                         }
                     },
@@ -103,7 +108,7 @@ export const myselfApi: ApiInterface[] = [
                             },
                             create_time: {
                                 transfer: "creaetTime",
-                                type: fields.StringField
+                                type: fields.DatetimeField
                             },
                         }
                     }
@@ -113,14 +118,31 @@ export const myselfApi: ApiInterface[] = [
         mock: {
             success:{
                 staff_info:{
-                    nick: 'Roy',
-                    head_url: '',
+                    id: 0,
                     name: 'Yang',
-                    birthday: '2019-01-02',
-                    phone: '15527703112',
+                    birthday: moment('1991-01-02', "YYYY-MM-DD"),
+                    phone: '15527703115',
+                    gender: 'man',
                     email: '237818280@qq.com',
                     work_number: 'BQ0001',
                     is_admin: true,
+                    account_info: {
+                        nick: 'Roy',
+                        head_url: '',
+                        username: '15527703115',
+                        status: "enable",
+                        last_login_time: moment('2020-01-02 11:20', "YYYY-MM-DD hh:mm"), 
+                        last_login_ip: "192.168.3.245",
+                        register_ip: "192.168.3.243",
+                        update_time: moment('2020-01-02 11:22', "YYYY-MM-DD hh:mm"),
+                        create_time: moment('2020-01-02 3:21', "YYYY-MM-DD hh:mm"),
+                    },
+                    company_info: {
+                        id: 1,
+                        name: 'XXXXXXXXXXXXXXX有限公司',
+                        license_number: '038absihndsihkwh9382',
+                        create_time: moment('2020-01-01 3:21', "YYYY-MM-DD hh:mm"),
+                    }
                 }
             },
             failure:{
