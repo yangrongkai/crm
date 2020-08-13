@@ -17,13 +17,9 @@ export const myselfApi: ApiInterface[] = [
             staff_info:{
                 transfer: 'staffInfo',
                 dict:{
-                    nick: {
-                        transfer: 'nick',
-                        type: fields.StringField
-                    },
-                    head_url: {
-                        transfer: "headUrl",
-                        type: fields.StringField
+                    id: {
+                        transfer: 'id',
+                        type: fields.IntField
                     },
                     name: {
                         transfer: "name",
@@ -35,7 +31,7 @@ export const myselfApi: ApiInterface[] = [
                     },
                     birthday: {
                         transfer: "birthday",
-                        type: fields.StringField
+                        type: fields.DatetimeField
                     },
                     phone: {
                         transfer: "phone",
@@ -53,6 +49,64 @@ export const myselfApi: ApiInterface[] = [
                         transfer: "isAdmin",
                         type: fields.StringField
                     },
+                    account_info:{
+                        transfer: "account",
+                        dict:{
+                            nick: {
+                                transfer: 'nick',
+                                type: fields.StringField
+                            },
+                            head_url: {
+                                transfer: "headUrl",
+                                type: fields.StringField
+                            },
+                            last_login_time: {
+                                transfer: "lastLoginTime",
+                                type: fields.StringField
+                            },
+                            last_login_ip: {
+                                transfer: "lastLoginIp",
+                                type: fields.StringField
+                            },
+                            register_ip: {
+                                transfer: "registerIp",
+                                type: fields.StringField
+                            },
+                            status: {
+                                transfer: "status",
+                                type: fields.StringField
+                            },
+                            update_time: {
+                                transfer: "updateTIme",
+                                type: fields.StringField
+                            },
+                            create_time: {
+                                transfer: "createTime",
+                                type: fields.StringField
+                            },
+                        }
+                    },
+                    company_info:{
+                        transfer: "company",
+                        dict:{
+                            id: {
+                                transfer: 'id',
+                                type: fields.IntField
+                            },
+                            name: {
+                                transfer: "name",
+                                type: fields.StringField
+                            },
+                            license_number: {
+                                transfer: "licenseNumber",
+                                type: fields.StringField
+                            },
+                            create_time: {
+                                transfer: "creaetTime",
+                                type: fields.StringField
+                            },
+                        }
+                    }
                 }
             }
         },
@@ -91,7 +145,7 @@ export const myselfApi: ApiInterface[] = [
                     },
                     birthday: {
                         transfer: "birthday",
-                        type: fields.StringField
+                        type: fields.DatetimeField
                     },
                     phone: {
                         transfer: "phone",

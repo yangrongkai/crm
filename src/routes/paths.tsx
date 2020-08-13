@@ -4,7 +4,6 @@
 import { RouteConfig } from 'react-router-config';
 import { App } from 'containers/app';
 import { Login } from 'containers/pages/login';
-import { AccountManager } from 'containers/components/account';
 import { PersonCentreManager } from 'containers/components/centre';
 import { One } from 'containers/pages/one';
 import { Two } from 'containers/pages/two';
@@ -20,11 +19,6 @@ export const paths: RouteConfig[] = [
         path: "/",
         component: App as any,
         routes:[
-            {
-                path: "/account",
-                exact: true,
-                component: AccountManager as any,
-            },
             {
                 path: "/centre",
                 exact: true,

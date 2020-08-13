@@ -13,7 +13,6 @@ import {
     Row
 } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import moment from 'moment';
 
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -23,8 +22,6 @@ import {
     RootState,
     PersonState,
     personRedux,
-    AccountState,
-    accountRedux,
 } from 'reduxes';
 // import * as classNames from 'classnames';
 // import * as style from './index.less';
@@ -33,39 +30,43 @@ import './index.less';
 
 
 export interface PersonCentreProps {
-    person: PersonState,
-    account: AccountState,
-    personHelper: any,
-    accountHelper: any,
+    person: PersonState;
+    personHelper: any;
 }
 
 export interface PersonCentreState {
-    visible: boolean,
+    visible: boolean;
+}
+
+export interface CentrePageEvent{
+    personUpdate: any;
+    personGet: any;
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<PersonCentreProps, 'person' | 'account'> =>{
+    (state: RootState, ownProps): Pick<PersonCentreProps, 'person' > =>{
         console.log("个人中心数据回流到这里-----》》》》》 ", state, ownProps)
-        return { person: state.person, account: state.account};
+        return { person: state.person };
     },
-    (dispatch: Dispatch): Pick<PersonCentreProps, 'personHelper' | 'accountHelper'> => {
+    (dispatch: Dispatch): Pick<PersonCentreProps, 'personHelper' > => {
         return {
             personHelper: bindActionCreators(personRedux.actions(), dispatch),
-            accountHelper: bindActionCreators(accountRedux.actions(), dispatch),
         };
     }
 )
-export class PersonCentreManager extends React.PureComponent<PersonCentreProps, PersonCentreState> {
+export class PersonCentreManager extends React.PureComponent<PersonCentreProps, PersonCentreState>  implements CentrePageEvent{
     private formRef: any;
-
-    static defaultProps: Partial<PersonCentreProps> = {
-    };
+    personUpdate: any;
+    personGet: any;
 
     constructor(props: PersonCentreProps, context?: any) {
         super(props, context);
         this.state = { 
             visible: false 
         };
+
+        this.personUpdate = this.props.personHelper.personUpdate;
+        this.personGet = this.props.personHelper.personGet;
 
         this.showDrawer = this.showDrawer.bind(this);
         this.onClose = this.onClose.bind(this);
@@ -77,8 +78,7 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
     }
 
     componentDidMount(){
-        const { personHelper } = this.props;
-        personHelper.getPerson()
+        this.personGet()
     }
 
     showDrawer(){
@@ -88,7 +88,6 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
         const { person } = this.props
         this.formRef.current.setFieldsValue(
             Object.assign({}, person, {
-                "birthday": moment(person.birthday, 'YYYY-MM-DD')
             })
         );
     };
@@ -100,19 +99,14 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
     };
 
     updatePerson(){
-        let { personHelper } = this.props;
         let fields = this.formRef.current.getFieldsValue()
-        let value = Object.assign({}, fields, {
-            birthday: fields.birthday.format("YYYY-MM-DD")
-        })
-
-        personHelper.updatePerson(
+        this.personUpdate(
             {
-                myselfInfo: value 
+                myselfInfo: fields 
             }
         ).then(() => {
-            personHelper.getPerson('staff.myself.get').then(
-                () => {
+            this.personGet().then(
+                (req: any) => {
                     this.onClose();
                 }
             )
@@ -120,7 +114,7 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
     }
 
     render(){
-        const { person, account } = this.props;
+        const { person } = this.props;
         return (
             <div>
                 <div>
@@ -130,7 +124,7 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
                             <p className="site-description-item-profile-p-label">
                                 头像:
                             </p>
-                            <img src={person.headUrl} style={{width:"40px", height:"40px"}}/>
+                            <img src={person.account.headUrl} style={{width:"40px", height:"40px"}}/>
                         </div>
                     </Row>
                     <Row>
@@ -139,7 +133,7 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
                                 <p className="site-description-item-profile-p-label">
                                     昵称:
                                 </p>
-                                {person.nick}
+                                {person.account.nick}
                             </div>
                         </Col>
                         <Col span={12}>
@@ -147,7 +141,7 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
                                 <p className="site-description-item-profile-p-label">
                                     账号:
                                 </p>
-                                {account.username}
+                                {person.account.username}
                             </div>
                         </Col>
                     </Row>
@@ -172,7 +166,7 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
                                 <p className="site-description-item-profile-p-label">
                                     生日:
                                 </p>
-                                {person.birthday}
+                                {person.birthday.format("YYYY-MM-DD")}
                             </div>
                         </Col>
                     </Row>

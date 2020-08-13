@@ -1,5 +1,6 @@
 'use strict'
 
+
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -8,7 +9,7 @@ import { Form, Input, Button, Layout } from 'antd';
 
 import * as config from '&/config.js';
 import { hex_md5 } from 'common/utils/security/CryptoMd5.js';
-import { RootState, AccountState, accountRedux } from 'reduxes';
+import { RootState, PersonState, personRedux } from 'reduxes';
 // import * as classNames from 'classnames';
 // import * as style from './index.less';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -17,8 +18,8 @@ import './index.less';
 
 
 export interface LoginProps{
-    account: AccountState,
-    accountHelper: any,
+    person: PersonState,
+    personHelper: any,
     history: any,
 }
 
@@ -26,30 +27,36 @@ export interface LoginState{
     isLogining: boolean,
 }
 
+// 页面需要的接口，redux需要匹配该接口
+export interface LoginPageEvent{
+    login: any
+}
+
 @connect(
-    (state: RootState, ownProps): Pick<LoginProps, 'account'> =>{
+    (state: RootState, ownProps): Pick<LoginProps, 'person'> =>{
         console.log("数据回流到这里-----》》》》》 ", state, ownProps)
-        return { account: state.account };
+        return { person: state.person };
     },
-    (dispatch: Dispatch): Pick<LoginProps, 'accountHelper'> => {
+    (dispatch: Dispatch): Pick<LoginProps, 'personHelper'> => {
         return {
-            accountHelper: bindActionCreators(accountRedux.actions(), dispatch),
+            personHelper: bindActionCreators(personRedux.actions(), dispatch),
         };
     }
 )
 export class Login extends React.PureComponent<LoginProps, LoginState> {
 
     private formRef: any;
+    login: any;
   
-    static defaultProps: Partial<LoginProps> = {
-    };
-
     constructor(props: LoginProps, context?: any) {
         super(props, context);
         this.state = { 
             isLogining: false 
         };
         
+        // 绑定事件
+        this.login = this.props.personHelper.accountLogin;
+
         this.formRef = React.createRef();
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -59,12 +66,11 @@ export class Login extends React.PureComponent<LoginProps, LoginState> {
         values.password = hex_md5(values.password)
         this.setState({ isLogining: true });
         console.log(values)
-        this.props.accountHelper.loginAccount(
+        this.login(
             values
         ).then(
-            (res: any) => {
+            (resp: any) => {
                 this.setState({ isLogining: false });
-                this.props.accountHelper.update(values)
                 this.props.history.push("/");
             }
         ).catch(

@@ -13,8 +13,8 @@ import {
     RootState,
     AppState,
     appRedux,
-    AccountState,
-    accountRedux
+    PersonState,
+    personRedux
 } from 'reduxes';
 import { wrapper } from 'containers/tools/wrapper';
 import { headerMenu } from 'schema/menu';
@@ -26,8 +26,8 @@ export interface HeaderProps{
     history?: any,
     app: AppState,
     appHelper: any
-    account: AccountState,
-    accountHelper: any
+    person: PersonState,
+    personHelper: any
 }
 
 export interface HeaderState{
@@ -36,20 +36,27 @@ export interface HeaderState{
     menuHelper: MenuElementHelper;
 }
 
+export interface HeaderPageEvent{
+    accountLogout: any;
+    changeCollapse: any;
+}
+
 @connect(
-    (state: RootState, ownProps): Pick<HeaderProps, 'app' | 'account'> => {
+    (state: RootState, ownProps): Pick<HeaderProps, 'app' | 'person'> => {
         console.log(" header 数据回流到这里-----》》》》》 ", state, ownProps)
-        return { app: state.app, account: state.account};
+        return { app: state.app, person: state.person};
     },
-    (dispatch: Dispatch): Pick<HeaderProps, 'appHelper' | 'accountHelper'> => {
+    (dispatch: Dispatch): Pick<HeaderProps, 'appHelper' | 'personHelper'> => {
         console.log(" header 数据绑定到这里-----》》》》》 ", dispatch) 
         return {
             appHelper: bindActionCreators(appRedux.actions(), dispatch),
-            accountHelper: bindActionCreators(accountRedux.actions(), dispatch),
+            personHelper: bindActionCreators(personRedux.actions(), dispatch),
         };
     }
 )
-class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState>{
+class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState> implements HeaderPageEvent{
+    accountLogout: any;
+    changeCollapse: any;
 
     constructor(props: HeaderProps, context?: any){
         super(props, context);
@@ -60,6 +67,9 @@ class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState>{
             menuJSX,
             menuHelper
         }
+
+        this.accountLogout = this.props.personHelper.accountLogout
+        this.changeCollapse = this.props.appHelper.changeCollapse;
 
         this.toggle = this.toggle.bind(this);
     }
@@ -74,13 +84,15 @@ class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState>{
     }
 
     logout = async () => {
-        const { accountHelper } = this.props;
-        accountHelper.logoutAccount({}).then(
+        this.accountLogout({}).then(
             (res: any) => {
                 this.props.history.push("/login");
             }
         )
+    }
 
+    toggle(){
+        this.changeCollapse();
     }
 
     establishMenu(menuHelper: MenuElementHelper): any{
@@ -150,10 +162,6 @@ class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState>{
             menuJSX,
             userMenu
         };
-    }
-
-    toggle(){
-        this.props.appHelper.changeCollapse();
     }
 
     render() {

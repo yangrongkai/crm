@@ -1,9 +1,6 @@
 'use strict'
 
 
-// import { BaseField } from 'common/api/fields'
-
-
 export interface ApiField{
     transfer: string;
     attr?: string;
@@ -18,16 +15,16 @@ export interface ApiFieldSet{
 }
 
 export class ApiFieldHelper{
-    format: ApiFieldSet;
+    fmt: ApiFieldSet;
 
     constructor(fieldFormat: ApiFieldSet){
-        this.format = fieldFormat;
+        this.fmt = fieldFormat;
     }
 
-    parse(parms: any, format: ApiFieldSet){
+    transfer(parms: any, fmt: ApiFieldSet, isTransfer: boolean){
         let result: any = {};
-        for(let attrKey in format){
-            let apiField = format[attrKey];
+        for(let attrKey in fmt){
+            let apiField = fmt[attrKey];
             apiField.attr = attrKey 
             let response= parms[apiField.attr] 
 
@@ -37,24 +34,25 @@ export class ApiFieldHelper{
             }
 
             if( apiField.hasOwnProperty('dict') ){
-                let value = this.parse(response, apiField.dict) 
+                let value = this.transfer(response, apiField.dict, isTransfer) 
                 value = isJSON ? JSON.stringify(value) : value 
                 result[apiField.transfer] = value
             } else if( apiField.hasOwnProperty('list') ){
                 result[apiField.transfer] = []
                 for(let index in response){
                     let item  = response[index]
-                    let value = this.parse(item, apiField.list)
+                    let value = this.transfer(item, apiField.dict, isTransfer) 
                     value = isJSON ? JSON.stringify(value) : value 
                     result[apiField.transfer][index] = value
                 }
             } else {
-                let value = (new apiField.type()).parse(response)
+                let field = new apiField.type()
+                let transfer = isTransfer? field.parse : field.format
+                let value =transfer(response)
                 value = isJSON ? JSON.stringify(value) : value 
                 result[apiField.transfer] = value
             }
         }
         return result;
     }
-
 }

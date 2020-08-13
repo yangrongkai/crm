@@ -68,9 +68,10 @@ export abstract class BaseApi {
     }
 
     _request(params: any, is_auth=true){
-        let requestParms = this.parmsHelper.parse(
+        let requestParms = this.parmsHelper.transfer(
             params,
-            this.parmsHelper.format
+            this.parmsHelper.fmt,
+            false,
         )
         let header = this._generateProtocolHeader()
         let other = {}
@@ -131,9 +132,10 @@ export abstract class BaseApi {
     }
 
     receive(result: any): any{
-        let responseResult = this.returnHelper.parse(
+        let responseResult = this.returnHelper.transfer(
             result,
-            this.returnHelper.format
+            this.returnHelper.fmt,
+            true,
         );
         return responseResult;
     }
