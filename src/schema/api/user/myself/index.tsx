@@ -32,7 +32,15 @@ export const myselfApi: ApiInterface[] = [
                     },
                     birthday: {
                         transfer: "birthday",
-                        type: fields.DatetimeField
+                        type: fields.DateField
+                    },
+                    qq: {
+                        transfer: "qq",
+                        type: fields.StringField
+                    },
+                    wechat: {
+                        transfer: "wechat",
+                        type: fields.StringField
                     },
                     phone: {
                         transfer: "phone",
@@ -121,8 +129,9 @@ export const myselfApi: ApiInterface[] = [
                     id: 0,
                     name: 'Yang',
                     birthday: moment('1991-01-02', "YYYY-MM-DD"),
-                    phone: '15527703115',
                     gender: 'man',
+                    wechat: '15527703115',
+                    qq: '237818280',
                     email: '237818280@qq.com',
                     work_number: 'BQ0001',
                     is_admin: true,
@@ -167,7 +176,11 @@ export const myselfApi: ApiInterface[] = [
                     },
                     birthday: {
                         transfer: "birthday",
-                        type: fields.DatetimeField
+                        type: fields.DateField
+                    },
+                    gender: {
+                        transfer: "gender",
+                        type: fields.StringField
                     },
                     phone: {
                         transfer: "phone",
@@ -175,6 +188,14 @@ export const myselfApi: ApiInterface[] = [
                     },
                     email: {
                         transfer: "email",
+                        type: fields.StringField
+                    },
+                    qq: {
+                        transfer: "qq",
+                        type: fields.StringField
+                    },
+                    wechat: {
+                        transfer: "wechat",
                         type: fields.StringField
                     },
                 }

@@ -8,6 +8,7 @@ import {
     Button,
     Input,
     DatePicker,
+    Radio,
     Col,
     Row
 } from 'antd';
@@ -136,28 +137,50 @@ export class EditPersonCentreManager extends React.PureComponent<EditPersonProps
                             <Col span={12}>
                                 <Form.Item
                                     name="name"
-                                    label="名称"
-                                    rules={[{ required: true, message: '请输入名称' }]}
+                                    label="姓名"
+                                    rules={[{ required: true, message: '请输入姓名' }]}
                                 >
                                     <Input 
-                                        placeholder="请输入名称" 
+                                        placeholder="请输入姓名" 
                                     />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item
-                                    name="birthday"
-                                    label="生日"
-                                    rules={[{ required: true, message: '请输入生日' }]}
-                                >
-                                    <DatePicker
-                                        style={{ width: '50%' }}
-                                        format="YYYY-MM-DD"
-                                    />
-                                </Form.Item>
+                                <Row>
+                                    <Col span={8}>
+                                        <Form.Item name="gender" label="性别">
+                                            <Radio.Group>
+                                                <Radio.Button value="man">男</Radio.Button>
+                                                <Radio.Button value="woman">女</Radio.Button>
+                                            </Radio.Group>
+                                         </Form.Item>
+                                    </Col>
+                                    <Col span={16}>
+                                            <Form.Item
+                                                name="birthday"
+                                                label="生日"
+                                                rules={[{ required: false, message: '请输入生日' }]}
+                                            >
+                                                <DatePicker
+                                                    format="YYYY-MM-DD"
+                                                />
+                                            </Form.Item>
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
                         <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="email"
+                                    label="邮箱"
+                                    rules={[{ required: false, message: '请输入邮件' }]}
+                                >
+                                    <Input 
+                                        placeholder="请输入邮箱" 
+                                    />
+                                </Form.Item>
+                            </Col>
                             <Col span={12}>
                                 <Form.Item
                                     name="phone"
@@ -169,14 +192,27 @@ export class EditPersonCentreManager extends React.PureComponent<EditPersonProps
                                     />
                                 </Form.Item>
                             </Col>
+                        </Row>
+                        <Row gutter={16}>
                             <Col span={12}>
                                 <Form.Item
-                                    name="email"
-                                    label="邮箱"
-                                    rules={[{ required: true, message: '请输入邮件' }]}
+                                    name="qq"
+                                    label="QQ"
+                                    rules={[{ required: false, message: '请输入QQ' }]}
                                 >
                                     <Input 
-                                        placeholder="请输入邮箱" 
+                                        placeholder="请输入手机号" 
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="wechat"
+                                    label="微信"
+                                    rules={[{ required: false, message: '请输入微信' }]}
+                                >
+                                    <Input 
+                                        placeholder="请输入微信" 
                                     />
                                 </Form.Item>
                             </Col>

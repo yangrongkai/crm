@@ -35,6 +35,8 @@ export interface PersonModel {
     birthday: string;
     phone: string;
     email: string;
+    qq: string;
+    wechat: string;
     workNumber: string;
     isAdmin: string;
     token: TokenModel;

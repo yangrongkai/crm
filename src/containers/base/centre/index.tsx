@@ -1,26 +1,23 @@
 'use strict'
 
-
 import * as antd from 'antd';
 import * as icons from '@ant-design/icons';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-
-
-import {
-    RootState,
-    PersonState,
-    personRedux,
-} from 'reduxes';
+import { RootState, PersonState, personRedux } from 'reduxes';
+import { EditPersonCentreManager } from 'containers/components/person';
+import { EditAccount, ResetPassword } from 'containers/components/account';
 import './index.less';
-import { EditPersonCentreManager } from 'containers/components/person/edit';
 
 
 export interface PersonCentreProps {
     person: PersonState;
     personHelper: any;
     editPersonComponent: any;
+    resetAccountPassoword: any;
+    editAccountContent: any;
+    history: any;
 }
 
 export interface PersonCentreState {
@@ -33,7 +30,6 @@ export interface CentrePageEvent{
 
 @connect(
     (state: RootState, ownProps): Pick<PersonCentreProps, 'person' > =>{
-        console.log("个人中心数据回流到这里-----》》》》》 ", state, ownProps)
         return { person: state.person };
     },
     (dispatch: Dispatch): Pick<PersonCentreProps, 'personHelper' > => {
@@ -44,7 +40,9 @@ export interface CentrePageEvent{
 )
 export class PersonCentreManager extends React.PureComponent<PersonCentreProps, PersonCentreState>  implements CentrePageEvent{
     personGet: any;
-    editPersonComponent: any;
+    editPersonContent: any;
+    editAccountContent: any;
+    resetAccountPassoword: any;
 
     constructor(props: PersonCentreProps, context?: any) {
         super(props, context);
@@ -60,142 +58,179 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
         const { person } = this.props;
         return (
             <div>
-                <div>
-                    <p className="site-description-item-profile-p">账号信息</p>
-                    <antd.Row>
-                        <div className="site-description-item-profile-wrapper">
-                            <p className="site-description-item-profile-p-label">
-                                头像:
-                            </p>
-                            <img src={person.account.headUrl} style={{width:"40px", height:"40px"}}/>
+                <div className="person-centre-detail">
+                    <antd.Form 
+                        labelCol={{span:8 }}
+                        wrapperCol={{span:16 }}
+                        colon={true}
+                    >
+                        <p>
+                            账号信息&nbsp;
+                            <a >
+                                <icons.EditOutlined onClick={() => this.editAccountContent.editAccount()}/>
+                            </a>
+                        </p>
+                        <div>
+                            <antd.Row>
+                                <antd.Col span={12}>
+                                <antd.Form.Item label="头像">
+                                    <span className="ant-form-text">
+                                        <img src={person.account.headUrl} style={{width:"40px", height:"40px"}}/>
+                                    </span>
+                                </antd.Form.Item>
+                                </antd.Col>
+                            </antd.Row>
+                            <antd.Row>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="账号">
+                                        <span className="ant-form-text">
+                                            {person.account.username}&nbsp;
+                                        </span>
+                                        <span className="ant-form-text">
+                                            <a onClick={() => this.resetAccountPassoword.openResetPassword()}>
+                                                修改密码
+                                            </a>
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="注册时间">
+                                        <span className="ant-form-text">
+                                            {person.account.createTime.format("YYYY-MM-DD h:mm:ss")}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                            </antd.Row>
+                            <antd.Row>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="昵称">
+                                        <span className="ant-form-text">
+                                            {person.account.nick}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="最后登录时间">
+                                        <span className="ant-form-text">
+                                            {person.account.lastLoginTime.format("YYYY-MM-DD hh:mm:ss")}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                            </antd.Row>
                         </div>
-                    </antd.Row>
-                    <antd.Row>
-                        <antd.Col span={12}>
-                            <div className="site-description-item-profile-wrapper">
-                                <p className="site-description-item-profile-p-label">
-                                    账号:
-                                </p>
-                                {person.account.username}
-                            </div>
-                        </antd.Col>
-                        <antd.Col span={12}>
-                            <div className="site-description-item-profile-wrapper">
-                                <p className="site-description-item-profile-p-label">
-                                    昵称:
-                                </p>
-                                {person.account.nick}
-                            </div>
-                        </antd.Col>
-                    </antd.Row>
-                    <antd.Row>
-                        <antd.Col span={12}>
-                            <div className="site-description-item-profile-wrapper">
-                                <p className="site-description-item-profile-p-label">
-                                    注册时间:
-                                </p>
-                                {person.account.createTime.format("YYYY-MM-DD hh:mm")}
-                            </div>
-                        </antd.Col>
-                        <antd.Col span={12}>
-                            <div className="site-description-item-profile-wrapper">
-                                <p className="site-description-item-profile-p-label">
-                                    最后登录时间:
-                                </p>
-                                {person.account.lastLoginTime.format("YYYY-MM-DD hh:mm")}
-                            </div>
-                        </antd.Col>
-                    </antd.Row>
-                    <antd.Divider />
-                    <p className="site-description-item-profile-p">
-                        基本信息 &nbsp;
-                        <a >
-                            <icons.EditOutlined onClick={() => this.editPersonComponent.editPerson()}/>
-                        </a>
-                    </p>
-                    <antd.Row>
-                        <antd.Col span={12}>
-                            <div className="site-description-item-profile-wrapper">
-                                <p className="site-description-item-profile-p-label">
-                                    姓名:
-                                </p>
-                                {person.name}
-                                &nbsp;
-                                {
-                                    person.gender == "man"
-                                    ? <icons.ManOutlined style={{color:"blue"}}/>
-                                    : <icons.WomanOutlined style={{color:"pink"}}/>
-                                }
-                            </div>
-                        </antd.Col>
-                        <antd.Col span={12}>
-                            <div className="site-description-item-profile-wrapper">
-                                <p className="site-description-item-profile-p-label">
-                                    工号:
-                                </p>
-                                {person.workNumber}
-                            </div>
-                        </antd.Col>
-                    </antd.Row>
-                    <antd.Row>
-                        <antd.Col span={12}>
-                            <div className="site-description-item-profile-wrapper">
-                                <p className="site-description-item-profile-p-label">
-                                    生日:
-                                </p>
-                                {person.birthday.format("YYYY-MM-DD")}
-                            </div>
-                        </antd.Col>
-                        <antd.Col span={12}>
-                            <div className="site-description-item-profile-wrapper">
-                                <p className="site-description-item-profile-p-label">
-                                    管理员:
-                                </p>
-                                {person.isAdmin ? "是" : "不是"}
-                            </div>
-                        </antd.Col>
-                    </antd.Row>
-                    <antd.Row>
-                        <antd.Col span={12}>
-                            <div className="site-description-item-profile-wrapper">
-                                <p className="site-description-item-profile-p-label">
-                                    手机号:
-                                </p>
-                                {person.phone}
-                            </div>
-                        </antd.Col>
-                        <antd.Col span={12}>
-                            <div className="site-description-item-profile-wrapper">
-                                <p className="site-description-item-profile-p-label">
-                                    邮箱:
-                                </p>
-                                {person.email}
-                            </div>
-                        </antd.Col>
-                    </antd.Row>
-                    <antd.Divider />
-                    <p className="site-description-item-profile-p">公司信息</p>
-                    <antd.Row>
-                        <antd.Col span={12}>
-                            <div className="site-description-item-profile-wrapper">
-                                <p className="site-description-item-profile-p-label">
-                                    公司:
-                                </p>
-                                {person.company.name}
-                            </div>
-                        </antd.Col>
-                        <antd.Col span={12}>
-                            <div className="site-description-item-profile-wrapper">
-                                <p className="site-description-item-profile-p-label">
-                                    社会统一编码
-                                </p>
-                                {person.company.licenseNumber}
-                            </div>
-                        </antd.Col>
-                    </antd.Row>
+                        <antd.Divider />
+                        <p>
+                            基本信息 &nbsp;
+                            <a >
+                                <icons.EditOutlined onClick={() => this.editPersonContent.editPerson()}/>
+                            </a>
+                        </p>
+                        <div>
+                            <antd.Row>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="姓名">
+                                        <span className="ant-form-text">
+                                            {person.name}
+                                        </span>
+                                        <span className="ant-form-text">
+                                            {
+                                                person.gender == "man"
+                                                ? <icons.ManOutlined style={{color:"blue"}}/>
+                                                : <icons.WomanOutlined style={{color:"pink"}}/>
+                                            }
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="工号">
+                                        <span className="ant-form-text">
+                                            {person.workNumber}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                            </antd.Row>
+                            <antd.Row>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="生日">
+                                        <span className="ant-form-text">
+                                            {person.birthday.format("YYYY-MM-DD")}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="管理员">
+                                        <span className="ant-form-text">
+                                            {person.isAdmin ? "是" : "不是"}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                            </antd.Row>
+                            <antd.Row>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="邮箱">
+                                        <span className="ant-form-text">
+                                            {person.email}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="手机号">
+                                        <span className="ant-form-text">
+                                            {person.phone}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                            </antd.Row>
+                            <antd.Row>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="QQ">
+                                        <span className="ant-form-text">
+                                            {person.qq}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="微信">
+                                        <span className="ant-form-text">
+                                            {person.wechat}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                            </antd.Row>
+                        </div>
+                        <antd.Divider />
+                        <p>
+                            公司信息
+                        </p>
+                        <div>
+                            <antd.Row>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="公司">
+                                        <span className="ant-form-text">
+                                            {person.company.name}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="社会统一编码">
+                                        <span className="ant-form-text">
+                                            {person.company.licenseNumber}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                            </antd.Row>
+                        </div>
+                    </antd.Form>
                 </div>
                 <EditPersonCentreManager
-                    onRef={(ref: any) => this.editPersonComponent = ref}
+                    onRef={(ref: any) => this.editPersonContent = ref}
+                />
+                <ResetPassword
+                    {...this.props}
+                    onRef={(ref: any) => this.resetAccountPassoword = ref}
+                />
+                <EditAccount
+                    onRef={(ref: any) => this.editAccountContent = ref}
                 />
             </div>
         )

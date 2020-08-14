@@ -25,7 +25,7 @@ export const personRedux = new PersonContainer({
         username: "",
         nick: "",
         headUrl: "",
-        state: "",
+        status: "",
         lastLoginTime: moment('1970-01-01', "YYYY-MM_DD"),
         lastLoginIp: "",
         registerIp: "",

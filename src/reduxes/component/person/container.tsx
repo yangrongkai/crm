@@ -10,6 +10,9 @@ import * as config from  '&/config.js';
 export enum PersonTypes {
     ACCOUNT_LOGIN = 'ACCOUNT_LOGIN',
     ACCOUNT_LOGOUT = 'ACCOUNT_LOGOUT',
+    ACCOUNT_UPDATE = 'ACCOUNT_UPDATE',
+    ACCOUNT_RESET_PASSWORD = 'ACCOUNT_RESET_PASSWORD',
+
     PERSON_UPDATA = 'PERSON_UPDATA',
     PERSON_GET = 'PERSON_GET'
 }
@@ -17,10 +20,13 @@ export enum PersonTypes {
 
 export class PersonContainer extends BaseContainer {
 
-    personGet: any;
-    personUpdate: any;
     accountLogin: any;
     accountLogout: any;
+    accountUpdate: any;
+    accountResetPassword: any;
+
+    personGet: any;
+    personUpdate: any;
 
     constructor(initialState: any){
         super(initialState);
@@ -34,6 +40,16 @@ export class PersonContainer extends BaseContainer {
             "staff.account.logout",
             config.defaultFlag,
             PersonTypes.ACCOUNT_LOGOUT
+        );
+        this.accountUpdate = this.createAsynchronizationAction(
+            "staff.account.update",
+            config.defaultFlag,
+            PersonTypes.ACCOUNT_UPDATE
+        );
+        this.accountResetPassword = this.createAsynchronizationAction(
+            "staff.account.password.modify",
+            config.defaultFlag,
+            PersonTypes.ACCOUNT_RESET_PASSWORD
         );
         this.personGet = this.createAsynchronizationAction(
             'staff.myself.get',
@@ -53,6 +69,8 @@ export class PersonContainer extends BaseContainer {
             personUpdate: this.personUpdate,
             accountLogin: this.accountLogin,
             accountLogout: this.accountLogout,
+            accountUpdate: this.accountUpdate,
+            accountResetPassword: this.accountResetPassword,
         }
     }
 
@@ -83,16 +101,20 @@ export class PersonContainer extends BaseContainer {
                     }
                 })
             },
-            [this.personUpdate.fulfilled.toString()]: (state: PersonState, action: any) => {
-                console.log('update person action成功了', state, action)
+            [this.accountUpdate.fulfilled.toString()]: (state: PersonState, action: any) => {
                 return Object.assign({}, state, {
-                    isLoading: false
+                })
+            },
+            [this.accountResetPassword.fulfilled.toString()]: (state: PersonState, action: any) => {
+                return Object.assign({}, state, {
+                })
+            },
+            [this.personUpdate.fulfilled.toString()]: (state: PersonState, action: any) => {
+                return Object.assign({}, state, {
                 })
             },
             [this.personGet.fulfilled.toString()]: (state: PersonState, action: any) => {
-                console.log("-------get -------->>>>>>>>  ", state, action)
                 return Object.assign({}, state, action.payload.staffInfo, {
-                    headUrl: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597053984761&di=f534be49bc87dabdddabc4b0d743129c&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201703%2F20%2F20170320112905_5zhQ3.jpeg"
                 })
             },
         }

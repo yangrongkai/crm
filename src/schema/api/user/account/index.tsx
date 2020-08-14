@@ -65,5 +65,67 @@ export const accountApi: ApiInterface[] = [
                 msg: '注销失败',
             }
         }
-    }
+    },
+    { 
+        name: "staff.account.update", 
+        descriptions: "go to update account information",
+        servers: ["controller-pc"],
+        type: api.ControllerApi,
+        request: {
+            updateInfo:{
+                transfer: 'update_info',
+                json: true,
+                dict:{
+                    nick: {
+                        transfer: "nick",
+                        type: fields.StringField
+                    },
+                    headUrl: {
+                        transfer: "head_url",
+                        type: fields.StringField
+                    },
+                }
+            }
+        },
+        response:{
+        },
+        mock: {
+            success:{
+            },
+            failure:{
+                code: '9999',
+                msg: '更新失败',
+            }
+        }
+    },
+    { 
+        name: "staff.account.password.modify", 
+        descriptions: "go to update account password",
+        servers: ["controller-pc"],
+        type: api.ControllerApi,
+        request: {
+            newPassword: {
+                transfer: "new_password",
+                type: fields.StringField
+            },
+            oldPassword: {
+                transfer: "old_password",
+                type: fields.StringField
+            },
+            repeatPassword: {
+                transfer: "repeat_password",
+                type: fields.StringField
+            },
+        },
+        response:{
+        },
+        mock: {
+            success:{
+            },
+            failure:{
+                code: '9999',
+                msg: '修改密码失败',
+            }
+        }
+    },
 ]

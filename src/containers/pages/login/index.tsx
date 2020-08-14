@@ -10,8 +10,6 @@ import { Form, Input, Button, Layout } from 'antd';
 import * as config from '&/config.js';
 import { hex_md5 } from 'common/utils/security/CryptoMd5.js';
 import { RootState, PersonState, personRedux } from 'reduxes';
-// import * as classNames from 'classnames';
-// import * as style from './index.less';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import './index.less';
@@ -34,7 +32,6 @@ export interface LoginPageEvent{
 
 @connect(
     (state: RootState, ownProps): Pick<LoginProps, 'person'> =>{
-        console.log("数据回流到这里-----》》》》》 ", state, ownProps)
         return { person: state.person };
     },
     (dispatch: Dispatch): Pick<LoginProps, 'personHelper'> => {
