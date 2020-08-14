@@ -6,6 +6,7 @@ import { ApiInterface } from 'common/interface';
 import * as fields from 'common/api/fields';
 import * as api from 'common/api/core';
 
+
 export const myselfApi: ApiInterface[] = [
     { 
         name: "staff.myself.get", 

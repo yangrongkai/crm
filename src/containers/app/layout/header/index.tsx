@@ -23,12 +23,6 @@ export interface HeaderProps{
     personHelper: any
 }
 
-export interface HeaderState{
-    userMenu: JSX.Element;
-    menuJSX: JSX.Element[];
-    menuHelper: MenuElementHelper;
-}
-
 export interface HeaderPageEvent{
     accountLogout: any;
     changeCollapse: any;
@@ -45,7 +39,7 @@ export interface HeaderPageEvent{
         };
     }
 )
-class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState> implements HeaderPageEvent{
+class HeaderComponent extends React.PureComponent<HeaderProps> implements HeaderPageEvent{
     accountLogout: any;
     changeCollapse: any;
 
