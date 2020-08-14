@@ -10,6 +10,7 @@ export const headerMenu: MenuElementInterface[] = [
         key: 'userMenu',
         name: "用户菜单",
         child: [
+            /*
             {
                 key: 'account',
                 name: '账户',
@@ -22,9 +23,10 @@ export const headerMenu: MenuElementInterface[] = [
                     },
                 ],
             },
+            */
             {
                 key: 'user',
-                name: '个人',
+                name: '个人中心',
                 child: [
                     {
                         key: 'person-manager',
@@ -34,6 +36,7 @@ export const headerMenu: MenuElementInterface[] = [
                     },
                 ],
             },
+            /*
             {
                 key: 'company',
                 name: '公司',
@@ -45,6 +48,7 @@ export const headerMenu: MenuElementInterface[] = [
                     },
                 ],
             },
+            */
         ],
     },
     {

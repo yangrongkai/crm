@@ -9,13 +9,6 @@ export interface CompanyModel {
     createTime: string;
 }
 
-export interface TokenModel {
-    // token信息
-    accessToken: string;
-    renewFlag: string;
-    expireTime: string;
-}
-
 export interface AccountModel {
     // 账号信息
     nick: string;
@@ -39,7 +32,6 @@ export interface PersonModel {
     wechat: string;
     workNumber: string;
     isAdmin: string;
-    token: TokenModel;
     account: AccountModel;
     company: CompanyModel;
 }

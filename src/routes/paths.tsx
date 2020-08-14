@@ -3,7 +3,7 @@
 
 import { RouteConfig } from 'react-router-config';
 import { App } from 'containers/app';
-import { Login } from 'containers/pages/login';
+import { Login } from 'containers/base/login';
 import { PersonCentreManager } from 'containers/base/centre';
 import { One } from 'containers/pages/one';
 import { Two } from 'containers/pages/two';

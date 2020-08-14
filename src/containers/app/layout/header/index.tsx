@@ -7,15 +7,8 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Row, Col, Menu, Layout } from 'antd';
 import * as icons from '@ant-design/icons';
-
-
-import { 
-    RootState,
-    AppState,
-    appRedux,
-    PersonState,
-    personRedux
-} from 'reduxes';
+import { RootState, AppState, appRedux, PersonState, personRedux } from 'reduxes';
+import * as config from '&/config.js';
 import { wrapper } from 'containers/tools/wrapper';
 import { headerMenu } from 'schema/menu';
 import { MenuElement, MenuElementHelper } from 'common/interface';
@@ -43,11 +36,9 @@ export interface HeaderPageEvent{
 
 @connect(
     (state: RootState, ownProps): Pick<HeaderProps, 'app' | 'person'> => {
-        console.log(" header 数据回流到这里-----》》》》》 ", state, ownProps)
         return { app: state.app, person: state.person};
     },
     (dispatch: Dispatch): Pick<HeaderProps, 'appHelper' | 'personHelper'> => {
-        console.log(" header 数据绑定到这里-----》》》》》 ", dispatch) 
         return {
             appHelper: bindActionCreators(appRedux.actions(), dispatch),
             personHelper: bindActionCreators(personRedux.actions(), dispatch),
@@ -60,13 +51,6 @@ class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState> impl
 
     constructor(props: HeaderProps, context?: any){
         super(props, context);
-        let menuHelper = new MenuElementHelper(headerMenu);
-        let { userMenu, menuJSX } = this.establishMenu(menuHelper);
-        this.state = {
-            userMenu,
-            menuJSX,
-            menuHelper
-        }
 
         this.accountLogout = this.props.personHelper.accountLogout
         this.changeCollapse = this.props.appHelper.changeCollapse;
@@ -151,12 +135,22 @@ class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState> impl
         })
 
         const userMenu = (
-                <Menu.SubMenu title={<icons.GithubFilled style={{ fontSize: "24px" }}/> }>
-                    {userMenuItems && userMenuItems[0] ? userMenuItems : null}
-                    <Menu.Divider />
-                    {logoutMenuItem}
-                </Menu.SubMenu>
-            );
+            <Menu.SubMenu 
+                title={
+                    <div>
+                    { 
+                        this.props.person.account.headUrl == "" 
+                        ? <img src={config.defaultHeadPortrait} className="personal-head-image"/>
+                        : <img src={this.props.person.account.headUrl} className="personal-head-image"/>
+                    }
+                    </div>
+                }
+            >
+                {userMenuItems && userMenuItems[0] ? userMenuItems : null}
+                <Menu.Divider />
+                {logoutMenuItem}
+            </Menu.SubMenu>
+        );
 
         return {
             menuJSX,
@@ -165,6 +159,8 @@ class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState> impl
     }
 
     render() {
+        let menuHelper = new MenuElementHelper(headerMenu);
+        let { userMenu, menuJSX } = this.establishMenu(menuHelper);
         return (
             <Layout.Header className="site-layout-background" style={{ padding: 0 }}>
                 <Row>
@@ -175,8 +171,8 @@ class HeaderComponent extends React.PureComponent<HeaderProps, HeaderState> impl
                     </Col>
                     <Col flex="auto" style={{ textAlign: "end" }}>
                         <Menu className="header-menu" mode="horizontal">
-                            {this.state.menuJSX}
-                            {this.state.userMenu}
+                            {menuJSX}
+                            {userMenu}
                         </Menu>
                     </Col>
                 </Row>

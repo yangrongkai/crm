@@ -7,6 +7,7 @@ const config = {
     footer: '<a target="_blank" href="http://www.baidu.com">foolbear</a>版权所有 © 2015-2099',  // footer中显示的字, 可以嵌入html标签
   
     debug: false,  // 是否开启debug模式, 不会请求后端接口, 使用mock的数据
+    defaultHeadPortrait: "assets/image/head_portrait.jpeg", // api默认服务
     defaultFlag: "controller-pc", // api默认服务
   
     tabMode: {  // tab模式相关配置

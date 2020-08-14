@@ -94,11 +94,6 @@ export class PersonContainer extends BaseContainer {
             [this.accountLogout.fulfilled.toString()]: (state: PersonState, action: any) => {
                 TokenConstant.remove();
                 return Object.assign({}, state, {
-                    token: {
-                        accessToken: "",
-                        renewFlag: "",
-                        expireTime: "",
-                    }
                 })
             },
             [this.accountUpdate.fulfilled.toString()]: (state: PersonState, action: any) => {

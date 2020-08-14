@@ -5,6 +5,7 @@ import * as icons from '@ant-design/icons';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
+import * as config from '&/config.js';
 import { RootState, PersonState, personRedux } from 'reduxes';
 import { EditPersonCentreManager } from 'containers/components/person';
 import { EditAccount, ResetPassword } from 'containers/components/account';
@@ -75,7 +76,11 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
                                 <antd.Col span={12}>
                                 <antd.Form.Item label="头像">
                                     <span className="ant-form-text">
-                                        <img src={person.account.headUrl} style={{width:"40px", height:"40px"}}/>
+                                        { 
+                                            person.account.headUrl == "" 
+                                            ? <img src={config.defaultHeadPortrait} className="personal-head-image"/>
+                                            : <img src={this.props.person.account.headUrl} className="personal-head-image"/>
+                                        }
                                     </span>
                                 </antd.Form.Item>
                                 </antd.Col>
@@ -174,7 +179,7 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
                                     </antd.Form.Item>
                                 </antd.Col>
                                 <antd.Col span={12}>
-                                    <antd.Form.Item label="手机号">
+                                    <antd.Form.Item label="手机">
                                         <span className="ant-form-text">
                                             {person.phone}
                                         </span>
