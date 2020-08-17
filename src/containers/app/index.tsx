@@ -55,6 +55,14 @@ class AppComponet extends React.Component<AppProps> implements AppEvent{
         this.getPerson()
     }
 
+    shouldComponentUpdate(nextProps: AppProps, nextState: any): boolean{
+        if(!this.authorize()){
+            this.props.history.push("/login");
+            return false;
+        }
+        return true;
+    }
+
     authorize(){
         let token = TokenConstant.get();
         if( token
@@ -63,14 +71,10 @@ class AppComponet extends React.Component<AppProps> implements AppEvent{
             return true;
         } else {
             return false
-            this.props.history.push("/login");
         }
     }
 
     render(){
-        if(!this.authorize()){
-            this.props.history.push("/login");
-        }
         return (
             <Layout style={{ height: "100%" }}>
                 <Sidebar {...this.props}/>

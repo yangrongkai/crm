@@ -1,6 +1,7 @@
 'use strict'
 
 
+import { message } from 'antd';
 import { createAction } from 'redux-promise-middleware-actions';
 import { createAsyncAction } from 'redux-promise-middleware-actions';
 import { handleActions } from 'redux-actions';
@@ -34,7 +35,11 @@ export abstract class BaseContainer implements BaseContainerInterface {
     createAsynchronizationAction(api: string, serverFlag: string, actionType: string){
         return createAsyncAction(actionType, (params: any):any => {
             try {
-                return apiRouter.router(serverFlag, api).request(params);
+                return apiRouter.router(serverFlag, api).request(params).catch(
+                    (result: any)=>{
+                        message.warn(result.msg);
+                    }
+                );
             } catch (e) {
                 console.error("[error] api is not to registed!", serverFlag, api)
             }

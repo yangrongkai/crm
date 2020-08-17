@@ -195,6 +195,7 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
 
     onTabChange(activeKey: any){
         this.setState({currentTabKey: activeKey});
+        this.props.history.location.pathname = activeKey
     }
 
     renderBreadCrumbItem(){

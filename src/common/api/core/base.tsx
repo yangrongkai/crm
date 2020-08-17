@@ -82,13 +82,11 @@ export abstract class BaseApi {
         }
         let request = Object.assign({}, header, other, requestParms)
         request['sign'] = signatureHelper.getSignature(request)
-        console.log("我正在请求服务器")
         if( config.debug ){
             return new Promise(
                 (resolve, reject) => {
                     var timeOut = Math.random() * 2;
                     setTimeout(function () {
-                        console.log("我得到了假数据返回的结果")
                         if (timeOut < 1) {
                             resolve('200 OK');
                         } else {
@@ -114,11 +112,9 @@ export abstract class BaseApi {
                 this.accessUrl,
                 request
             ).then( (res) => {
-                console.log("我得到了服务器的结果")
                 let { isSuccess, result } = this._parseResponseHeader(res)
                 if( !isSuccess ){
-                    message.warn(result.msg)
-                    throw new Error(result.msg);
+                    throw result;
                 } else {
                     result = this.receive(result);
                 }
