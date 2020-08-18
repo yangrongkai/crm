@@ -4,10 +4,11 @@
 import { RouteConfig } from 'react-router-config';
 import { App } from 'containers/app';
 import { Login } from 'containers/base/login';
-import { PersonCentreManager } from 'containers/base/centre';
 import { One } from 'containers/pages/one';
 import { Two } from 'containers/pages/two';
 import { Welcome } from 'containers/pages/welcome';
+import { personPaths } from './person';
+import { permissionPaths } from './permission';
 
 
 export const paths: RouteConfig[] = [
@@ -19,11 +20,8 @@ export const paths: RouteConfig[] = [
         path: "/",
         component: App as any,
         routes:[
-            {
-                path: "/centre",
-                exact: true,
-                component: PersonCentreManager as any,
-            },
+            ...personPaths,
+            ...permissionPaths,
             {
                 path: "/one",
                 exact: true,

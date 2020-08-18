@@ -107,7 +107,6 @@ export abstract class BaseApi {
                 }
             );
         } else {
-            console.log(this.accessUrl)
             return HttpRequest.post(
                 this.accessUrl,
                 request

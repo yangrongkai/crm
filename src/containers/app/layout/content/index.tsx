@@ -59,6 +59,7 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
             ...headerMenu
         ];
         let menuHelper = new MenuElementHelper(menuList);
+        console.log("==============>>>>>>>>>    ", menuHelper)
 
         this.state = {
             currentTabKey: "",
@@ -117,6 +118,7 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
         let forRoutes = [...root.routes];
         for( let route of forRoutes ){
             let routePath = prefix + route.path;
+            console.log("------>>>> rootpath ----->>>>>> ", routePath, pathName)
             if(routePath === pathName){
                 return route.component;
             }

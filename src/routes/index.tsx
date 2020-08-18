@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { BrowserRouter } from "react-router-dom";
 import { renderRoutes } from "react-router-config";
-import { paths } from 'routes/paths';
+import { paths } from './paths';
 
 
 export interface RouterProps {

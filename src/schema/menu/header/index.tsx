@@ -10,20 +10,6 @@ export const headerMenu: MenuElementInterface[] = [
         key: 'userMenu',
         name: "用户菜单",
         child: [
-            /*
-            {
-                key: 'account',
-                name: '账户',
-                child: [
-                    {
-                        key: 'account-manager',
-                        name: '账号管理',
-                        icon: icons.IdcardOutlined,
-                        router:"/account",
-                    },
-                ],
-            },
-            */
             {
                 key: 'user',
                 name: '个人中心',
@@ -32,17 +18,25 @@ export const headerMenu: MenuElementInterface[] = [
                         key: 'person-manager',
                         name: '个人中心',
                         icon: icons.UserOutlined,
-                        router:"/centre",
+                        router:"/personCentre",
                     },
+                    /*
+                    {
+                        key: 'person-message',
+                        name: '私人消息',
+                        icon: icons.UserOutlined,
+                        router:"/person/centre",
+                    },
+                    */
                 ],
             },
             /*
             {
                 key: 'company',
-                name: '公司',
+                name: '日志管理',
                 child: [
                     {
-                        key: 'detail',
+                        key: 'person-logger',
                         name: '公司信息',
                         icon: icons.HomeOutlined,
                     },
