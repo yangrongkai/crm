@@ -90,6 +90,10 @@ export class ApiFieldHelper{
             }
 
             let response = parms[apiField.attr] 
+            if(response == "" || response == undefined){
+                continue
+            }
+
             if( apiField.hasOwnProperty('iter') ){
                 let value: any[] = []
                 for(let index in response){
