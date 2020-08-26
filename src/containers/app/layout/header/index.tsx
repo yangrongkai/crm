@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators, Dispatch } from 'redux';
-import { Row, Col, Menu, Layout } from 'antd';
+import { Row, Col, Menu, Layout, Space } from 'antd';
 import * as icons from '@ant-design/icons';
 import { RootState, AppState, appRedux, PersonState, personRedux } from 'reduxes';
 import * as config from '&/config.js';
@@ -156,15 +156,15 @@ class HeaderComponent extends React.PureComponent<HeaderProps> implements Header
         let menuHelper = new MenuElementHelper(headerMenu);
         let { userMenu, menuJSX } = this.establishMenu(menuHelper);
         return (
-            <Layout.Header className="site-layout-background" style={{ padding: 0 }}>
+            <Layout.Header className="site-layout-background" >
                 <Row>
                     <Col flex="32px">
                         { this.props.app.isCollapsed ? 
                             <icons.MenuUnfoldOutlined className="trigger" onClick={this.toggle}/> : 
                             <icons.MenuFoldOutlined className="trigger" onClick={this.toggle}/> }
                     </Col>
-                    <Col flex="auto" style={{ textAlign: "end" }}>
-                        <Menu className="header-menu" mode="horizontal">
+                    <Col flex="auto">
+                        <Menu className="menu-limit-height" mode="horizontal">
                             {menuJSX}
                             {userMenu}
                         </Menu>

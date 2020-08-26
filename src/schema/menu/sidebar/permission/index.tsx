@@ -7,48 +7,48 @@ import { MenuElementInterface } from 'common/interface';
 
 export const organizationMenu: MenuElementInterface[] = [
     {
+        key: 'authorization',
+        name: '授权管理',
+        icon: icons.HomeOutlined,
+        router:"/",
+        child: [
+            {
+                key: 'permission',
+                name: '权限授权',
+                icon: icons.VerifiedOutlined,
+                router:"/permissionPlatform",
+            },
+        ],
+    },
+    {
         key: 'permission',
         name: '权限管理',
         icon: icons.HomeOutlined,
         router:"/",
         child: [
             {
-                key: 'platform',
-                name: '平台管理',
-                icon: icons.VerifiedOutlined,
-                router:"/permissionPlatform",
-            },
-            {
                 key: 'rulegroup',
                 name: '权限组管理',
                 icon: icons.ClusterOutlined,
                 router:"/permissionRuleGroup",
             },
-        ],
-    },
-    {
-        key: 'organization',
-        name: '组织管理',
-        icon: icons.HomeOutlined,
-        router:"/",
-        child: [
             {
                 key: 'department',
-                name: '部门列表',
+                name: '部门管理',
                 icon: icons.ClusterOutlined,
-                router:"/one",
+                router:"/permissionOrganization",
             },
             {
-                key: 'department',
+                key: 'position',
                 name: '职位管理',
                 icon: icons.ClusterOutlined,
-                router:"/one",
+                router:"/permissionPosition",
             },
             {
                 key: 'sublist',
                 name: '员工列表',
                 icon: icons.TeamOutlined,
-                router:"/two",
+                router:"/permissionStaff",
             },
         ],
     },

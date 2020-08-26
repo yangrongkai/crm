@@ -101,7 +101,7 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
                                 <antd.Col span={12}>
                                     <antd.Form.Item label="注册时间">
                                         <span className="ant-form-text">
-                                            {person.account.createTime.format("YYYY-MM-DD h:mm:ss")}
+                                            {person.account.createTime.format("YYYY-MM-DD hh:mm:ss")}
                                         </span>
                                     </antd.Form.Item>
                                 </antd.Col>

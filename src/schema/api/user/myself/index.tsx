@@ -132,6 +132,7 @@ export const myselfApi: ApiInterface[] = [
                     birthday: moment('1991-01-02', "YYYY-MM-DD"),
                     gender: 'man',
                     wechat: '15527703115',
+                    phone: '15527703115',
                     qq: '237818280',
                     email: '237818280@qq.com',
                     work_number: 'BQ0001',

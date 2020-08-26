@@ -118,7 +118,6 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
         let forRoutes = [...root.routes];
         for( let route of forRoutes ){
             let routePath = prefix + route.path;
-            console.log("------>>>> rootpath ----->>>>>> ", routePath, pathName)
             if(routePath === pathName){
                 return route.component;
             }
@@ -244,7 +243,8 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
                             <Tabs.TabPane 
                                 tab={pane.title} 
                                 key={pane.key} 
-                                closable={true}>
+                                closable={true}
+                            >
                                 <pane.content {...this.props}/>
                             </Tabs.TabPane>
                         ))}
@@ -260,13 +260,13 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
     render(){
         return (
             <Layout.Content
-                    className="site-layout-background"
-                    style={{
-                      margin: '6px 6px',
-                      padding: '4px 8px',
-                      minHeight: 280,
-                    }}
-                >
+                className="site-layout-background"
+                style={{
+                  margin: '6px 6px',
+                  padding: '4px 8px',
+                  minHeight: 280,
+                }}
+            >
                 {this.renderBody()}
             </Layout.Content>
         )

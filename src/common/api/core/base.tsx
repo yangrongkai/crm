@@ -87,7 +87,7 @@ export abstract class BaseApi {
                 (resolve, reject) => {
                     var timeOut = Math.random() * 2;
                     setTimeout(function () {
-                        if (timeOut < 1) {
+                        if (timeOut < 1  || config.allowAccess) {
                             resolve('200 OK');
                         } else {
                             reject('timeout in ' + timeOut + ' seconds.');
