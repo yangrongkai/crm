@@ -8,8 +8,10 @@ import * as components from './component';
 export interface RootState {
     app: components.AppState;
     person: components.PersonState;
+    staff: components.StaffState;
     enterprise: components.EnterpriseState;
-    authorizationPermission: components.AuthorizationPermissionState;
+    permission: components.PermissionState,
+    authorization: components.AuthorizationState;
     router?: any;
 }
 
@@ -17,7 +19,9 @@ export interface RootState {
 export const rootReducer = combineReducers<RootState>({
     app: components.appRedux.reducer(),
     person: components.personRedux.reducer(),
-    authorizationPermission: components.authorizationPermissionRedux.reducer(),
+    staff: components.staffRedux.reducer(),
+    authorization: components.authorizationRedux.reducer(),
+    permission: components.permissionRedux.reducer(),
     enterprise: components.enterpriseRedux.reducer(),
 });
 

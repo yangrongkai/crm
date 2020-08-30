@@ -33,16 +33,16 @@ export const organizationMenu: MenuElementInterface[] = [
                 router:"/permissionRuleGroup",
             },
             {
-                key: 'department',
-                name: '部门管理',
-                icon: icons.ClusterOutlined,
-                router:"/permissionOrganization",
-            },
-            {
                 key: 'position',
                 name: '职位管理',
                 icon: icons.ClusterOutlined,
                 router:"/permissionPosition",
+            },
+            {
+                key: 'department',
+                name: '部门管理',
+                icon: icons.ClusterOutlined,
+                router:"/permissionOrganization",
             },
             {
                 key: 'sublist',

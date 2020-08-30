@@ -1,10 +1,10 @@
 'use strict'
 
 
-import { AuthorizationPermissionContainer } from './container';
-export { AuthorizationPermissionState } from './model';
+import { AuthorizationContainer } from './container';
+export { AuthorizationState } from './model';
 
-export const authorizationPermissionRedux = new AuthorizationPermissionContainer({
+export const authorizationRedux = new AuthorizationContainer({
     platformList: {
         dataList: [],
         total: 0,

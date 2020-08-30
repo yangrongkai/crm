@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { 
     RootState,
-    authorizationPermissionRedux,
-    AuthorizationPermissionState,
+    authorizationRedux,
+    AuthorizationState,
     EnterpriseState,
     enterpriseRedux
 } from 'reduxes';
@@ -16,8 +16,8 @@ import './index.less';
 
 
 export interface AddCompanyProps {
-    authorizationPermission: AuthorizationPermissionState;
-    authorizationPermissionHelper: any;
+    authorization: AuthorizationState;
+    authorizationHelper: any;
     enterprise: EnterpriseState,
     enterpriseHelper: any,
 }
@@ -34,15 +34,15 @@ export interface AddCompanyEvent{
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<AddCompanyProps, 'authorizationPermission' | "enterprise" > =>{
+    (state: RootState, ownProps): Pick<AddCompanyProps, 'authorization' | "enterprise" > =>{
         return { 
-            authorizationPermission: state.authorizationPermission,
+            authorization: state.authorization,
             enterprise: state.enterprise,
         };
     },
-    (dispatch: Dispatch): Pick<AddCompanyProps, 'authorizationPermissionHelper'| "enterpriseHelper" > => {
+    (dispatch: Dispatch): Pick<AddCompanyProps, 'authorizationHelper'| "enterpriseHelper" > => {
         return {
-            authorizationPermissionHelper: bindActionCreators(authorizationPermissionRedux.actions(), dispatch),
+            authorizationHelper: bindActionCreators(authorizationRedux.actions(), dispatch),
             enterpriseHelper: bindActionCreators(enterpriseRedux.actions(), dispatch),
         };
     }
@@ -63,8 +63,8 @@ export class AddCompanyManager extends React.PureComponent<AddCompanyProps, AddC
             },
         };
 
-        this.platformGet = this.props.authorizationPermissionHelper.platformGet;
-        this.authorizationAdd = this.props.authorizationPermissionHelper.authorizationAdd;
+        this.platformGet = this.props.authorizationHelper.platformGet;
+        this.authorizationAdd = this.props.authorizationHelper.authorizationAdd;
         this.enterpriseSearch = this.props.enterpriseHelper.enterpriseSearch;
 
         this.onClose = this.onClose.bind(this);
@@ -93,7 +93,7 @@ export class AddCompanyManager extends React.PureComponent<AddCompanyProps, AddC
             }).then(() => {
                 this.setState({
                     visible: true,
-                    platform: this.props.authorizationPermission.platformCurrent
+                    platform: this.props.authorization.platformCurrent
                 });
                 this.formRef.current.setFieldsValue(
                     {

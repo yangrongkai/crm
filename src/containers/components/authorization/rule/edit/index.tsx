@@ -7,15 +7,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { 
     RootState,
-    authorizationPermissionRedux,
-    AuthorizationPermissionState,
+    authorizationRedux,
+    AuthorizationState,
 } from 'reduxes';
 import './index.less';
 
 
 export interface EditRuleProps {
-    authorizationPermission: AuthorizationPermissionState;
-    authorizationPermissionHelper: any;
+    authorization: AuthorizationState;
+    authorizationHelper: any;
 }
 
 export interface EditRuleState {
@@ -30,14 +30,14 @@ export interface EditRuleEvent{
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<EditRuleProps, 'authorizationPermission'> =>{
+    (state: RootState, ownProps): Pick<EditRuleProps, 'authorization'> =>{
         return { 
-            authorizationPermission: state.authorizationPermission,
+            authorization: state.authorization,
         };
     },
-    (dispatch: Dispatch): Pick<EditRuleProps, 'authorizationPermissionHelper'> => {
+    (dispatch: Dispatch): Pick<EditRuleProps, 'authorizationHelper'> => {
         return {
-            authorizationPermissionHelper: bindActionCreators(authorizationPermissionRedux.actions(), dispatch),
+            authorizationHelper: bindActionCreators(authorizationRedux.actions(), dispatch),
         };
     }
 )
@@ -54,8 +54,8 @@ export class EditRuleManager extends React.PureComponent<EditRuleProps, EditRule
             currentRule: this.initialLastRule(),
         };
 
-        this.ruleUpdate = this.props.authorizationPermissionHelper.ruleUpdate;
-        this.ruleGet = this.props.authorizationPermissionHelper.ruleGet;
+        this.ruleUpdate = this.props.authorizationHelper.ruleUpdate;
+        this.ruleGet = this.props.authorizationHelper.ruleGet;
 
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
@@ -97,7 +97,7 @@ export class EditRuleManager extends React.PureComponent<EditRuleProps, EditRule
             this.ruleGet({
                 ruleId: record.id
             }).then(() => {
-                let currentRule = this.props.authorizationPermission.ruleCurrent
+                let currentRule = this.props.authorization.ruleCurrent
                 this.formRef.current.setFieldsValue(
                     currentRule
                 )
@@ -110,12 +110,12 @@ export class EditRuleManager extends React.PureComponent<EditRuleProps, EditRule
             this.ruleGet({
                 ruleId: record.parentId,
             }).then(()=>{
-                let lastRule = this.props.authorizationPermission.ruleCurrent
+                let lastRule = this.props.authorization.ruleCurrent
                 this.setState({ lastRule: lastRule })
                 this.ruleGet({
                     ruleId: record.id
                 }).then(() => {
-                    let currentRule = this.props.authorizationPermission.ruleCurrent
+                    let currentRule = this.props.authorization.ruleCurrent
                     this.formRef.current.setFieldsValue(
                         currentRule
                     )

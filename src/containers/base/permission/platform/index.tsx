@@ -6,7 +6,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import * as config from '&/config.js';
-import { RootState, authorizationPermissionRedux, AuthorizationPermissionState } from 'reduxes';
+import { RootState, authorizationRedux, AuthorizationState } from 'reduxes';
 import { 
     AddPlatformManager,
     DetailPlatformManager,
@@ -16,34 +16,34 @@ import {
 import './index.less';
 
 
-export interface PermissionPlatformProps {
-    authorizationPermission: AuthorizationPermissionState;
-    authorizationPermissionHelper: any;
+export interface PlatformProps {
+    authorization: AuthorizationState;
+    authorizationHelper: any;
     history: any;
 }
 
-export interface PermissionPlatformState {
+export interface PlatformState {
     currentPage: number;
     pageSizeOptions: any[],
 }
 
-export interface PermissionPlatformPageEvent{
+export interface PlatformPageEvent{
     platformSearch: any;
     platformRemove: any;
 }
 
 
 @connect(
-    (state: RootState, ownProps): Pick<PermissionPlatformProps, 'authorizationPermission' > =>{
-        return { authorizationPermission: state.authorizationPermission };
+    (state: RootState, ownProps): Pick<PlatformProps, 'authorization' > =>{
+        return { authorization: state.authorization };
     },
-    (dispatch: Dispatch): Pick<PermissionPlatformProps, 'authorizationPermissionHelper' > => {
+    (dispatch: Dispatch): Pick<PlatformProps, 'authorizationHelper' > => {
         return {
-            authorizationPermissionHelper: bindActionCreators(authorizationPermissionRedux.actions(), dispatch),
+            authorizationHelper: bindActionCreators(authorizationRedux.actions(), dispatch),
         };
     }
 )
-export class PermissionPlatformManager extends React.PureComponent<PermissionPlatformProps, PermissionPlatformState>  implements PermissionPlatformPageEvent{
+export class PlatformManager extends React.PureComponent<PlatformProps, PlatformState>  implements PlatformPageEvent{
 
     private formRef: any;
     addPlatformComponent: any;
@@ -54,7 +54,7 @@ export class PermissionPlatformManager extends React.PureComponent<PermissionPla
     platformSearch: any;
     platformRemove: any;
 
-    constructor(props: PermissionPlatformProps, context?: any) {
+    constructor(props: PlatformProps, context?: any) {
         super(props, context);
 
         this.state = {
@@ -62,8 +62,8 @@ export class PermissionPlatformManager extends React.PureComponent<PermissionPla
             pageSizeOptions: ["10", "20", "50"],
         }
 
-        this.platformSearch =this.props.authorizationPermissionHelper.platformSearch;
-        this.platformRemove = this.props.authorizationPermissionHelper.platformRemove;
+        this.platformSearch =this.props.authorizationHelper.platformSearch;
+        this.platformRemove = this.props.authorizationHelper.platformRemove;
 
         this.formRef = React.createRef();
         this.searchPlatform = this.searchPlatform.bind(this);
@@ -163,7 +163,7 @@ export class PermissionPlatformManager extends React.PureComponent<PermissionPla
                     </antd.Form>
                     <antd.Table
             title={() => {
-                let message = "共计 " + this.props.authorizationPermission.platformList.total + " 条";
+                let message = "共计 " + this.props.authorization.platformList.total + " 条";
                 return (
                     <antd.Alert message={message} type="info" showIcon />
                 )
@@ -255,10 +255,10 @@ export class PermissionPlatformManager extends React.PureComponent<PermissionPla
                                 },
                             ]
                         }
-                        dataSource={this.props.authorizationPermission.platformList.dataList}
+                        dataSource={this.props.authorization.platformList.dataList}
                         pagination={{
                             current: this.state.currentPage,
-                            total: this.props.authorizationPermission.platformList.total,
+                            total: this.props.authorization.platformList.total,
                             onChange: this.changePagination
                         }}
                     >

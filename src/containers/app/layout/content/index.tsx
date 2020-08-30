@@ -59,7 +59,6 @@ class ContentComponet extends React.Component<ContentProps, ContentState>{
             ...headerMenu
         ];
         let menuHelper = new MenuElementHelper(menuList);
-        console.log("==============>>>>>>>>>    ", menuHelper)
 
         this.state = {
             currentTabKey: "",

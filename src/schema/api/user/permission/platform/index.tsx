@@ -143,7 +143,6 @@ export const platformApi: ApiInterface[] = [
                     }
                 }
             },
-
         },
         response:{
             data_list: {

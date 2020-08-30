@@ -1,118 +1,268 @@
 'use strict'
 
 
-import { TokenEnum, TokenConstant } from 'common/utils/persistence';
 import { BaseContainer } from 'reduxes/tools/container';
 import { PermissionState } from './model';
 import * as config from  '&/config.js';
 
 
 export enum PermissionTypes {
-    ACCOUNT_LOGIN = 'ACCOUNT_LOGIN',
-    ACCOUNT_LOGOUT = 'ACCOUNT_LOGOUT',
-    ACCOUNT_UPDATE = 'ACCOUNT_UPDATE',
-    ACCOUNT_RESET_PASSWORD = 'ACCOUNT_RESET_PASSWORD',
+    RULEGROUP_ADD = "RULEGROUP_ADD",
+    RULEGROUP_GET = "RULEGROUP_GET",
+    RULEGROUP_SEARCH = "RULEGROUP_SEARCH",
+    RULEGROUP_UPDATE = "RULEGROUP_UPDATE",
+    RULEGROUP_REMOVE = "RULEGROUP_REMOVE",
 
-    PERSON_UPDATA = 'PERSON_UPDATA',
-    PERSON_GET = 'PERSON_GET'
+    POSITION_ADD = "POSITION_ADD",
+    POSITION_GET = "POSITION_GET",
+    POSITION_SEARCH = "POSITION_SEARCH",
+    POSITION_ALL = "POSITION_ALL",
+    POSITION_UPDATE = "POSITION_UPDATE",
+    POSITION_REMOVE = "POSITION_REMOVE",
+
+    ORGANIZATION_ADD = "ORGANIZATION_ADD",
+    ORGANIZATION_GET = "ORGANIZATION_GET",
+    ORGANIZATION_SEARCH = "ORGANIZATION_SEARCH",
+    ORGANIZATION_ALL = "ORGANIZATION_ALL",
+    ORGANIZATION_UPDATE = "ORGANIZATION_UPDATE",
+    ORGANIZATION_REMOVE = "ORGANIZATION_REMOVE",
 }
 
 
 export class PermissionContainer extends BaseContainer {
 
-    accountLogin: any;
-    accountLogout: any;
-    accountUpdate: any;
-    accountResetPassword: any;
+    ruleGroupAdd: any;
+    ruleGroupGet: any;
+    ruleGroupSearch: any;
+    ruleGroupUpdate: any;
+    ruleGroupRemove: any;
 
-    personGet: any;
-    personUpdate: any;
-
+    positionAdd: any;
+    positionGet: any;
+    positionFilter: any;
+    positionSearch: any;
+    positionUpdate: any;
+    positionRemove: any;
+    
+    organizationAdd: any;
+    organizationGet: any;
+    organizationFilter: any;
+    organizationSearch: any;
+    organizationUpdate: any;
+    organizationRemove: any;
+    
     constructor(initialState: any){
         super(initialState);
 
-        this.accountLogin = this.createAsynchronizationAction(
-            "staff.account.login",
+        this.ruleGroupAdd = this.createAsynchronizationAction(
+            "staff.permission.rulegroup.add",
             config.defaultFlag,
-            PermissionTypes.ACCOUNT_LOGIN
+            PermissionTypes.RULEGROUP_ADD
         );
-        this.accountLogout = this.createAsynchronizationAction(
-            "staff.account.logout",
+        this.ruleGroupGet = this.createAsynchronizationAction(
+            "staff.permission.rulegroup.get",
             config.defaultFlag,
-            PermissionTypes.ACCOUNT_LOGOUT
+            PermissionTypes.RULEGROUP_GET
         );
-        this.accountUpdate = this.createAsynchronizationAction(
-            "staff.account.update",
+        this.ruleGroupSearch = this.createAsynchronizationAction(
+            "staff.permission.rulegroup.search",
             config.defaultFlag,
-            PermissionTypes.ACCOUNT_UPDATE
+            PermissionTypes.RULEGROUP_SEARCH
         );
-        this.accountResetPassword = this.createAsynchronizationAction(
-            "staff.account.password.modify",
+        this.ruleGroupUpdate = this.createAsynchronizationAction(
+            "staff.permission.rulegroup.update",
             config.defaultFlag,
-            PermissionTypes.ACCOUNT_RESET_PASSWORD
+            PermissionTypes.RULEGROUP_UPDATE
         );
-        this.personGet = this.createAsynchronizationAction(
-            'staff.myself.get',
+        this.ruleGroupRemove = this.createAsynchronizationAction(
+            "staff.permission.rulegroup.remove",
             config.defaultFlag,
-            PermissionTypes.PERSON_GET
+            PermissionTypes.RULEGROUP_REMOVE
         );
-        this.personUpdate = this.createAsynchronizationAction(
-            'staff.myself.update',
+
+        this.positionAdd = this.createAsynchronizationAction(
+            "staff.permission.position.add",
             config.defaultFlag,
-            PermissionTypes.PERSON_UPDATA
+            PermissionTypes.POSITION_ADD
+        );
+        this.positionGet = this.createAsynchronizationAction(
+            "staff.permission.position.get",
+            config.defaultFlag,
+            PermissionTypes.POSITION_GET
+        );
+        this.positionFilter = this.createAsynchronizationAction(
+            "staff.permission.position.search",
+            config.defaultFlag,
+            PermissionTypes.POSITION_SEARCH
+        );
+        this.positionSearch = this.createAsynchronizationAction(
+            "staff.permission.position.all",
+            config.defaultFlag,
+            PermissionTypes.POSITION_ALL
+        );
+        this.positionUpdate = this.createAsynchronizationAction(
+            "staff.permission.position.update",
+            config.defaultFlag,
+            PermissionTypes.POSITION_UPDATE
+        );
+        this.positionRemove = this.createAsynchronizationAction(
+            "staff.permission.position.remove",
+            config.defaultFlag,
+            PermissionTypes.POSITION_REMOVE
+        );
+
+        this.organizationAdd = this.createAsynchronizationAction(
+            "staff.permission.organization.add",
+            config.defaultFlag,
+            PermissionTypes.ORGANIZATION_ADD
+        );
+        this.organizationGet = this.createAsynchronizationAction(
+            "staff.permission.organization.get",
+            config.defaultFlag,
+            PermissionTypes.ORGANIZATION_GET
+        );
+        this.organizationFilter = this.createAsynchronizationAction(
+            "staff.permission.organization.search",
+            config.defaultFlag,
+            PermissionTypes.ORGANIZATION_SEARCH
+        );
+        this.organizationSearch = this.createAsynchronizationAction(
+            "staff.permission.organization.all",
+            config.defaultFlag,
+            PermissionTypes.ORGANIZATION_ALL
+        );
+        this.organizationUpdate = this.createAsynchronizationAction(
+            "staff.permission.organization.update",
+            config.defaultFlag,
+            PermissionTypes.ORGANIZATION_UPDATE
+        );
+        this.organizationRemove = this.createAsynchronizationAction(
+            "staff.permission.organization.remove",
+            config.defaultFlag,
+            PermissionTypes.ORGANIZATION_REMOVE
         );
     }
 
     loadActions(): any{
         return {
-            personGet: this.personGet,
-            personUpdate: this.personUpdate,
-            accountLogin: this.accountLogin,
-            accountLogout: this.accountLogout,
-            accountUpdate: this.accountUpdate,
-            accountResetPassword: this.accountResetPassword,
+            ruleGroupAdd: this.ruleGroupAdd,
+            ruleGroupGet: this.ruleGroupGet,
+            ruleGroupSearch: this.ruleGroupSearch,
+            ruleGroupUpdate: this.ruleGroupUpdate,
+            ruleGroupRemove: this.ruleGroupRemove,
+            positionAdd: this.positionAdd,
+            positionGet: this.positionGet,
+            positionFilter: this.positionFilter,
+            positionUpdate: this.positionUpdate,
+            positionSearch: this.positionSearch,
+            positionRemove: this.positionRemove,
+            organizationAdd: this.organizationAdd,
+            organizationGet: this.organizationGet,
+            organizationFilter: this.organizationFilter,
+            organizationUpdate: this.organizationUpdate,
+            organizationSearch: this.organizationSearch,
+            organizationRemove: this.organizationRemove,
         }
     }
 
     loadReducer(): any{
         return {
-            [this.accountLogin.fulfilled.toString()]: (state: PermissionState, action: any) => {
-                let result = action.payload
-                TokenConstant.save({
-                    [TokenEnum.ACCESS_TOKEN]: result.accessToken,
-                    [TokenEnum.RENEW_FLAG]: result.renewFlag,
-                    [TokenEnum.EXPIRE_TIME]: result.expireTime,
-                });
+            [this.ruleGroupAdd.fulfilled.toString()]: (state: PermissionState, action: any) => {
                 return Object.assign({}, state, {
-                    token: {
-                        accessToken: result.accessToken,
-                        renewFlag: result.renewFlag,
-                        expireTime: result.expireTime,
+                })
+            },
+            [this.ruleGroupGet.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
+                    ruleGroupCurrent: action.payload.ruleGroupInfo
+                })
+            },
+            [this.ruleGroupSearch.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
+                    ruleGroupSearch: {
+                        dataList: action.payload.dataList,
+                        total: action.payload.total,
+                        totalPage: action.payload.totalPage,
                     }
                 })
             },
-            [this.accountLogout.fulfilled.toString()]: (state: PermissionState, action: any) => {
-                TokenConstant.remove();
+            [this.ruleGroupUpdate.fulfilled.toString()]: (state: PermissionState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.accountUpdate.fulfilled.toString()]: (state: PermissionState, action: any) => {
+            [this.ruleGroupRemove.fulfilled.toString()]: (state: PermissionState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.accountResetPassword.fulfilled.toString()]: (state: PermissionState, action: any) => {
+
+            [this.positionAdd.fulfilled.toString()]: (state: PermissionState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.personUpdate.fulfilled.toString()]: (state: PermissionState, action: any) => {
+            [this.positionGet.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
+                    positionCurrent: action.payload.positionInfo
+                })
+            },
+            [this.positionFilter.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
+                    positionFilter: {
+                        dataList: action.payload.dataList,
+                        total: action.payload.total,
+                        totalPage: action.payload.totalPage,
+                    }
+                })
+            },
+            [this.positionSearch.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
+                    positionSearch: {
+                        dataList: action.payload.dataList,
+                        total: action.payload.total,
+                    }
+                })
+            },
+            [this.positionUpdate.fulfilled.toString()]: (state: PermissionState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.personGet.fulfilled.toString()]: (state: PermissionState, action: any) => {
-                return Object.assign({}, state, action.payload.staffInfo, {
+            [this.positionRemove.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
+                })
+            },
+
+            [this.organizationAdd.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
+                })
+            },
+            [this.organizationGet.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
+                    organizationCurrent: action.payload.organizationInfo
+                })
+            },
+            [this.organizationFilter.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
+                    organizationFilter: {
+                        dataList: action.payload.dataList,
+                        total: action.payload.total,
+                        totalPage: action.payload.totalPage,
+                    }
+                })
+            },
+            [this.organizationSearch.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
+                    organizationSearch: {
+                        dataList: action.payload.dataList,
+                        total: action.payload.total,
+                    }
+                })
+            },
+            [this.organizationUpdate.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
+                })
+            },
+            [this.organizationRemove.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
                 })
             },
         }
     }
-
 }

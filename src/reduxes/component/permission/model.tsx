@@ -1,43 +1,57 @@
 'use strict'
 
 
-export interface CompanyModel {
-    // 公司信息
+import { SearchModel, AllModel } from 'reduxes/tools/model';
+
+export interface RuleGroupModel {
     id: number;
     name: string;
-    licenseNumber: string;
-    createTime: string;
+    content: string;
+    description: string;
+    remark: string;
+    createTime: any;
+    updateTime: any;
 }
 
-export interface AccountModel {
-    // 账号信息
-    nick: string;
-    headUrl: string;
-    username: string;
-    status: string;
-    lastLoginTime: string;
-    lastLoginIp: string;
-    registerIp: string;
-    updateTime: string;
-    createTime: string;
+export interface PositionModel {
+    id: number;
+    parentId: number;
+    name: string;
+    description: string;
+    remark: string;
+    ruleGroupId: number;
+    ruleGroupName: string;
+    createTime: any;
+    updateTime: any;
 }
 
-export interface PermissionModel {
+export interface OrganizationPositionModel {
     id: number;
     name: string;
-    birthday: string;
-    phone: string;
-    email: string;
-    qq: string;
-    wechat: string;
-    workNumber: string;
-    isAdmin: string;
-    account: AccountModel;
-    company: CompanyModel;
 }
 
-export enum PermissionFilter {
+export interface OrganizationModel {
+    id: number;
+    parentId: number;
+    name: string;
+    description: string;
+    positionList: OrganizationPositionModel[];
+    remark: string;
+    createTime: any;
+    updateTime: any;
+
 }
 
+export type PermissionState = {
+    ruleGroupSearch: SearchModel<Partial<RuleGroupModel>>;
+    ruleGroupCurrent: Partial<RuleGroupModel>;
+    ruleGroupFilter: SearchModel<Partial<RuleGroupModel>>;
 
-export type PermissionState = Partial<PermissionModel>;
+    positionSearch: AllModel<Partial<PositionModel>>;
+    positionCurrent: Partial<PositionModel>;
+    positionFilter: SearchModel<Partial<PositionModel>>;
+
+    organizationSearch: AllModel<Partial<OrganizationModel>>;
+    organizationCurrent: Partial<OrganizationModel>;
+    organizationFilter: SearchModel<Partial<OrganizationModel>>;
+}

@@ -39,7 +39,7 @@ export interface PlatformModel{
     updateTime: any;
 }
 
-export type AuthorizationPermissionState = {
+export type AuthorizationState = {
     platformList: SearchModel<Partial<PlatformModel>>;
     platformCurrent: Partial<PlatformModel>;
 

@@ -2,11 +2,11 @@
 
 
 import { BaseContainer } from 'reduxes/tools/container';
-import { AuthorizationPermissionState } from './model';
+import { AuthorizationState } from './model';
 import * as config from  '&/config.js';
 
 
-export enum AuthorizationPermissionTypes {
+export enum AuthorizationTypes {
     PLATFORM_ADD = "PLATFORM_ADD",
     PLATFORM_GET = "PLATFORM_GET",
     PLATFORM_SEARCH = "PLATFORM_SEARCH",
@@ -28,7 +28,7 @@ export enum AuthorizationPermissionTypes {
 }
 
 
-export class AuthorizationPermissionContainer extends BaseContainer {
+export class AuthorizationContainer extends BaseContainer {
 
     platformAdd: any;
     platformGet: any;
@@ -55,92 +55,92 @@ export class AuthorizationPermissionContainer extends BaseContainer {
         this.platformAdd = this.createAsynchronizationAction(
             "staff.permission.platform.add",
             config.defaultFlag,
-            AuthorizationPermissionTypes.PLATFORM_ADD
+            AuthorizationTypes.PLATFORM_ADD
         );
         this.platformGet = this.createAsynchronizationAction(
             "staff.permission.platform.get",
             config.defaultFlag,
-            AuthorizationPermissionTypes.PLATFORM_GET
+            AuthorizationTypes.PLATFORM_GET
         );
         this.platformSearch = this.createAsynchronizationAction(
             "staff.permission.platform.search",
             config.defaultFlag,
-            AuthorizationPermissionTypes.PLATFORM_SEARCH
+            AuthorizationTypes.PLATFORM_SEARCH
         );
         this.platformUpdate = this.createAsynchronizationAction(
             "staff.permission.platform.update",
             config.defaultFlag,
-            AuthorizationPermissionTypes.PLATFORM_UPDATE
+            AuthorizationTypes.PLATFORM_UPDATE
         );
         this.platformRemove = this.createAsynchronizationAction(
             "staff.permission.platform.remove",
             config.defaultFlag,
-            AuthorizationPermissionTypes.PLATFORM_REMOVE
+            AuthorizationTypes.PLATFORM_REMOVE
         );
         this.authorizationGet = this.createAsynchronizationAction(
             "staff.permission.authorization.get",
             config.defaultFlag,
-            AuthorizationPermissionTypes.AUTHORIZATION_GET
+            AuthorizationTypes.AUTHORIZATION_GET
         );
         this.authorizationSearch = this.createAsynchronizationAction(
             "staff.permission.authorization.search",
             config.defaultFlag,
-            AuthorizationPermissionTypes.AUTHORIZATION_SEARCH
+            AuthorizationTypes.AUTHORIZATION_SEARCH
         );
         this.authorizationUpdate = this.createAsynchronizationAction(
             "staff.permission.authorization.update",
             config.defaultFlag,
-            AuthorizationPermissionTypes.AUTHORIZATION_UPDATE
+            AuthorizationTypes.AUTHORIZATION_UPDATE
         );
         this.authorizationRemove = this.createAsynchronizationAction(
             "staff.permission.authorization.remove",
             config.defaultFlag,
-            AuthorizationPermissionTypes.AUTHORIZATION_REMOVE
+            AuthorizationTypes.AUTHORIZATION_REMOVE
         );
         this.authorizationAdd = this.createAsynchronizationAction(
             "staff.permission.authorization.authorize",
             config.defaultFlag,
-            AuthorizationPermissionTypes.AUTHORIZATION_ADD
+            AuthorizationTypes.AUTHORIZATION_ADD
         );
         this.authorizationApply = this.createAsynchronizationAction(
             'staff.permission.authorization.apply',
             config.defaultFlag,
-            AuthorizationPermissionTypes.AUTHORIZATION_APPLY
+            AuthorizationTypes.AUTHORIZATION_APPLY
         );
         this.authorizationForbidden = this.createAsynchronizationAction(
             'staff.permission.authorization.forbidden',
             config.defaultFlag,
-            AuthorizationPermissionTypes.AUTHORIZATION_FORBIDDEN
+            AuthorizationTypes.AUTHORIZATION_FORBIDDEN
         );
         this.authorizationRefresh = this.createAsynchronizationAction(
             'staff.permission.authorization.refresh',
             config.defaultFlag,
-            AuthorizationPermissionTypes.AUTHORIZATION_REFRESH
+            AuthorizationTypes.AUTHORIZATION_REFRESH
         );
         this.ruleAdd = this.createAsynchronizationAction(
             'staff.permission.rule.add',
             config.defaultFlag,
-            AuthorizationPermissionTypes.RULE_ADD
+            AuthorizationTypes.RULE_ADD
         );
         this.ruleAll = this.createAsynchronizationAction(
             'staff.permission.rule.all',
             config.defaultFlag,
-            AuthorizationPermissionTypes.RULE_ALL
+            AuthorizationTypes.RULE_ALL
         );
         this.ruleGet = this.createAsynchronizationAction(
             'staff.permission.rule.get',
             config.defaultFlag,
-            AuthorizationPermissionTypes.RULE_GET
+            AuthorizationTypes.RULE_GET
         );
         this.ruleUpdate = this.createAsynchronizationAction(
             'staff.permission.rule.update',
             config.defaultFlag,
-            AuthorizationPermissionTypes.RULE_UPDATE
+            AuthorizationTypes.RULE_UPDATE
         );
         this.ruleRemove = this.createAsynchronizationAction(
             'staff.permission.rule.remove',
             config.defaultFlag,
-            AuthorizationPermissionTypes.RULE_REMOVE
+            AuthorizationTypes.RULE_REMOVE
         );
     }
 
@@ -169,17 +169,17 @@ export class AuthorizationPermissionContainer extends BaseContainer {
 
     loadReducer(): any{
         return {
-            [this.platformAdd.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.platformAdd.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.platformGet.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.platformGet.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 let newPlatform = action.payload.platformInfo;
                 return Object.assign({}, state, {
                     platformCurrent: newPlatform
                 })
             },
-            [this.platformSearch.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.platformSearch.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 let newPlatformList = {
                     dataList: action.payload.dataList,
                     total: action.payload.total,
@@ -189,21 +189,21 @@ export class AuthorizationPermissionContainer extends BaseContainer {
                     platformList: newPlatformList
                 })
             },
-            [this.platformUpdate.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.platformUpdate.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.platformRemove.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.platformRemove.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.authorizationGet.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.authorizationGet.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 let authorization = action.payload.authorizationInfo;
                 return Object.assign({}, state, {
                     authorizationCurrent: authorization
                 })
             },
-            [this.authorizationSearch.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.authorizationSearch.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 let newPlatformList = {
                     dataList: action.payload.dataList,
                     total: action.payload.total,
@@ -213,35 +213,35 @@ export class AuthorizationPermissionContainer extends BaseContainer {
                     authorizationList: newPlatformList
                 })
             },
-            [this.authorizationUpdate.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.authorizationUpdate.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.authorizationRemove.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.authorizationRemove.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.authorizationAdd.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.authorizationAdd.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.authorizationApply.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.authorizationApply.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.authorizationForbidden.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.authorizationForbidden.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.authorizationRefresh.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.authorizationRefresh.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.ruleAdd.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.ruleAdd.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.ruleAll.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.ruleAll.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                     ruleList:{
                         dataList: action.payload.dataList,
@@ -249,16 +249,16 @@ export class AuthorizationPermissionContainer extends BaseContainer {
                     }
                 })
             },
-            [this.ruleGet.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.ruleGet.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                     ruleCurrent: action.payload.ruleInfo
                 })
             },
-            [this.ruleUpdate.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.ruleUpdate.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },
-            [this.ruleRemove.fulfilled.toString()]: (state: AuthorizationPermissionState, action: any) => {
+            [this.ruleRemove.fulfilled.toString()]: (state: AuthorizationState, action: any) => {
                 return Object.assign({}, state, {
                 })
             },

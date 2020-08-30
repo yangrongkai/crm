@@ -7,15 +7,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { 
     RootState,
-    authorizationPermissionRedux,
-    AuthorizationPermissionState,
+    authorizationRedux,
+    AuthorizationState,
 } from 'reduxes';
 import './index.less';
 
 
 export interface AddRuleProps {
-    authorizationPermission: AuthorizationPermissionState;
-    authorizationPermissionHelper: any;
+    authorization: AuthorizationState;
+    authorizationHelper: any;
 }
 
 export interface AddRuleState {
@@ -30,14 +30,14 @@ export interface AddRuleEvent{
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<AddRuleProps, 'authorizationPermission'> =>{
+    (state: RootState, ownProps): Pick<AddRuleProps, 'authorization'> =>{
         return { 
-            authorizationPermission: state.authorizationPermission,
+            authorization: state.authorization,
         };
     },
-    (dispatch: Dispatch): Pick<AddRuleProps, 'authorizationPermissionHelper'> => {
+    (dispatch: Dispatch): Pick<AddRuleProps, 'authorizationHelper'> => {
         return {
-            authorizationPermissionHelper: bindActionCreators(authorizationPermissionRedux.actions(), dispatch),
+            authorizationHelper: bindActionCreators(authorizationRedux.actions(), dispatch),
         };
     }
 )
@@ -54,8 +54,8 @@ export class AddRuleManager extends React.PureComponent<AddRuleProps, AddRuleSta
             platformId: 0,
         };
 
-        this.ruleAdd = this.props.authorizationPermissionHelper.ruleAdd;
-        this.ruleGet = this.props.authorizationPermissionHelper.ruleGet;
+        this.ruleAdd = this.props.authorizationHelper.ruleAdd;
+        this.ruleGet = this.props.authorizationHelper.ruleGet;
 
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);

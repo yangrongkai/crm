@@ -4,8 +4,8 @@
 import { RouteConfig } from 'react-router-config';
 
 import {
-    PermissionPlatformManager,
-    PermissionRuleGroupManager,
+    PlatformManager,
+    RuleGroupManager,
     OrganizationManager,
     PositionManager,
     StaffManager,
@@ -15,12 +15,12 @@ export const permissionPaths: RouteConfig[] = [
     {
         path: "/permissionPlatform",
         exact: true,
-        component: PermissionPlatformManager as any,
+        component: PlatformManager as any,
     },
     {
         path: "/permissionRuleGroup",
         exact: true,
-        component: PermissionRuleGroupManager as any,
+        component: RuleGroupManager as any,
     },
     {
         path: "/permissionOrganization",

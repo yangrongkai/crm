@@ -6,7 +6,7 @@ import * as icons from '@ant-design/icons';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { RootState, authorizationPermissionRedux, AuthorizationPermissionState } from 'reduxes';
+import { RootState, authorizationRedux, AuthorizationState } from 'reduxes';
 import {
     AddRuleManager,
     EditRuleManager,
@@ -15,8 +15,8 @@ import './index.less';
 
 
 export interface DetailPlatformProps {
-    authorizationPermission: AuthorizationPermissionState;
-    authorizationPermissionHelper: any;
+    authorization: AuthorizationState;
+    authorizationHelper: any;
 }
 
 export interface DetailPlatformState {
@@ -31,12 +31,12 @@ export interface DetailPlatformEvent{
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<DetailPlatformProps, 'authorizationPermission' > =>{
-        return { authorizationPermission: state.authorizationPermission };
+    (state: RootState, ownProps): Pick<DetailPlatformProps, 'authorization' > =>{
+        return { authorization: state.authorization };
     },
-    (dispatch: Dispatch): Pick<DetailPlatformProps, 'authorizationPermissionHelper' > => {
+    (dispatch: Dispatch): Pick<DetailPlatformProps, 'authorizationHelper' > => {
         return {
-            authorizationPermissionHelper: bindActionCreators(authorizationPermissionRedux.actions(), dispatch),
+            authorizationHelper: bindActionCreators(authorizationRedux.actions(), dispatch),
         };
     }
 )
@@ -56,9 +56,9 @@ export class DetailPlatformManager extends React.PureComponent<DetailPlatformPro
             platform: undefined,
         };
 
-        this.platformGet = this.props.authorizationPermissionHelper.platformGet;
-        this.ruleAll = this.props.authorizationPermissionHelper.ruleAll;
-        this.ruleRemove = this.props.authorizationPermissionHelper.ruleRemove;
+        this.platformGet = this.props.authorizationHelper.platformGet;
+        this.ruleAll = this.props.authorizationHelper.ruleAll;
+        this.ruleRemove = this.props.authorizationHelper.ruleRemove;
 
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
@@ -84,7 +84,7 @@ export class DetailPlatformManager extends React.PureComponent<DetailPlatformPro
             this.ruleAll({
                 platformId: platformId
             }).then(() => {
-                let platform =this.props.authorizationPermission.platformCurrent
+                let platform =this.props.authorization.platformCurrent
                 this.setState({
                     platform: platform
                 })
@@ -249,7 +249,7 @@ export class DetailPlatformManager extends React.PureComponent<DetailPlatformPro
                             }
                         ]}
                         indentSize={42}
-                        dataSource={this.props.authorizationPermission.ruleList.dataList}
+                        dataSource={this.props.authorization.ruleList.dataList}
                         pagination={false}
                         defaultExpandAllRows
                     />

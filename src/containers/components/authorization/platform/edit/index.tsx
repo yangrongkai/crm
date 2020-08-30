@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { 
     RootState,
-    authorizationPermissionRedux,
-    AuthorizationPermissionState,
+    authorizationRedux,
+    AuthorizationState,
     EnterpriseState,
     enterpriseRedux
 } from 'reduxes';
@@ -16,8 +16,8 @@ import './index.less';
 
 
 export interface EditPlatformProps {
-    authorizationPermission: AuthorizationPermissionState;
-    authorizationPermissionHelper: any;
+    authorization: AuthorizationState;
+    authorizationHelper: any;
     enterprise: EnterpriseState;
     enterpriseHelper: any;
 }
@@ -34,15 +34,15 @@ export interface EditPlatformEvent{
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<EditPlatformProps, 'authorizationPermission' | "enterprise" > =>{
+    (state: RootState, ownProps): Pick<EditPlatformProps, 'authorization' | "enterprise" > =>{
         return { 
-            authorizationPermission: state.authorizationPermission,
+            authorization: state.authorization,
             enterprise: state.enterprise,
         };
     },
-    (dispatch: Dispatch): Pick<EditPlatformProps, 'authorizationPermissionHelper'| "enterpriseHelper" > => {
+    (dispatch: Dispatch): Pick<EditPlatformProps, 'authorizationHelper'| "enterpriseHelper" > => {
         return {
-            authorizationPermissionHelper: bindActionCreators(authorizationPermissionRedux.actions(), dispatch),
+            authorizationHelper: bindActionCreators(authorizationRedux.actions(), dispatch),
             enterpriseHelper: bindActionCreators(enterpriseRedux.actions(), dispatch),
         };
     }
@@ -60,8 +60,8 @@ export class EditPlatformManager extends React.PureComponent<EditPlatformProps, 
             platform: undefined,
         };
 
-        this.platformGet = this.props.authorizationPermissionHelper.platformGet;
-        this.platformUpdate = this.props.authorizationPermissionHelper.platformUpdate;
+        this.platformGet = this.props.authorizationHelper.platformGet;
+        this.platformUpdate = this.props.authorizationHelper.platformUpdate;
         this.enterpriseSearch = this.props.enterpriseHelper.enterpriseSearch;
 
         this.onClose = this.onClose.bind(this);
@@ -98,7 +98,7 @@ export class EditPlatformManager extends React.PureComponent<EditPlatformProps, 
                 searchInfo: {
                 }
             }).then(() => {
-                let platform  = this.props.authorizationPermission.platformCurrent
+                let platform  = this.props.authorization.platformCurrent
                 this.formRef.current.setFieldsValue(
                     platform
                 )

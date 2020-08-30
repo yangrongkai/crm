@@ -6,7 +6,7 @@ import * as icons from '@ant-design/icons';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { RootState, authorizationPermissionRedux, AuthorizationPermissionState } from 'reduxes';
+import { RootState, authorizationRedux, AuthorizationState } from 'reduxes';
 import {
     AddCompanyManager,
     EditCompanyManager,
@@ -15,8 +15,8 @@ import './index.less';
 
 
 export interface DetailCompanyProps {
-    authorizationPermission: AuthorizationPermissionState;
-    authorizationPermissionHelper: any;
+    authorization: AuthorizationState;
+    authorizationHelper: any;
 }
 
 export interface DetailCompanyState {
@@ -38,12 +38,12 @@ export interface DetailCompanyEvent{
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<DetailCompanyProps, 'authorizationPermission' > =>{
-        return { authorizationPermission: state.authorizationPermission };
+    (state: RootState, ownProps): Pick<DetailCompanyProps, 'authorization' > =>{
+        return { authorization: state.authorization };
     },
-    (dispatch: Dispatch): Pick<DetailCompanyProps, 'authorizationPermissionHelper' > => {
+    (dispatch: Dispatch): Pick<DetailCompanyProps, 'authorizationHelper' > => {
         return {
-            authorizationPermissionHelper: bindActionCreators(authorizationPermissionRedux.actions(), dispatch),
+            authorizationHelper: bindActionCreators(authorizationRedux.actions(), dispatch),
         };
     }
 )
@@ -70,14 +70,14 @@ export class DetailCompanyManager extends React.PureComponent<DetailCompanyProps
             platform: undefined,
         };
 
-        this.platformGet = this.props.authorizationPermissionHelper.platformGet;
-        this.authorizationSearch = this.props.authorizationPermissionHelper.authorizationSearch;
-        this.authorizationUpdate = this.props.authorizationPermissionHelper.authorizationUpdate;
-        this.authorizationGet = this.props.authorizationPermissionHelper.authorizationGet;
-        this.authorizationRemove = this.props.authorizationPermissionHelper.authorizationRemove;
-        this.authorizationApply = this.props.authorizationPermissionHelper.authorizationApply;
-        this.authorizationForbidden = this.props.authorizationPermissionHelper.authorizationForbidden;
-        this.authorizationRefresh = this.props.authorizationPermissionHelper.authorizationRefresh;
+        this.platformGet = this.props.authorizationHelper.platformGet;
+        this.authorizationSearch = this.props.authorizationHelper.authorizationSearch;
+        this.authorizationUpdate = this.props.authorizationHelper.authorizationUpdate;
+        this.authorizationGet = this.props.authorizationHelper.authorizationGet;
+        this.authorizationRemove = this.props.authorizationHelper.authorizationRemove;
+        this.authorizationApply = this.props.authorizationHelper.authorizationApply;
+        this.authorizationForbidden = this.props.authorizationHelper.authorizationForbidden;
+        this.authorizationRefresh = this.props.authorizationHelper.authorizationRefresh;
 
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
@@ -108,7 +108,7 @@ export class DetailCompanyManager extends React.PureComponent<DetailCompanyProps
                 platformId: platformId,
                 searchInfo: {}
             }).then(() => {
-                let platform =this.props.authorizationPermission.platformCurrent
+                let platform =this.props.authorization.platformCurrent
                 this.setState({
                     platform: platform,
                     visible: true,
@@ -142,7 +142,7 @@ export class DetailCompanyManager extends React.PureComponent<DetailCompanyProps
                 platformId: this.state.platform.id,
                 searchInfo: values
             }).then(() => {
-                let platform =this.props.authorizationPermission.platformCurrent
+                let platform =this.props.authorization.platformCurrent
                 this.setState({
                     platform: platform,
                     visible: true,
@@ -352,10 +352,10 @@ export class DetailCompanyManager extends React.PureComponent<DetailCompanyProps
                             }
                         ]}
                         indentSize={42}
-                        dataSource={this.props.authorizationPermission.authorizationList.dataList}
+                        dataSource={this.props.authorization.authorizationList.dataList}
                         pagination={{
                             current: this.state.currentPage,
-                            total: this.props.authorizationPermission.authorizationList.total,
+                            total: this.props.authorization.authorizationList.total,
                             onChange: this.changePagination
                         }}
                         defaultExpandAllRows

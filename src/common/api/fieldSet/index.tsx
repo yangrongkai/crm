@@ -82,16 +82,16 @@ export class ApiFieldHelper{
                 isRequired = apiField.required;
             }
 
-            if(!parms.hasOwnProperty(attrKey)){
-                if( isRequired == true){
+            let response = parms[apiField.attr] 
+            if( isRequired == true){
+                if(!parms.hasOwnProperty(attrKey)){
                     console.error("api parms losted.... filed = " + apiField.attr)
                     throw Error("api parms losted.... filed" + apiField.attr)
                 }
-            }
-
-            let response = parms[apiField.attr] 
-            if(response == "" || response == undefined){
-                continue
+            } else {
+                if(response == undefined){
+                    continue
+                }
             }
 
             if( apiField.hasOwnProperty('iter') ){

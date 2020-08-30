@@ -8,15 +8,15 @@ import moment from 'moment';
 import { bindActionCreators, Dispatch } from 'redux';
 import { 
     RootState,
-    authorizationPermissionRedux,
-    AuthorizationPermissionState,
+    authorizationRedux,
+    AuthorizationState,
 } from 'reduxes';
 import './index.less';
 
 
 export interface EditCompanyProps {
-    authorizationPermission: AuthorizationPermissionState;
-    authorizationPermissionHelper: any;
+    authorization: AuthorizationState;
+    authorizationHelper: any;
 }
 
 export interface EditCompanyState {
@@ -30,14 +30,14 @@ export interface EditCompanyEvent{
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<EditCompanyProps, 'authorizationPermission'> =>{
+    (state: RootState, ownProps): Pick<EditCompanyProps, 'authorization'> =>{
         return { 
-            authorizationPermission: state.authorizationPermission,
+            authorization: state.authorization,
         };
     },
-    (dispatch: Dispatch): Pick<EditCompanyProps, 'authorizationPermissionHelper'> => {
+    (dispatch: Dispatch): Pick<EditCompanyProps, 'authorizationHelper'> => {
         return {
-            authorizationPermissionHelper: bindActionCreators(authorizationPermissionRedux.actions(), dispatch),
+            authorizationHelper: bindActionCreators(authorizationRedux.actions(), dispatch),
         };
     }
 )
@@ -53,8 +53,8 @@ export class EditCompanyManager extends React.PureComponent<EditCompanyProps, Ed
             currentCompany: this.initialComponentData(),
         };
 
-        this.authorizationUpdate = this.props.authorizationPermissionHelper.authorizationUpdate;
-        this.authorizationGet = this.props.authorizationPermissionHelper.authorizationGet;
+        this.authorizationUpdate = this.props.authorizationHelper.authorizationUpdate;
+        this.authorizationGet = this.props.authorizationHelper.authorizationGet;
 
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
@@ -88,7 +88,7 @@ export class EditCompanyManager extends React.PureComponent<EditCompanyProps, Ed
         this.authorizationGet({
             authorizationId:authorizationId
         }).then(() => {
-            let currentCompany = this.props.authorizationPermission.authorizationCurrent
+            let currentCompany = this.props.authorization.authorizationCurrent
             this.formRef.current.setFieldsValue(Object.assign({}, currentCompany, {
                 useStatus: currentCompany.useStatus == "enable" ? true: false
             })

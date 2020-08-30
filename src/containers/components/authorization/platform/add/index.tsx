@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { 
     RootState,
-    authorizationPermissionRedux,
-    AuthorizationPermissionState,
+    authorizationRedux,
+    AuthorizationState,
     EnterpriseState,
     enterpriseRedux
 } from 'reduxes';
@@ -16,8 +16,8 @@ import './index.less';
 
 
 export interface AddPlatformProps {
-    authorizationPermission: AuthorizationPermissionState;
-    authorizationPermissionHelper: any;
+    authorization: AuthorizationState;
+    authorizationHelper: any;
     enterprise: EnterpriseState,
     enterpriseHelper: any,
 }
@@ -32,15 +32,15 @@ export interface AddPlatformEvent{
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<AddPlatformProps, 'authorizationPermission' | "enterprise" > =>{
+    (state: RootState, ownProps): Pick<AddPlatformProps, 'authorization' | "enterprise" > =>{
         return { 
-            authorizationPermission: state.authorizationPermission,
+            authorization: state.authorization,
             enterprise: state.enterprise,
         };
     },
-    (dispatch: Dispatch): Pick<AddPlatformProps, 'authorizationPermissionHelper'| "enterpriseHelper" > => {
+    (dispatch: Dispatch): Pick<AddPlatformProps, 'authorizationHelper'| "enterpriseHelper" > => {
         return {
-            authorizationPermissionHelper: bindActionCreators(authorizationPermissionRedux.actions(), dispatch),
+            authorizationHelper: bindActionCreators(authorizationRedux.actions(), dispatch),
             enterpriseHelper: bindActionCreators(enterpriseRedux.actions(), dispatch),
         };
     }
@@ -56,7 +56,7 @@ export class AddPlatformManager extends React.PureComponent<AddPlatformProps, Ad
             visible: false,
         };
 
-        this.platformAdd = this.props.authorizationPermissionHelper.platformAdd;
+        this.platformAdd = this.props.authorizationHelper.platformAdd;
         this.enterpriseSearch = this.props.enterpriseHelper.enterpriseSearch;
 
         this.onClose = this.onClose.bind(this);
