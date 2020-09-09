@@ -108,8 +108,8 @@ export const authorizationApi: ApiInterface[] = [
                     company_id: 1,
                     company_name: "天道酬勤湖北有限公司",
                     remark: "",
-                    update_time: moment('1970-01-01', "YYYY-MM_DD"),
                     create_time: moment('1970-01-01', "YYYY-MM_DD"),
+                    update_time: moment('1970-01-01', "YYYY-MM_DD"),
                 },
             },
             failure:{

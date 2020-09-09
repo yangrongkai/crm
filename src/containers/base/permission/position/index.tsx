@@ -119,7 +119,7 @@ export class PositionManager extends React.PureComponent<PositionProps, Position
                             title: '更新时间',
                             dataIndex: 'updateTime',
                             key: 'updateTime',
-                            render: (text: string, record: any) => {
+                            render: (text: any, record: any) => {
                                 return (
                                     <span>
                                         {text.format("YYYY-MM-DD hh:mm:ss")}
@@ -131,7 +131,7 @@ export class PositionManager extends React.PureComponent<PositionProps, Position
                             title: '创建时间',
                             dataIndex: 'createTime',
                             key: 'createTime',
-                            render: (text: string, record: any) => {
+                            render: (text: any, record: any) => {
                                 return (
                                     <span>
                                         {text.format("YYYY-MM-DD hh:mm:ss")}
@@ -171,6 +171,8 @@ export class PositionManager extends React.PureComponent<PositionProps, Position
                     indentSize={42}
                     dataSource={this.props.permission.positionSearch.dataList}
                     pagination={false}
+                    rowKey={(record: any) => record.id}
+                    key={JSON.stringify(this.props.permission.positionSearch.dataList)}
                     defaultExpandAllRows
                 />
                 <AddPositionManager

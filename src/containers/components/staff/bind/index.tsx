@@ -98,11 +98,14 @@ export class BindStaffManager extends React.PureComponent<BindStaffProps, BindSt
             }).then(() => {
                 let staff = this.props.staff.staffCurrent
                 let organizationList = this.props.permission.organizationFilter.dataList;
+                let positionList = organizationList.find(
+                    (obj) => obj.id==staff.organization.id
+                ).positionList
                 this.setState({
                     visible: true,
                     staff: staff,
                     organizationList: organizationList,
-                    positionList: organizationList[0].positionList
+                    positionList: positionList
                 });
                 this.formRef.current.setFieldsValue({
                     positionId: staff.position.id,

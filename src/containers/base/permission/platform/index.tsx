@@ -162,12 +162,12 @@ export class PlatformManager extends React.PureComponent<PlatformProps, Platform
                         </antd.Space>
                     </antd.Form>
                     <antd.Table
-            title={() => {
-                let message = "共计 " + this.props.authorization.platformList.total + " 条";
-                return (
-                    <antd.Alert message={message} type="info" showIcon />
-                )
-            }}
+                        title={() => {
+                            let message = "共计 " + this.props.authorization.platformList.total + " 条";
+                            return (
+                                <antd.Alert message={message} type="info" showIcon />
+                            )
+                        }}
                         columns={
                             [
                                 {
@@ -185,7 +185,7 @@ export class PlatformManager extends React.PureComponent<PlatformProps, Platform
                                     dataIndex: 'appType',
                                     key: 'appType',
                                     render: (text: string) => {
-                                        let mapping = {
+                                        let mapping: any = {
                                             position: "公司",
                                             person: "个人",
                                         }
@@ -200,7 +200,7 @@ export class PlatformManager extends React.PureComponent<PlatformProps, Platform
                                     title: '更新时间',
                                     dataIndex: 'updateTime',
                                     key: 'updateTime',
-                                    render: (text: string, record: any) => {
+                                    render: (text: any, record: any) => {
                                         return (
                                             <span>
                                                 {text.format("YYYY-MM-DD hh:mm:ss")}
@@ -212,7 +212,7 @@ export class PlatformManager extends React.PureComponent<PlatformProps, Platform
                                     title: '创建时间',
                                     dataIndex: 'createTime',
                                     key: 'createTime',
-                                    render: (text: string, record: any) => {
+                                    render: (text: any, record: any) => {
                                         return (
                                             <span>
                                                 {text.format("YYYY-MM-DD hh:mm:ss")}
@@ -247,6 +247,8 @@ export class PlatformManager extends React.PureComponent<PlatformProps, Platform
                                             <antd.Popconfirm 
                                                 title="您确认要删除吗"
                                                 onConfirm={() => this.deletePlatform(record.id)}
+                                                okText="确定"
+                                                cancelText="取消"
                                             >
                                                 <a>删除</a>
                                             </antd.Popconfirm>
@@ -261,6 +263,7 @@ export class PlatformManager extends React.PureComponent<PlatformProps, Platform
                             total: this.props.authorization.platformList.total,
                             onChange: this.changePagination
                         }}
+                        rowKey={(record) => record.id}
                     >
                     </antd.Table>
                 </antd.Space>

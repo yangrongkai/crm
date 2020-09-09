@@ -6,7 +6,7 @@ const config = {
     favicon: '',  // 设置网页的favicon, 可以是外链, 也可以是本地
     footer: '<a target="_blank" href="http://www.baidu.com">foolbear</a>版权所有 © 2015-2099',  // footer中显示的字, 可以嵌入html标签
   
-    debug: false,  // 是否开启debug模式, 不会请求后端接口, 使用mock的数据
+    debug: true,  // 是否开启debug模式, 不会请求后端接口, 使用mock的数据
     allowAccess: true,  // 是否开启debug模式, 不会请求后端接口, 使用mock的数据
     defaultHeadPortrait: "assets/image/head_portrait.jpeg", // api默认服务
     defaultFlag: "controller-pc", // api默认服务
@@ -16,7 +16,7 @@ const config = {
     },
 
     permission:{
-        appkey: "682461ca-2c78-3f4b-a31b-10a19f5dc306"
+        appkey: "c94b5046-7677-3fa0-acf9-2f4d3c796ed5"
     },
   
     tabMode: {  // tab模式相关配置

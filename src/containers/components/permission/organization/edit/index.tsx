@@ -201,6 +201,10 @@ export class EditOrganizationManager extends React.PureComponent<EditOrganizatio
                         <antd.Form.Item
                             label="上级组织"
                             name="parentId"
+                            style={
+                                this.state.currentOrganization.parentId == 0?
+                                {display: "none"} : {}
+                            }
                             rules={[{ required: true, message: '请选择上级组织' }]}
                         >
                             <antd.Select

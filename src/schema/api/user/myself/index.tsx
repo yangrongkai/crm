@@ -163,6 +163,14 @@ export const myselfApi: ApiInterface[] = [
                     email: '237818280@qq.com',
                     work_number: 'BQ0001',
                     is_admin: true,
+                    organization: {
+                        id: 1,
+                        name: "公司",
+                    },
+                    position: {
+                        id: 1,
+                        name: "总经理",
+                    },
                     account_info: {
                         nick: 'Roy',
                         head_url: '',

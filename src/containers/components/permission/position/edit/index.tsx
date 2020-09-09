@@ -197,6 +197,10 @@ export class EditPositionManager extends React.PureComponent<EditPositionProps, 
                         <antd.Form.Item
                             label="上级身份"
                             name="parentId"
+                            style={
+                                this.state.currentPosition.parentId == 0?
+                                {display: "none"} : {}
+                            }
                             rules={[{ required: true, message: '请输入上级身份' }]}
                         >
                             <antd.Select
@@ -214,7 +218,7 @@ export class EditPositionManager extends React.PureComponent<EditPositionProps, 
                         </antd.Form.Item>
                         <antd.Form.Item
                             label="权限组"
-                            name="positionIdList"
+                            name="ruleGroupId"
                             rules={[{ required: true, message: '请输入权限组' }]}
                         >
                             <antd.Select

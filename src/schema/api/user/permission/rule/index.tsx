@@ -187,11 +187,11 @@ export const ruleApi: ApiInterface[] = [
                         description: "仅仅管理权限:以功能权限为主",
                         remark: "权限列表-授权列表-规则挂你",
                         code: "XAXG",
-                        updateTime: moment('1970-01-01', "YYYY-MM_DD"),
-                        createTime: moment('1970-01-01', "YYYY-MM_DD"),
+                        update_time: moment('1970-01-01', "YYYY-MM_DD"),
+                        create_time: moment('1970-01-01', "YYYY-MM_DD"),
                         children:[
                             {
-                                id: 1,
+                                id: 2,
                                 name: "权限列表",
                                 parent_id: 0,
                                 description: "",
@@ -201,9 +201,9 @@ export const ruleApi: ApiInterface[] = [
                                 create_time: moment('1970-01-01', "YYYY-MM_DD"),
                                 children:[
                                     {
-                                        id: 1,
+                                        id: 3,
                                         name: "查询",
-                                        parent_id: 0,
+                                        parent_id: 2,
                                         description: "",
                                         remark: "",
                                         code: "lAXG",
@@ -211,9 +211,9 @@ export const ruleApi: ApiInterface[] = [
                                         create_time: moment('1970-01-01', "YYYY-MM_DD"),
                                     },
                                     {
-                                        id: 1,
+                                        id: 4,
                                         name: "修改",
-                                        parent_id: 0,
+                                        parent_id: 2,
                                         description: "",
                                         remark: "",
                                         code: "ADSC",
@@ -221,9 +221,9 @@ export const ruleApi: ApiInterface[] = [
                                         create_time: moment('1970-01-01', "YYYY-MM_DD"),
                                     },
                                     {
-                                        id: 1,
+                                        id: 5,
                                         name: "删除",
-                                        parent_id: 0,
+                                        parent_id: 2,
                                         description: "",
                                         remark: "",
                                         code: "lAXG",
@@ -233,9 +233,9 @@ export const ruleApi: ApiInterface[] = [
                                 ]
                             },
                             {
-                                id: 1,
+                                id: 6,
                                 name: "授权列表",
-                                parent_id: 0,
+                                parent_id: 1,
                                 description: "",
                                 remark: "",
                                 code: "ADSC",
@@ -245,19 +245,19 @@ export const ruleApi: ApiInterface[] = [
                         ]
                     },
                     {
-                        id: 1,
+                        id: 7,
                         name: "组织管理",
                         parent_id: 0,
                         description: "管理数据权限",
                         remark: "组织挂你-身份管理-员工管理",
                         code: "XAXG",
-                        updateTime: moment('1970-01-01', "YYYY-MM_DD"),
-                        createTime: moment('1970-01-01', "YYYY-MM_DD"),
+                        update_time: moment('1970-01-01', "YYYY-MM_DD"),
+                        create_time: moment('1970-01-01', "YYYY-MM_DD"),
                         children:[
                             {
-                                id: 1,
+                                id: 8,
                                 name: "组织列表",
-                                parent_id: 0,
+                                parent_id: 7,
                                 description: "",
                                 remark: "",
                                 code: "lAXG",
@@ -265,9 +265,9 @@ export const ruleApi: ApiInterface[] = [
                                 create_time: moment('1970-01-01', "YYYY-MM_DD"),
                             },
                             {
-                                id: 1,
+                                id: 9,
                                 name: "身份列表",
-                                parent_id: 0,
+                                parent_id: 7,
                                 description: "",
                                 remark: "",
                                 code: "ADSC",
@@ -275,9 +275,9 @@ export const ruleApi: ApiInterface[] = [
                                 create_time: moment('1970-01-01', "YYYY-MM_DD"),
                             },
                             {
-                                id: 1,
+                                id: 10,
                                 name: "员工列表",
-                                parent_id: 0,
+                                parent_id: 7,
                                 description: "",
                                 remark: "",
                                 code: "lAXG",

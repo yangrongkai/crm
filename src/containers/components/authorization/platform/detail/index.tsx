@@ -63,7 +63,7 @@ export class DetailPlatformManager extends React.PureComponent<DetailPlatformPro
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
         this.deleteRule = this.deleteRule.bind(this);
-        this.resetRule = this.resetRule.bind(this);
+        this.refreshRule = this.refreshRule.bind(this);
         this.formRef = React.createRef();
     }
 
@@ -95,7 +95,7 @@ export class DetailPlatformManager extends React.PureComponent<DetailPlatformPro
         })
     }
 
-    resetRule(){
+    refreshRule(){
         return this.ruleAll({
             platformId: this.state.platform.id
         })
@@ -105,7 +105,7 @@ export class DetailPlatformManager extends React.PureComponent<DetailPlatformPro
         return this.ruleRemove({
             ruleId: ruleId 
         }).then(() => {
-            this.resetRule()
+            this.refreshRule()
         })
     }
 
@@ -236,7 +236,10 @@ export class DetailPlatformManager extends React.PureComponent<DetailPlatformPro
                                                 </a>
                                                 <antd.Popconfirm 
                                                     title="您确定要删除吗?"
-                                                    onConfirm={() => this.deleteRule(record.id)}>
+                                                    onConfirm={() => this.deleteRule(record.id)}
+                                                    okText="确定"
+                                                    cancelText="取消"
+                                                >
                                                     <a >
                                                         删除
                                                     </a>
@@ -251,6 +254,8 @@ export class DetailPlatformManager extends React.PureComponent<DetailPlatformPro
                         indentSize={42}
                         dataSource={this.props.authorization.ruleList.dataList}
                         pagination={false}
+                        rowKey={(record: any) => record.id}
+                        key={JSON.stringify(this.props.authorization.ruleList.dataList)}
                         defaultExpandAllRows
                     />
                     <AddRuleManager

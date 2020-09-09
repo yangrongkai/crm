@@ -269,7 +269,7 @@ export class StaffManager extends React.PureComponent<StaffPageProps, StaffPageS
                                 },
                                 {
                                     title: 'QQ',
-                                    dataIndex: 'qqq',
+                                    dataIndex: 'qq',
                                     key: 'qq',
                                 },
                                 {

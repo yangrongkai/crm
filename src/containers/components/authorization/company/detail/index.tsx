@@ -339,7 +339,10 @@ export class DetailCompanyManager extends React.PureComponent<DetailCompanyProps
                                                 </a>
                                                 <antd.Popconfirm 
                                                     title="您确定要删除吗?"
-                                                    onConfirm={() => this.deleteCompany(record.id)}>
+                                                    onConfirm={() => this.deleteCompany(record.id)}
+                                                    okText="确定"
+                                                    cancelText="取消"
+                                                >
                                                     <a >
                                                         删除
                                                     </a>
@@ -358,6 +361,7 @@ export class DetailCompanyManager extends React.PureComponent<DetailCompanyProps
                             total: this.props.authorization.authorizationList.total,
                             onChange: this.changePagination
                         }}
+                        rowKey={(record: any) => record.id}
                         defaultExpandAllRows
                     />
                     <AddCompanyManager

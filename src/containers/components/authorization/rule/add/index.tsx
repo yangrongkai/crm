@@ -127,7 +127,7 @@ export class AddRuleManager extends React.PureComponent<AddRuleProps, AddRuleSta
                     parentId: this.state.lastRule.id
                 })
             }).then(()=>{
-                this.props.father.resetRule().then(() =>{
+                this.props.father.refreshRule().then(() =>{
                     this.onClose()
                 })
             })

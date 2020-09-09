@@ -178,6 +178,8 @@ export class OrganizationManager extends React.PureComponent<OrganizationProps, 
                     indentSize={42}
                     dataSource={this.props.permission.organizationSearch.dataList}
                     pagination={false}
+                    rowKey={(record: any) => record.id}
+                    key={JSON.stringify(this.props.permission.organizationSearch.dataList)}
                     defaultExpandAllRows
                 />
                 <AddOrganizationManager

@@ -135,7 +135,7 @@ export class EditRuleManager extends React.PureComponent<EditRuleProps, EditRule
                 updateInfo: Object.assign({}, values, {
                 })
             }).then(()=>{
-                this.props.father.resetRule().then(() =>{
+                this.props.father.refreshRule().then(() =>{
                     this.onClose()
                 })
             })

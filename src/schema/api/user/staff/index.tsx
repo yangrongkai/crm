@@ -53,6 +53,16 @@ export const staffApi: ApiInterface[] = [
                         type: fields.StringField,
                         required: false,
                     },
+                    qq: {
+                        transfer: "qq",
+                        type: fields.StringField,
+                        required: false,
+                    },
+                    wechat: {
+                        transfer: "wechat",
+                        type: fields.StringField,
+                        required: false,
+                    },
                     remark: {
                         transfer: "remark",
                         type: fields.StringField,

@@ -76,17 +76,18 @@ export class ResetPassword extends React.PureComponent<ResetPasswordProps, Reset
     };
 
     resetPassword(){
-        let fields = this.formRef.current.getFieldsValue()
-        this.accountResetPassword({
-            oldPassword: hex_md5(fields.oldPassword),
-            newPassword: hex_md5(fields.newPassword),
-            repeatPassword: hex_md5(fields.repeatPassword),
-        }
-        ).then(() => {
-            this.accountLogout().then(() =>{
-                this.props.history.push("/login");
-            })
-        });
+        this.formRef.current.validateFields().then((values: any) => {
+            this.accountResetPassword({
+                oldPassword: hex_md5(values.oldPassword),
+                newPassword: hex_md5(values.newPassword),
+                repeatPassword: hex_md5(values.repeatPassword),
+            }
+            ).then(() => {
+                this.accountLogout().then(() =>{
+                    this.props.history.push("/login");
+                })
+            });
+        })
     }
 
     render(){
