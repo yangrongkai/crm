@@ -23,7 +23,6 @@ export interface EditOrganizationProps {
 export interface EditOrganizationState {
     visible: boolean;
     currentOrganization: any;
-    lastOrganization: any;
 }
 
 export interface EditOrganizationEvent{
@@ -57,7 +56,6 @@ export class EditOrganizationManager extends React.PureComponent<EditOrganizatio
         this.state = { 
             visible: false,
             currentOrganization: this.initialComponentData(),
-            lastOrganization: this.initialComponentData(),
         };
 
         this.organizationGet = this.props.permissionHelper.organizationGet;
@@ -68,8 +66,6 @@ export class EditOrganizationManager extends React.PureComponent<EditOrganizatio
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
         this.editOrganization = this.editOrganization.bind(this);
-        this.searchOrganization = this.searchOrganization.bind(this);
-        this.searchPosition = this.searchPosition.bind(this);
         this.formRef = React.createRef();
     }
 
@@ -96,74 +92,26 @@ export class EditOrganizationManager extends React.PureComponent<EditOrganizatio
     }
 
     onOpen(organizationId: any){
-        this.organizationGet({
-            organizationId: organizationId
-        }).then(()=>{
-            let currentOrganization = this.props.permission.organizationCurrent
-            this.searchOrganization(
-                currentOrganization.name
-            ).then(() => {
-                if( currentOrganization.parentId > 0 ){
-                    this.organizationGet({
-                        organizationId: currentOrganization.parentId
-                    }).then(() => {
-                        let lastOrganization = this.props.permission.organizationCurrent
-                        this.setState({
-                            visible: true,
-                            lastOrganization: lastOrganization,
-                            currentOrganization: currentOrganization,
-                        })
-                        let positionIdList = currentOrganization.positionList.map(
-                            (obj) => obj.id
-                        )
-                        this.formRef.current.setFieldsValue(
-                            Object.assign({}, currentOrganization, {
-                                parentId: lastOrganization.id,
-                                parentName: lastOrganization.name,
-                                positionIdList: positionIdList
-                            })
-                        )
-                        this.searchOrganization(
-                            currentOrganization.name
-                        )
-
-                    })
-                } else {
-                    let lastOrganization = this.initialComponentData() 
+        this.organizationFilter({
+            appkey: config.permission.appkey,
+        }).then(() => {
+            this.positionFilter({
+                appkey: config.permission.appkey,
+            }).then(() => {
+                this.organizationGet({
+                    organizationId: organizationId
+                }).then(()=>{
+                    let currentOrganization = this.props.permission.organizationCurrent
                     this.setState({
                         visible: true,
-                        lastOrganization: lastOrganization,
                         currentOrganization: currentOrganization,
                     })
-
                     this.formRef.current.setFieldsValue(
                         Object.assign({}, currentOrganization, {
-                            parentId: lastOrganization.id,
-                            parentName: lastOrganization.name,
                         })
                     )
-                }
+                })
             })
-        })
-    }
-
-    searchOrganization(text: string){
-        return this.organizationFilter({
-            appkey: config.permission.appkey,
-            currentPage: 1,
-            searchInfo:{
-                name: text
-            }
-        })
-    }
-
-    searchPosition(text: string){
-        return this.positionFilter({
-            appkey: config.permission.appkey,
-            currentPage: 1,
-            searchInfo:{
-                name: text
-            }
         })
     }
 
@@ -194,7 +142,6 @@ export class EditOrganizationManager extends React.PureComponent<EditOrganizatio
                 )
         });
         const positionList = [
-            ...this.props.permission.organizationCurrent.positionList,
             ...this.props.permission.positionFilter.dataList,
         ]
         const positionOptions = positionList.map(
@@ -261,8 +208,9 @@ export class EditOrganizationManager extends React.PureComponent<EditOrganizatio
                                 placeholder="请输上级组织"
                                 defaultActiveFirstOption={true}
                                 showArrow={false}
-                                filterOption={false}
-                                onSearch={this.searchOrganization}
+                                filterOption={(input, option) =>
+                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
                                 notFoundContent={null}
                             >
                                 {organizationOptions}
@@ -279,8 +227,9 @@ export class EditOrganizationManager extends React.PureComponent<EditOrganizatio
                                 placeholder="请输选择职位"
                                 defaultActiveFirstOption={true}
                                 showArrow={false}
-                                filterOption={false}
-                                onSearch={this.searchPosition}
+                                filterOption={(input, option) =>
+                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
                                 notFoundContent={null}
                             >
                                 {positionOptions}

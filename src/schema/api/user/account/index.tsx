@@ -128,4 +128,26 @@ export const accountApi: ApiInterface[] = [
             }
         }
     },
+    { 
+        name: "staff.account.password.reset", 
+        descriptions: "go to reset account password",
+        servers: ["controller-pc"],
+        type: api.ControllerApi,
+        request: {
+            staffId: {
+                transfer: "staff_id",
+                type: fields.IntField
+            },
+        },
+        response:{
+        },
+        mock: {
+            success:{
+            },
+            failure:{
+                code: '9999',
+                msg: '重置密码失败',
+            }
+        }
+    },
 ]

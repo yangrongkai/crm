@@ -16,6 +16,7 @@ import {
 import { 
     AddStaffManager,
     DetailStaffManager,
+    BindStaffManager,
 } from 'containers/components/staff';
 import './index.less';
 
@@ -35,7 +36,7 @@ export interface StaffPageState {
 
 export interface StaffPageEvent{
     staffSearch: any;
-    staffRemove: any;
+    staffResetPassword: any;
 }
 
 
@@ -55,9 +56,10 @@ export class StaffManager extends React.PureComponent<StaffPageProps, StaffPageS
     private formRef: any;
     addStaffComponent: any;
     detailStaffComponent: any;
+    bindStaffComponent: any;
 
     staffSearch: any;
-    staffRemove: any;
+    staffResetPassword: any;
 
     constructor(props: StaffPageProps, context?: any) {
         super(props, context);
@@ -67,12 +69,13 @@ export class StaffManager extends React.PureComponent<StaffPageProps, StaffPageS
             pageSizeOptions: ["10", "20", "50"],
         }
 
-        this.staffSearch =this.props.permissionHelper.staffSearch;
-        this.staffRemove = this.props.permissionHelper.staffRemove;
+        this.staffSearch =this.props.staffHelper.staffSearch;
+        this.staffResetPassword =this.props.staffHelper.staffResetPassword;
 
         this.formRef = React.createRef();
         this.searchStaff = this.searchStaff.bind(this);
         this.refreshStaff = this.refreshStaff.bind(this);
+        this.resetPassword = this.resetPassword.bind(this);
         this.changePagination = this.changePagination.bind(this);
     }
 
@@ -93,8 +96,14 @@ export class StaffManager extends React.PureComponent<StaffPageProps, StaffPageS
         this.searchStaff()
     }
     
+    resetPassword(staffId: number){
+        this.staffResetPassword({
+            staffId: staffId
+        })
+    }
+
     refreshStaff(){
-        this.formRef.current.validateFields().then((values: any) => {
+        return this.formRef.current.validateFields().then((values: any) => {
             this.staffSearch({
                 currentPage: this.state.currentPage,
                 searchInfo: values,
@@ -112,14 +121,6 @@ export class StaffManager extends React.PureComponent<StaffPageProps, StaffPageS
                     currentPage: index,
                 })
             });
-        })
-    }
-
-    deleteStaff(staffId: number){
-        this.staffRemove({
-            staffId: staffId
-        }).then(() =>{
-            this.refreshStaff()
         })
     }
 
@@ -167,43 +168,94 @@ export class StaffManager extends React.PureComponent<StaffPageProps, StaffPageS
                         </antd.Space>
                     </antd.Form>
                     <antd.Table
-            title={() => {
-                let message = "共计 " + this.props.staff.staffSearch.total + " 条";
-                return (
-                    <antd.Alert message={message} type="info" showIcon />
-                )
-            }}
+                        scroll={{ x: 2400 }}
+                        title={() => {
+                            let message = "共计 " + this.props.staff.staffSearch.total + " 条";
+                            return (
+                                <antd.Alert message={message} type="info" showIcon />
+                            )
+                        }}
                         columns={
                             [
                                 {
                                     title: '工号',
                                     dataIndex: 'workNumber',
                                     key: 'workNumber',
+                                    fixed: "left",
                                 },
                                 {
                                     title: '姓名',
                                     dataIndex: 'name',
                                     key: 'name',
+                                    fixed: "left",
+                                    render : (text: string, record: any) =>{
+                                        return (
+                                            <antd.Space>
+                                                <span className="ant-form-text">
+                                                    {record.name}
+                                                </span>
+                                                <span className="ant-form-text">
+                                                    {
+                                                        record.gender == "man"
+                                                        ? <icons.ManOutlined style={{color:"blue"}}/>
+                                                        : <icons.WomanOutlined style={{color:"pink"}}/>
+                                                    }
+                                                </span>
+                                            </antd.Space>
+                                        )
+                                    }
                                 },
                                 {
                                     title: '部门',
-                                    dataIndex: 'department',
-                                    key: 'department',
+                                    dataIndex: 'organization',
+                                    key: 'organization',
+                                    render: (text: any, record: any) => {
+                                        return (
+                                            <span className="ant-form-text">
+                                                {text.name}
+                                            </span>
+                                        )
+                                    }
                                 },
                                 {
                                     title: '职位',
                                     dataIndex: 'position',
                                     key: 'position',
+                                    render: (text: any, record: any) => {
+                                        return (
+                                            <span className="ant-form-text">
+                                                {text.name}
+                                            </span>
+                                        )
+                                    }
                                 },
                                 {
                                     title: '管理员',
                                     dataIndex: 'isAdmin',
                                     key: 'isAdmin',
+                                    render: (text: any, record: any) => {
+                                        return (
+                                            <span className="ant-form-text">
+                                                {
+                                                    record.isAdmin
+                                                    ? <span>是</span>
+                                                    : <span>不是</span>
+                                                }
+                                            </span>
+                                        )
+                                    }
                                 },
                                 {
                                     title: '生日',
                                     dataIndex: 'birthday',
                                     key: 'birthday',
+                                    render: (text: any, record: any) => {
+                                        return (
+                                            <span>
+                                                {text.format("YYYY-MM-DD")}
+                                            </span>
+                                        )
+                                    },
                                 },
                                 {
                                     title: '手机号',
@@ -229,7 +281,7 @@ export class StaffManager extends React.PureComponent<StaffPageProps, StaffPageS
                                     title: '更新时间',
                                     dataIndex: 'updateTime',
                                     key: 'updateTime',
-                                    render: (text: string, record: any) => {
+                                    render: (text: any, record: any) => {
                                         return (
                                             <span>
                                                 {text.format("YYYY-MM-DD hh:mm:ss")}
@@ -241,7 +293,7 @@ export class StaffManager extends React.PureComponent<StaffPageProps, StaffPageS
                                     title: '创建时间',
                                     dataIndex: 'createTime',
                                     key: 'createTime',
-                                    render: (text: string, record: any) => {
+                                    render: (text: any, record: any) => {
                                         return (
                                             <span>
                                                 {text.format("YYYY-MM-DD hh:mm:ss")}
@@ -258,21 +310,26 @@ export class StaffManager extends React.PureComponent<StaffPageProps, StaffPageS
                                 {
                                     title: '操作',
                                     key: 'action',
+                                    fixed: "right",
                                     render: (text: string, record: any) => (
                                         <antd.Space>
-                                            <a
-                                                onClick={() => this.addStaffComponent.onOpen(record.id)}
-
-                                            >添加</a>
                                             <a
                                                 onClick={() => this.detailStaffComponent.onOpen(record.id)}
 
                                             >详情</a>
+                                            <a
+                                                onClick={() => this.bindStaffComponent.onOpen(record.id)}
+
+                                            >调岗</a>
                                             <antd.Popconfirm 
-                                                title="您确认要删除吗"
-                                                onConfirm={() => this.deleteStaff(record.id)}
+                                                title="此操作将会把密码修改为“123456”."
+                                                okText="确认"
+                                                cancelText="取消"
+                                                onConfirm={ () => this.resetPassword(record.id) }
                                             >
-                                                <a>删除</a>
+                                                <a href="#">
+                                                    重置密码
+                                                </a>
                                             </antd.Popconfirm>
                                         </antd.Space>
                                     ),
@@ -295,6 +352,10 @@ export class StaffManager extends React.PureComponent<StaffPageProps, StaffPageS
                 <DetailStaffManager
                     father={this}
                     onRef={(ref: any) => this.detailStaffComponent = ref}
+                />
+                <BindStaffManager
+                    father={this}
+                    onRef={(ref: any) => this.bindStaffComponent = ref}
                 />
             </div>
         )

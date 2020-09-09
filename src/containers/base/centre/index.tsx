@@ -217,9 +217,25 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
                                     </antd.Form.Item>
                                 </antd.Col>
                                 <antd.Col span={12}>
+                                    <antd.Form.Item label="部门">
+                                        <span className="ant-form-text">
+                                            {person.organization.name}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                            </antd.Row>
+                            <antd.Row>
+                                <antd.Col span={12}>
                                     <antd.Form.Item label="社会统一编码">
                                         <span className="ant-form-text">
                                             {person.company.licenseNumber}
+                                        </span>
+                                    </antd.Form.Item>
+                                </antd.Col>
+                                <antd.Col span={12}>
+                                    <antd.Form.Item label="职位">
+                                        <span className="ant-form-text">
+                                            {person.position.name}
                                         </span>
                                     </antd.Form.Item>
                                 </antd.Col>

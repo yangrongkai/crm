@@ -16,7 +16,7 @@ const config = {
     },
 
     permission:{
-        appkey: "2591158c-7edf-38be-a05b-479f498d5691"
+        appkey: "682461ca-2c78-3f4b-a31b-10a19f5dc306"
     },
   
     tabMode: {  // tab模式相关配置

@@ -102,12 +102,13 @@ export class OrganizationManager extends React.PureComponent<OrganizationProps, 
                         },
                         {
                             title: '涉及职位',
-                            dataIndex: 'positionNameList',
-                            key: 'positionNameList',
-                            render: (text: string[], record: any) => {
+                            dataIndex: 'positionList',
+                            key: 'positionList',
+                            render: (text: any, record: any) => {
+                                let nameList = text.map((obj: any)=> obj.name)
+                                let name = nameList.join(", ")
                                 return (
-                                    <span>
-                                    </span>
+                                    <span>{name}</span>
                                 )
                             }
                         },
@@ -125,7 +126,7 @@ export class OrganizationManager extends React.PureComponent<OrganizationProps, 
                             title: '更新时间',
                             dataIndex: 'updateTime',
                             key: 'updateTime',
-                            render: (text: string, record: any) => {
+                            render: (text: any, record: any) => {
                                 return (
                                     <span>
                                         {text.format("YYYY-MM-DD hh:mm:ss")}
@@ -137,7 +138,7 @@ export class OrganizationManager extends React.PureComponent<OrganizationProps, 
                             title: '创建时间',
                             dataIndex: 'createTime',
                             key: 'createTime',
-                            render: (text: string, record: any) => {
+                            render: (text: any, record: any) => {
                                 return (
                                     <span>
                                         {text.format("YYYY-MM-DD hh:mm:ss")}

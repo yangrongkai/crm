@@ -6,86 +6,62 @@ import * as icons from '@ant-design/icons';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { RootState, authorizationRedux, AuthorizationState } from 'reduxes';
-import {
-    EditStaffManager,
-} from 'containers/components/authorization';
+import { 
+    RootState,
+    permissionRedux,
+    PermissionState,
+    StaffState,
+    staffRedux,
+} from 'reduxes';
+import { EditStaffManager } from 'containers/components/staff';
+import * as config from '&/config.js';
 import './index.less';
 
 
 export interface DetailStaffProps {
-    authorization: AuthorizationState;
-    authorizationHelper: any;
+    permission: PermissionState;
+    permissionHelper: any;
+    staff: StaffState;
+    staffHelper: any;
+    history: any;
 }
 
 export interface DetailStaffState {
     visible: boolean;
-    currentPage: number,
-    platform: any;
+    staff: any;
 }
 
 export interface DetailStaffEvent{
-    platformGet: any;
-    authorizationAdd: any;
-    authorizationSearch: any;
-    authorizationUpdate: any;
-    authorizationGet: any;
-    authorizationRemove: any;
-    authorizationApply: any;
-    authorizationForbidden: any;
-    authorizationRefresh: any;
+    staffGet: any;
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<DetailStaffProps, 'authorization' > =>{
-        return { authorization: state.authorization };
+    (state: RootState, ownProps): Pick<DetailStaffProps, 'permission' | "staff"> =>{
+        return { permission: state.permission, staff: state.staff};
     },
-    (dispatch: Dispatch): Pick<DetailStaffProps, 'authorizationHelper' > => {
+    (dispatch: Dispatch): Pick<DetailStaffProps, 'permissionHelper' | 'staffHelper'> => {
         return {
-            authorizationHelper: bindActionCreators(authorizationRedux.actions(), dispatch),
+            permissionHelper: bindActionCreators(permissionRedux.actions(), dispatch),
+            staffHelper: bindActionCreators(staffRedux.actions(), dispatch),
         };
     }
 )
 export class DetailStaffManager extends React.PureComponent<DetailStaffProps, DetailStaffState>  implements DetailStaffEvent{
-    private formRef: any;
-    addStaffComponent: any;
     editStaffComponent: any;
 
-    platformGet: any;
-    authorizationAdd: any;
-    authorizationSearch: any;
-    authorizationUpdate: any;
-    authorizationGet: any;
-    authorizationRemove: any;
-    authorizationApply: any;
-    authorizationForbidden: any;
-    authorizationRefresh: any;
+    staffGet: any;
 
     constructor(props: DetailStaffProps, context?: any) {
         super(props, context);
         this.state = { 
             visible: false,
-            currentPage: 1,
-            platform: undefined,
+            staff: undefined,
         };
 
-        this.platformGet = this.props.authorizationHelper.platformGet;
-        this.authorizationSearch = this.props.authorizationHelper.authorizationSearch;
-        this.authorizationUpdate = this.props.authorizationHelper.authorizationUpdate;
-        this.authorizationGet = this.props.authorizationHelper.authorizationGet;
-        this.authorizationRemove = this.props.authorizationHelper.authorizationRemove;
-        this.authorizationApply = this.props.authorizationHelper.authorizationApply;
-        this.authorizationForbidden = this.props.authorizationHelper.authorizationForbidden;
-        this.authorizationRefresh = this.props.authorizationHelper.authorizationRefresh;
-
+        this.staffGet = this.props.staffHelper.staffGet;
+        this.refreshStaff = this.refreshStaff.bind(this);
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
-        this.deleteStaff = this.deleteStaff.bind(this);
-        this.resetStaff = this.resetStaff.bind(this);
-        this.searchStaff = this.searchStaff.bind(this);
-
-        this.formRef = React.createRef();
-        this.changePagination = this.changePagination.bind(this);
     }
 
     componentDidMount(){
@@ -98,96 +74,40 @@ export class DetailStaffManager extends React.PureComponent<DetailStaffProps, De
         });
     };
 
-    onOpen(platformId: number){
-        this.platformGet({
-            platformId: platformId
+    onOpen(staffId: number){
+        this.staffGet({
+            staffId: staffId
         }).then(() => {
-            this.authorizationSearch({
-                currentPage: 1,
-                platformId: platformId,
-                searchInfo: {}
-            }).then(() => {
-                let platform =this.props.authorization.platformCurrent
-                this.setState({
-                    platform: platform,
-                    visible: true,
-                    currentPage: 1,
-                })
-                this.formRef.current.setFieldsValue(
-                    {
-                        name: ""
-                    }
-                );
-
+            let staff = this.props.staff.staffCurrent;
+            this.setState({
+                staff: staff,
+                visible: true,
             })
         })
     }
 
-    resetStaff(){
-        return this.formRef.current.validateFields().then((values: any) => {
-            this.authorizationSearch({
-                currentPage: this.state.currentPage,
-                platformId: this.state.platform.id,
-                searchInfo: values
-            }).then(() => {
-            })
-        })
-    }
-
-    searchStaff(){
-        return this.formRef.current.validateFields().then((values: any) => {
-            this.authorizationSearch({
-                currentPage: 1,
-                platformId: this.state.platform.id,
-                searchInfo: values
-            }).then(() => {
-                let platform =this.props.authorization.platformCurrent
-                this.setState({
-                    platform: platform,
-                    visible: true,
-                    currentPage: 1,
-                })
-            })
-        })
-    }
-
-    changePagination(index: number){
-        return this.formRef.current.validateFields().then((values: any) => {
-            this.authorizationSearch({
-                currentPage: index,
-                platformId: this.state.platform.id,
-                searchInfo: values,
-            }).then(()=>{
-                this.setState({
-                    currentPage: index,
-                })
-            });
-        })
-    }
-
-    deleteStaff(authorizationId: number){
-        return this.authorizationRemove({
-            authorizationId: authorizationId 
+    refreshStaff(){
+        return this.staffGet({
+            staffId: this.state.staff.id
         }).then(() => {
-            this.resetStaff()
+            let staff = this.props.staff.staffCurrent;
+            this.setState({
+                staff: staff,
+            })
         })
     }
 
     render(){
-        const {platform} = this.state;
-        if( platform == undefined ){
+        const { staff } = this.state;
+        if( staff == undefined ){
             return (<div></div>);
-        }
-        let mapping = {
-            position: "公司",
-            person: "个人",
         }
         return (
             <div>
                 <antd.Drawer
                     title={
                         <span>
-                            {platform.name}
+                            {staff.name}
                         </span>
                     }
                     width={840}
@@ -196,169 +116,186 @@ export class DetailStaffManager extends React.PureComponent<DetailStaffProps, De
                     forceRender={true}
                     bodyStyle={{ paddingBottom: 80 }}
                 >
-                    <antd.Descriptions 
-                        title="基础信息"
-                        column={2}
-                    >
-                        <antd.Descriptions.Item label="归属公司" >
-                            <span>
-                                {platform.companyName}
-                            </span>
-                        </antd.Descriptions.Item>
-                        <antd.Descriptions.Item label="授权类型">
-                            <span>
-                                {mapping[platform.appType]}
-                            </span>
-                        </antd.Descriptions.Item>
-                        <antd.Descriptions.Item label="修改时间">
-                            <span>
-                                {platform.updateTime.format("YYYY-MM-DD hh:mm:ss")}
-                            </span>
-                        </antd.Descriptions.Item>
-                        <antd.Descriptions.Item label="创建时间">
-                            <span>
-                                {platform.createTime.format("YYYY-MM-DD hh:mm:ss")}
-                            </span>
-                        </antd.Descriptions.Item>
-                        <antd.Descriptions.Item label="备注" span={2}>
-                            <span>
-                                {platform.remark}
-                            </span>
-                        </antd.Descriptions.Item>
-                    </antd.Descriptions>
-                    <antd.Divider/>
-                    <antd.Descriptions 
-                        title="授权列表"
-                    >
-                    </antd.Descriptions>
-                    <antd.Form
-                        ref={this.formRef}
-                        labelCol={{span:8 }}
-                        wrapperCol={{span:16 }}
-                        colon={true}
-                        style={{
-                            padding: "5px 15px"
-                        }}
-                    >
-                        <antd.Space align="baseline">
-                                <antd.Form.Item
-                                    name="name"
-                                    label="公司名称"
-                                    rules={[
-                                      {
-                                        message: '公司名称',
-                                      },
-                                    ]}
-                                >
-                                    <antd.Input placeholder="公司名称" />
-                                </antd.Form.Item>
-                                <antd.Button type="primary" 
-                                    onClick={ this.searchStaff }
-                                >
-                                    搜索
-                                </antd.Button>
-                                <antd.Button
-                                    style={{ margin: '0 8px' }}
-                                    onClick={() => this.addStaffComponent.onOpen(this.state.platform.id)}
-                                >
-                                    添加
-                                </antd.Button>
-                        </antd.Space>
-                    </antd.Form>
-                    <antd.Table
-                        scroll={{x: 1300}}
-                        columns={[
-                            {
-                                title: '公司',
-                                dataIndex: 'companyName',
-                                key: 'companyName',
-                                fixed: 'left'
-                            },
-                            {
-                                title: 'appkey',
-                                dataIndex: 'appkey',
-                                key: 'appkey',
-                            },
-                            {
-                                title: '使用状态',
-                                dataIndex: 'useStatus',
-                                key: 'useStatus',
-                                render: (text: string, record: any) => {
-                                    return (
-                                        <span>
-                                            { 
-                                                text == "enable" ?
-                                                <span >已启用</span>:
-                                                <span >已禁用</span>
-                                            }
-                                        </span>
-                                    )
-                                }
-                            },
-                            {
-                                title: '备注',
-                                dataIndex: 'remark',
-                                key: 'remark'
-                            },
-                            {
-                                title: '更新时间',
-                                dataIndex: 'updateTime',
-                                key: 'updateTime',
-                                render: (text: string, record: any) => {
-                                    return (
-                                        <span>
-                                            {text.format("YYYY-MM-DD hh:mm:ss")}
-                                        </span>
-                                    )
-                                }
-                            },
-                            {
-                                title: '创建时间',
-                                dataIndex: 'createTime',
-                                key: 'createTime',
-                                render: (text: string, record: any) => {
-                                    return (
-                                        <span>
-                                            {text.format("YYYY-MM-DD hh:mm:ss")}
-                                        </span>
-                                    )
-                                }
-                            },
-                            {
-                                title: '操作',
-                                dataIndex: 'option',
-                                key: 'option',
-                                fixed: 'right',
-                                render: (text: string, record: any) => {
-                                    return (
-                                        <div>
-                                            <antd.Space>
-                                                <a onClick={() => this.editStaffComponent.onOpen(record.id)}>
-                                                    编辑
-                                                </a>
-                                                <antd.Popconfirm 
-                                                    title="您确定要删除吗?"
-                                                    onConfirm={() => this.deleteStaff(record.id)}>
-                                                    <a >
-                                                        删除
-                                                    </a>
-                                                </antd.Popconfirm>
-                                            </antd.Space>
-
-                                        </div>
-                                    )
-                                }
-                            }
-                        ]}
-                        indentSize={42}
-                        dataSource={this.props.authorization.authorizationList.dataList}
-                        pagination={{
-                            current: this.state.currentPage,
-                            total: this.props.authorization.authorizationList.total,
-                            onChange: this.changePagination
-                        }}
-                        defaultExpandAllRows
-                    />
+                    <div>
+                        <div className="person-centre-detail">
+                            <antd.Form 
+                                labelCol={{span:8 }}
+                                wrapperCol={{span:16 }}
+                                colon={true}
+                            >
+                                <p>
+                                    账号信息&nbsp;
+                                </p>
+                                <div>
+                                    <antd.Row>
+                                        <antd.Col span={12}>
+                                        <antd.Form.Item label="头像">
+                                            <span className="ant-form-text">
+                                                { 
+                                                    staff.account.headUrl == "" 
+                                                    ? <img src={config.defaultHeadPortrait} className="personal-head-image"/>
+                                                    : <img src={staff.account.headUrl} className="personal-head-image"/>
+                                                }
+                                            </span>
+                                        </antd.Form.Item>
+                                        </antd.Col>
+                                    </antd.Row>
+                                    <antd.Row>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="账号">
+                                                <span className="ant-form-text">
+                                                    {staff.account.username}&nbsp;
+                                                </span>
+                                                <span className="ant-form-text">
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="注册时间">
+                                                <span className="ant-form-text">
+                                                    {staff.account.createTime.format("YYYY-MM-DD hh:mm:ss")}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                    </antd.Row>
+                                    <antd.Row>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="昵称">
+                                                <span className="ant-form-text">
+                                                    {staff.account.nick}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="最后登录时间">
+                                                <span className="ant-form-text">
+                                                    {staff.account.lastLoginTime.format("YYYY-MM-DD hh:mm:ss")}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                    </antd.Row>
+                                </div>
+                                <antd.Divider />
+                                <p>
+                                    基本信息 &nbsp;
+                                    <a onClick={() => this.editStaffComponent.onOpen(staff.id)}>
+                                        <icons.EditOutlined />
+                                    </a>
+                                </p>
+                                <div>
+                                    <antd.Row>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="姓名">
+                                                <span className="ant-form-text">
+                                                    {staff.name}
+                                                </span>
+                                                <span className="ant-form-text">
+                                                    {
+                                                        staff.gender == "man"
+                                                        ? <icons.ManOutlined style={{color:"blue"}}/>
+                                                        : <icons.WomanOutlined style={{color:"pink"}}/>
+                                                    }
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="工号">
+                                                <span className="ant-form-text">
+                                                    {staff.workNumber}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                    </antd.Row>
+                                    <antd.Row>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="生日">
+                                                <span className="ant-form-text">
+                                                    {staff.birthday.format("YYYY-MM-DD")}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="管理员">
+                                                <span className="ant-form-text">
+                                                    {staff.isAdmin ? "是" : "不是"}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                    </antd.Row>
+                                    <antd.Row>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="邮箱">
+                                                <span className="ant-form-text">
+                                                    {staff.email}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="手机">
+                                                <span className="ant-form-text">
+                                                    {staff.phone}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                    </antd.Row>
+                                    <antd.Row>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="QQ">
+                                                <span className="ant-form-text">
+                                                    {staff.qq}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="微信">
+                                                <span className="ant-form-text">
+                                                    {staff.wechat}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                    </antd.Row>
+                                </div>
+                                <antd.Divider />
+                                <p>
+                                    公司信息
+                                </p>
+                                <div>
+                                    <antd.Row>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="公司">
+                                                <span className="ant-form-text">
+                                                    {staff.company.name}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="部门">
+                                                <span className="ant-form-text">
+                                                    {staff.organization.name}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                    </antd.Row>
+                                    <antd.Row>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="社会统一编码">
+                                                <span className="ant-form-text">
+                                                    {staff.company.licenseNumber}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                        <antd.Col span={12}>
+                                            <antd.Form.Item label="职位">
+                                                <span className="ant-form-text">
+                                                    {staff.position.name}
+                                                </span>
+                                            </antd.Form.Item>
+                                        </antd.Col>
+                                    </antd.Row>
+                                </div>
+                            </antd.Form>
+                        </div>
+                    </div>
                     <EditStaffManager
                         father={this}
                         onRef={(ref: any) => this.editStaffComponent = ref}

@@ -10,6 +10,7 @@ export enum PermissionTypes {
     RULEGROUP_ADD = "RULEGROUP_ADD",
     RULEGROUP_GET = "RULEGROUP_GET",
     RULEGROUP_SEARCH = "RULEGROUP_SEARCH",
+    RULEGROUP_FILTER = "RULEGROUP_FILTER",
     RULEGROUP_UPDATE = "RULEGROUP_UPDATE",
     RULEGROUP_REMOVE = "RULEGROUP_REMOVE",
 
@@ -34,6 +35,7 @@ export class PermissionContainer extends BaseContainer {
     ruleGroupAdd: any;
     ruleGroupGet: any;
     ruleGroupSearch: any;
+    ruleGroupFilter: any;
     ruleGroupUpdate: any;
     ruleGroupRemove: any;
 
@@ -69,6 +71,11 @@ export class PermissionContainer extends BaseContainer {
             config.defaultFlag,
             PermissionTypes.RULEGROUP_SEARCH
         );
+        this.ruleGroupFilter = this.createAsynchronizationAction(
+            "staff.permission.rulegroup.all",
+            config.defaultFlag,
+            PermissionTypes.RULEGROUP_FILTER
+        );
         this.ruleGroupUpdate = this.createAsynchronizationAction(
             "staff.permission.rulegroup.update",
             config.defaultFlag,
@@ -91,12 +98,12 @@ export class PermissionContainer extends BaseContainer {
             PermissionTypes.POSITION_GET
         );
         this.positionFilter = this.createAsynchronizationAction(
-            "staff.permission.position.search",
+            "staff.permission.position.all",
             config.defaultFlag,
             PermissionTypes.POSITION_SEARCH
         );
         this.positionSearch = this.createAsynchronizationAction(
-            "staff.permission.position.all",
+            "staff.permission.position.tree",
             config.defaultFlag,
             PermissionTypes.POSITION_ALL
         );
@@ -122,12 +129,12 @@ export class PermissionContainer extends BaseContainer {
             PermissionTypes.ORGANIZATION_GET
         );
         this.organizationFilter = this.createAsynchronizationAction(
-            "staff.permission.organization.search",
+            "staff.permission.organization.all",
             config.defaultFlag,
             PermissionTypes.ORGANIZATION_SEARCH
         );
         this.organizationSearch = this.createAsynchronizationAction(
-            "staff.permission.organization.all",
+            "staff.permission.organization.tree",
             config.defaultFlag,
             PermissionTypes.ORGANIZATION_ALL
         );
@@ -148,6 +155,7 @@ export class PermissionContainer extends BaseContainer {
             ruleGroupAdd: this.ruleGroupAdd,
             ruleGroupGet: this.ruleGroupGet,
             ruleGroupSearch: this.ruleGroupSearch,
+            ruleGroupFilter: this.ruleGroupFilter,
             ruleGroupUpdate: this.ruleGroupUpdate,
             ruleGroupRemove: this.ruleGroupRemove,
             positionAdd: this.positionAdd,
@@ -185,6 +193,14 @@ export class PermissionContainer extends BaseContainer {
                     }
                 })
             },
+            [this.ruleGroupFilter.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
+                    ruleGroupFilter: {
+                        dataList: action.payload.dataList,
+                        total: action.payload.dataList.total,
+                    }
+                })
+            },
             [this.ruleGroupUpdate.fulfilled.toString()]: (state: PermissionState, action: any) => {
                 return Object.assign({}, state, {
                 })
@@ -207,8 +223,7 @@ export class PermissionContainer extends BaseContainer {
                 return Object.assign({}, state, {
                     positionFilter: {
                         dataList: action.payload.dataList,
-                        total: action.payload.total,
-                        totalPage: action.payload.totalPage,
+                        total: action.payload.dataList.length,
                     }
                 })
             },
@@ -242,8 +257,7 @@ export class PermissionContainer extends BaseContainer {
                 return Object.assign({}, state, {
                     organizationFilter: {
                         dataList: action.payload.dataList,
-                        total: action.payload.total,
-                        totalPage: action.payload.totalPage,
+                        total: action.payload.dataList.length,
                     }
                 })
             },

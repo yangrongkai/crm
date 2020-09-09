@@ -24,46 +24,23 @@ export class ApiFieldHelper{
         this.fmt = fieldFormat;
     }
 
-    _iterField(flag: string, item: any, fmt: ApiFieldSet, isTransfer: boolean){
-        let result: any = {};
-        for(let attrKey in fmt){
-            let apiField = fmt[attrKey];
-            apiField.attr = attrKey 
-            let response= item[apiField.attr] 
-            if( attrKey == flag ){
-                result[apiField.transfer] = []
-                for(let index in response){
-                    let newItem = response[index]
-                    result[apiField.transfer].push(this._iterField(
-                        flag,
-                        newItem,
-                        fmt,
-                        isTransfer
-                    ))
-                }
-            } else {
-                let isJSON = false;
-                if( apiField.hasOwnProperty('json') ){
-                    isJSON = apiField.json;
-                }
-                
-                let isRequired = true;
-                if( apiField.hasOwnProperty('required') ){
-                    isRequired = apiField.required;
-                    if( isRequired == false){
-                        if (response == undefined || response == ""){
-                            continue
-                        }
-                    }
-                }
-                let field = new apiField.type()
-                let transfer = isTransfer? field.parse : field.format
-                let value = transfer(response)
-                value = isJSON ? JSON.stringify(value) : value 
-                result[apiField.transfer] = value
-            }
+    _iterField(data: any, apiField: ApiField, isTransfer: boolean){
+        let children = [];
+
+        if( data.hasOwnProperty(apiField.iterFlag) ){
+            children = data[apiField.iterFlag]
+            delete data[apiField.iterFlag]
         }
-        return result;
+
+        let value = this.transfer(data, apiField.iter, isTransfer)
+        let subValue = []
+        for(let index in children){
+            let result = this._iterField(children[index], apiField, isTransfer)
+            subValue.push(result)
+        }
+
+        value[apiField.iterFlag] = subValue
+        return value
     }
 
     transfer(parms: any, fmt: ApiFieldSet, isTransfer: boolean){
@@ -95,14 +72,11 @@ export class ApiFieldHelper{
             }
 
             if( apiField.hasOwnProperty('iter') ){
-                let value: any[] = []
+                let value: any = []
                 for(let index in response){
-                    value.push(this._iterField(
-                        apiField.iterFlag,
-                        response[index],
-                        apiField.iter,
-                        isTransfer
-                    ))
+                    let current = response[index]
+                    let result = this._iterField(current, apiField, isTransfer)
+                    value.push(result)
                 }
                 value = isJSON ? JSON.stringify(value) : value 
                 result[apiField.transfer] = value

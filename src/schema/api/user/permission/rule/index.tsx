@@ -174,10 +174,6 @@ export const ruleApi: ApiInterface[] = [
                         transfer: "updateTime",
                         type: fields.DatetimeField
                     },
-                    children: {
-                        transfer: "children",
-                        type: fields.StringField
-                    },
                 }
             },
         },

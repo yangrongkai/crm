@@ -162,6 +162,7 @@ export class RuleGroupManager extends React.PureComponent<RuleGroupProps, RuleGr
                         </antd.Space>
                     </antd.Form>
                     <antd.Table
+                        scroll={{ x: 1300 }}
                         title={() => {
                             let message = "共计 " + this.props.permission.ruleGroupSearch.total + " 条";
                             return (
@@ -174,6 +175,7 @@ export class RuleGroupManager extends React.PureComponent<RuleGroupProps, RuleGr
                                     title: '权限组名称',
                                     dataIndex: 'name',
                                     key: 'name',
+                                    fixed: 'left',
                                 },
                                 {
                                     title: '描述',
@@ -212,6 +214,7 @@ export class RuleGroupManager extends React.PureComponent<RuleGroupProps, RuleGr
                                 {
                                     title: '操作',
                                     key: 'action',
+                                    fixed: 'right',
                                     render: (text: string, record: any) => (
                                         <antd.Space>
                                             <a

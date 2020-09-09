@@ -28,7 +28,7 @@ export interface AddPositionState {
 export interface AddPositionEvent{
     positionGet: any;
     positionAdd: any;
-    ruleGroupSearch: any;
+    ruleGroupFilter: any;
 }
 
 @connect(
@@ -47,7 +47,7 @@ export class AddPositionManager extends React.PureComponent<AddPositionProps, Ad
     private formRef: any;
     positionGet: any;
     positionAdd: any;
-    ruleGroupSearch: any;
+    ruleGroupFilter: any;
 
     constructor(props: AddPositionProps, context?: any) {
         super(props, context);
@@ -58,7 +58,7 @@ export class AddPositionManager extends React.PureComponent<AddPositionProps, Ad
 
         this.positionGet = this.props.permissionHelper.positionGet;
         this.positionAdd = this.props.permissionHelper.positionAdd;
-        this.ruleGroupSearch = this.props.permissionHelper.ruleGroupSearch;
+        this.ruleGroupFilter = this.props.permissionHelper.ruleGroupFilter;
 
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
@@ -91,7 +91,9 @@ export class AddPositionManager extends React.PureComponent<AddPositionProps, Ad
     };
 
     onOpen(positionId: number){
-        this.searchRuleGroup("").then(() => {
+        this.ruleGroupFilter({
+            appkey: config.permission.appkey,
+        }).then(() => {
             if( positionId !== 0 ){
                 this.positionGet({
                     positionId: positionId
@@ -110,21 +112,10 @@ export class AddPositionManager extends React.PureComponent<AddPositionProps, Ad
             }
             this.formRef.current.setFieldsValue({
                 name: "",
-                ruleGroupId:"", 
-                ruleGroupName: "",
+                ruleGroupId: undefined ,
                 description: "",
                 remark: "",
             })
-        })
-    }
-
-    searchRuleGroup(text: string){
-        return this.ruleGroupSearch({
-            appkey: config.permission.appkey,
-            currentPage: 1,
-            searchInfo:{
-                name: text
-            }
         })
     }
 
@@ -144,7 +135,7 @@ export class AddPositionManager extends React.PureComponent<AddPositionProps, Ad
     }
 
     render(){
-        const options = this.props.permission.ruleGroupSearch.dataList.map(
+        const options = this.props.permission.ruleGroupFilter.dataList.map(
             (record: any) => {
                 return (
                     <antd.Select.Option key={record.id} value={record.id}>
@@ -208,8 +199,9 @@ export class AddPositionManager extends React.PureComponent<AddPositionProps, Ad
                                 placeholder="请输入权限组"
                                 defaultActiveFirstOption={true}
                                 showArrow={false}
-                                filterOption={false}
-                                onSearch={this.searchRuleGroup}
+                                filterOption={(input, option) =>
+                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
                                 notFoundContent={null}
                             >
                                 {options}

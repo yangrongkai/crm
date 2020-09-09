@@ -22,6 +22,18 @@ export interface AccountModel {
     createTime: string;
 }
 
+export interface OrganizationModel {
+    // 部门信息
+    id: number;
+    name: string;
+}
+
+export interface PositionModel {
+    // 职位信息
+    id: number;
+    name: string;
+}
+
 export interface PersonModel {
     id: number;
     name: string;
@@ -34,9 +46,8 @@ export interface PersonModel {
     isAdmin: string;
     account: AccountModel;
     company: CompanyModel;
-}
-
-export enum PersonFilter {
+    organization: OrganizationModel,
+    position: PositionModel,
 }
 
 

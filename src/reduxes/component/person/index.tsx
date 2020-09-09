@@ -14,6 +14,14 @@ export const personRedux = new PersonContainer({
     email: "",
     workNumber: "",
     isAdmin: "",
+    organization: {
+        id: undefined,
+        name: ""
+    },
+    position: {
+        id: undefined,
+        name: ""
+    },
     account: {
         username: "",
         nick: "",

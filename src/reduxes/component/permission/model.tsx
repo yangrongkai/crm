@@ -49,9 +49,9 @@ export type PermissionState = {
 
     positionSearch: AllModel<Partial<PositionModel>>;
     positionCurrent: Partial<PositionModel>;
-    positionFilter: SearchModel<Partial<PositionModel>>;
+    positionFilter: AllModel<Partial<PositionModel>>;
 
     organizationSearch: AllModel<Partial<OrganizationModel>>;
     organizationCurrent: Partial<OrganizationModel>;
-    organizationFilter: SearchModel<Partial<OrganizationModel>>;
+    organizationFilter: AllModel<Partial<OrganizationModel>>;
 }

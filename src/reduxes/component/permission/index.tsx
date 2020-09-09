@@ -15,7 +15,6 @@ export const permissionRedux = new PermissionContainer({
     ruleGroupFilter: {
         dataList: [],
         total: 0,
-        totalPage: 0,
     },
 
     positionSearch: {
@@ -27,7 +26,6 @@ export const permissionRedux = new PermissionContainer({
     positionFilter: {
         dataList: [],
         total: 0,
-        totalPage: 0,
     },
 
     organizationSearch: {
@@ -40,6 +38,5 @@ export const permissionRedux = new PermissionContainer({
     organizationFilter: {
         dataList: [],
         total: 0,
-        totalPage: 0,
     },
 });

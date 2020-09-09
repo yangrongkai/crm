@@ -59,6 +59,32 @@ export const myselfApi: ApiInterface[] = [
                         transfer: "isAdmin",
                         type: fields.BooleanField
                     },
+                    organization: {
+                        transfer: "organization",
+                        dict: {
+                            id: {
+                                transfer: "id",
+                                type: fields.IntField
+                            },
+                            name: {
+                                transfer: "name",
+                                type: fields.StringField
+                            },
+                        },
+                    },
+                    position: {
+                        transfer: "position",
+                        dict: {
+                            id: {
+                                transfer: "id",
+                                type: fields.IntField
+                            },
+                            name: {
+                                transfer: "name",
+                                type: fields.StringField
+                            },
+                        },
+                    },
                     account_info:{
                         transfer: "account",
                         dict:{

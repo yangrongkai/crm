@@ -5,70 +5,68 @@ import React from 'react';
 import  * as antd from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
+import * as config from '&/config.js';
 import { 
     RootState,
-    authorizationRedux,
-    AuthorizationState,
-    EnterpriseState,
-    enterpriseRedux
+    staffRedux,
+    StaffState,
+    permissionRedux,
+    PermissionState,
 } from 'reduxes';
 import './index.less';
 
 
 export interface AddStaffProps {
-    authorization: AuthorizationState;
-    authorizationHelper: any;
-    enterprise: EnterpriseState,
-    enterpriseHelper: any,
+    staff: StaffState;
+    staffHelper: any;
+    permission: PermissionState;
+    permissionHelper: any,
 }
 
 export interface AddStaffState {
     visible: boolean;
-    platform: any;
+    organizationList: any[];
+    positionList: any[];
 }
 
 export interface AddStaffEvent{
-    platformGet: any;
-    authorizationAdd: any;
-    enterpriseSearch: any;
+    staffAdd: any;
+    organizationFilter: any;
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<AddStaffProps, 'authorization' | "enterprise" > =>{
+    (state: RootState, ownProps): Pick<AddStaffProps, 'staff' | 'permission'> =>{
         return { 
-            authorization: state.authorization,
-            enterprise: state.enterprise,
+            staff: state.staff,
+            permission: state.permission,
         };
     },
-    (dispatch: Dispatch): Pick<AddStaffProps, 'authorizationHelper'| "enterpriseHelper" > => {
+    (dispatch: Dispatch): Pick<AddStaffProps, 'staffHelper' | 'permissionHelper'> => {
         return {
-            authorizationHelper: bindActionCreators(authorizationRedux.actions(), dispatch),
-            enterpriseHelper: bindActionCreators(enterpriseRedux.actions(), dispatch),
+            staffHelper: bindActionCreators(staffRedux.actions(), dispatch),
+            permissionHelper: bindActionCreators(permissionRedux.actions(), dispatch),
         };
     }
 )
 export class AddStaffManager extends React.PureComponent<AddStaffProps, AddStaffState>  implements AddStaffEvent{
     private formRef: any;
-    platformGet: any;
-    authorizationAdd: any;
-    enterpriseSearch: any;
+    staffAdd: any;
+    organizationFilter: any;
 
     constructor(props: AddStaffProps, context?: any) {
         super(props, context);
         this.state = { 
             visible: false,
-            platform: {
-                id: -1,
-                name: "",
-            },
+            organizationList: [],
+            positionList: [] 
         };
 
-        this.platformGet = this.props.authorizationHelper.platformGet;
-        this.authorizationAdd = this.props.authorizationHelper.authorizationAdd;
-        this.enterpriseSearch = this.props.enterpriseHelper.enterpriseSearch;
+        this.staffAdd = this.props.staffHelper.staffAdd;
+        this.organizationFilter = this.props.permissionHelper.organizationFilter;
 
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
+        this.selectOrganization = this.selectOrganization.bind(this);
         this.addStaff = this.addStaff.bind(this);
         this.formRef = React.createRef();
     }
@@ -83,46 +81,54 @@ export class AddStaffManager extends React.PureComponent<AddStaffProps, AddStaff
         });
     };
 
-    onOpen(platformId: number){
-        this.platformGet({
-            platformId: platformId
+    selectOrganization(value: any){
+        let organizationList = this.props.permission.organizationFilter.dataList;
+        let organization = organizationList.find((obj) => obj.id == value)
+        this.setState({
+            positionList: organization.positionList
+        });
+        this.formRef.current.setFieldsValue({
+            positionId: organization.positionList[0].id,
+        })
+    };
+
+    onOpen(){
+        this.organizationFilter({
+            appkey: config.permission.appkey
         }).then(() => {
-            this.enterpriseSearch({
-                currentPage: 1,
-                searchInfo: {}
-            }).then(() => {
+            let organizationList = this.props.permission.organizationFilter.dataList;
+            if(organizationList.length > 0){
                 this.setState({
                     visible: true,
-                    platform: this.props.authorization.platformCurrent
+                    organizationList: organizationList,
+                    positionList: organizationList[0].positionList
                 });
-                this.formRef.current.setFieldsValue(
-                    {
-                        remark: "",
-                        staffName: "",
-                        staffId: "",
-                    }
-                );
-            })
-        })
-    }
-
-    searchEnterprise(text: string){
-        this.enterpriseSearch({
-            currentPage: 1,
-            searchInfo: {
-                name: text
+                this.formRef.current.setFieldsValue({
+                    name: undefined,
+                    gender: "man",
+                    birthday: undefined,
+                    email: undefined,
+                    phone: undefined,
+                    qq: undefined,
+                    wechat: undefined,
+                    organizationId: undefined,
+                    positionId: undefined,
+                })
+            } else {
+                this.onClose()
+                antd.message.warn("系统没有设置组织结构")
             }
         })
     }
 
     addStaff(){
         this.formRef.current.validateFields().then((values: any) => {
-            this.authorizationAdd({
-                platformId: this.state.platform.id,
-                authorizationInfo: Object.assign({}, values, {
+            this.staffAdd({
+                appkey: config.permission.appkey,
+                staffInfo: Object.assign({}, values, {
                 })
             }).then(()=>{
-                this.props.father.resetStaff().then(() =>{
+                this.props.father.refreshStaff().then(() =>{
                     this.onClose()
                 })
             })
@@ -130,7 +136,15 @@ export class AddStaffManager extends React.PureComponent<AddStaffProps, AddStaff
     }
 
     render(){
-        const options = this.props.enterprise.dataList.map(
+        const organizationOptions = this.state.organizationList.map(
+            (record: any) => {
+                return (
+                    <antd.Select.Option key={record.id} value={record.id}>
+                        {record.name}
+                    </antd.Select.Option>
+                )
+        });
+        const positionOptions = this.state.positionList.map(
             (record: any) => {
                 return (
                     <antd.Select.Option key={record.id} value={record.id}>
@@ -142,7 +156,7 @@ export class AddStaffManager extends React.PureComponent<AddStaffProps, AddStaff
             <div>
                 <antd.Drawer
                     title="添加员工"
-                    width={480}
+                    width={680}
                     onClose={this.onClose}
                     visible={this.state.visible}
                     bodyStyle={{ paddingBottom: 80 }}
@@ -171,41 +185,136 @@ export class AddStaffManager extends React.PureComponent<AddStaffProps, AddStaff
                 >
                     <antd.Form 
                         ref={this.formRef}
-                        labelCol={{span:5 }}
-                        wrapperCol={{span:19 }}
+                        layout="vertical"
                         colon={true}
                     >
-                        <antd.Form.Item label="平台">
-                            <span className="ant-form-text">
-                                {this.state.platform.name}
-                            </span> 
-                        </antd.Form.Item>
-                        <antd.Form.Item
-                            label="公司"
-                            name="staffId"
-                            rules={[{ required: true, message: '请输入公司' }]}
-                        >
-                            <antd.Select
-                                showSearch
-                                placeholder="请输入公司"
-                                defaultActiveFirstOption={true}
-                                showArrow={false}
-                                filterOption={false}
-                                onSearch={this.searchEnterprise}
-                                notFoundContent={null}
-                            >
-                                {options}
-                            </antd.Select>
-                        </antd.Form.Item>
-                        <antd.Form.Item
-                            name="remark"
-                            label="备注"
-                            rules={[{ required: false, message: '请输入备注' }]}
-                        >
-                            <antd.Input.TextArea 
-                                placeholder="请输入备注" 
-                            />
-                        </antd.Form.Item>
+                        <antd.Row gutter={16}>
+                            <antd.Col span={12}>
+                                <antd.Form.Item
+                                    name="name"
+                                    label="姓名"
+                                    rules={[{ required: true, message: '请输入姓名' }]}
+                                >
+                                    <antd.Input 
+                                        placeholder="请输入姓名" 
+                                    />
+                                </antd.Form.Item>
+                            </antd.Col>
+                            <antd.Col span={12}>
+                                <antd.Row>
+                                    <antd.Col span={8}>
+                                        <antd.Form.Item name="gender" label="性别">
+                                            <antd.Radio.Group>
+                                                <antd.Radio.Button value="man">男</antd.Radio.Button>
+                                                <antd.Radio.Button value="woman">女</antd.Radio.Button>
+                                            </antd.Radio.Group>
+                                         </antd.Form.Item>
+                                    </antd.Col>
+                                    <antd.Col span={16}>
+                                            <antd.Form.Item
+                                                name="birthday"
+                                                label="生日"
+                                                rules={[{ required: false, message: '请输入生日' }]}
+                                            >
+                                                <antd.DatePicker
+                                                    format="YYYY-MM-DD"
+                                                />
+                                            </antd.Form.Item>
+                                    </antd.Col>
+                                </antd.Row>
+                            </antd.Col>
+                        </antd.Row>
+                        <antd.Row gutter={16}>
+                            <antd.Col span={12}>
+                                <antd.Form.Item
+                                    name="phone"
+                                    label="手机号"
+                                    rules={[{ required: true, message: '请输入手机号' }]}
+                                >
+                                    <antd.Input 
+                                        placeholder="请输入手机号" 
+                                    />
+                                </antd.Form.Item>
+                            </antd.Col>
+                            <antd.Col span={12}>
+                                <antd.Form.Item
+                                    name="email"
+                                    label="邮箱"
+                                    rules={[{ required: false, message: '请输入邮件' }]}
+                                >
+                                    <antd.Input 
+                                        placeholder="请输入邮箱" 
+                                    />
+                                </antd.Form.Item>
+                            </antd.Col>
+                        </antd.Row>
+                        <antd.Row gutter={16}>
+                            <antd.Col span={12}>
+                                <antd.Form.Item
+                                    name="qq"
+                                    label="QQ"
+                                    rules={[{ required: false, message: '请输入QQ' }]}
+                                >
+                                    <antd.Input 
+                                        placeholder="请输入QQ" 
+                                    />
+                                </antd.Form.Item>
+                            </antd.Col>
+                            <antd.Col span={12}>
+                                <antd.Form.Item
+                                    name="wechat"
+                                    label="微信"
+                                    rules={[{ required: false, message: '请输入微信' }]}
+                                >
+                                    <antd.Input 
+                                        placeholder="请输入微信" 
+                                    />
+                                </antd.Form.Item>
+                            </antd.Col>
+                        </antd.Row>
+                        <antd.Row gutter={16}>
+                            <antd.Col span={12}>
+                                <antd.Form.Item
+                                    name="organizationId"
+                                    label="部门"
+                                    rules={[{ required: true, message: '部门' }]}
+                                >
+                                    <antd.Select
+                                        showSearch
+                                        placeholder="请选择部门"
+                                        defaultActiveFirstOption={true}
+                                        showArrow={false}
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                        notFoundContent={null}
+                                        onChange={this.selectOrganization}
+                                    >
+                                        {organizationOptions}
+                                    </antd.Select>
+                                </antd.Form.Item>
+                            </antd.Col>
+                            <antd.Col span={12}>
+                                <antd.Form.Item
+                                    name="positionId"
+                                    label="职位"
+                                    rules={[{ required: true, message: '请输入职位' }]}
+                                >
+                                    <antd.Select
+                                        showSearch
+                                        placeholder="请选择职位"
+                                        defaultActiveFirstOption={true}
+                                        showArrow={false}
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                        notFoundContent={null}
+                                    >
+                                        {positionOptions}
+                                    </antd.Select>
+                                </antd.Form.Item>
+                            </antd.Col>
+                        </antd.Row>
                     </antd.Form>
                 </antd.Drawer>
             </div>

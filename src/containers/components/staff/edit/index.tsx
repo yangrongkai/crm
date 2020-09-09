@@ -8,15 +8,15 @@ import moment from 'moment';
 import { bindActionCreators, Dispatch } from 'redux';
 import { 
     RootState,
-    authorizationRedux,
-    AuthorizationState,
+    staffRedux,
+    StaffState,
 } from 'reduxes';
 import './index.less';
 
 
 export interface EditStaffProps {
-    authorization: AuthorizationState;
-    authorizationHelper: any;
+    staff: StaffState;
+    staffHelper: any;
 }
 
 export interface EditStaffState {
@@ -25,26 +25,26 @@ export interface EditStaffState {
 }
 
 export interface EditStaffEvent{
-    authorizationUpdate: any;
-    authorizationGet: any;
+    staffUpdate: any;
+    staffGet: any;
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<EditStaffProps, 'authorization'> =>{
+    (state: RootState, ownProps): Pick<EditStaffProps, 'staff'> =>{
         return { 
-            authorization: state.authorization,
+            staff: state.staff,
         };
     },
-    (dispatch: Dispatch): Pick<EditStaffProps, 'authorizationHelper'> => {
+    (dispatch: Dispatch): Pick<EditStaffProps, 'staffHelper'> => {
         return {
-            authorizationHelper: bindActionCreators(authorizationRedux.actions(), dispatch),
+            staffHelper: bindActionCreators(staffRedux.actions(), dispatch),
         };
     }
 )
 export class EditStaffManager extends React.PureComponent<EditStaffProps, EditStaffState>  implements EditStaffEvent{
     private formRef: any;
-    authorizationUpdate: any;
-    authorizationGet: any;
+    staffUpdate: any;
+    staffGet: any;
 
     constructor(props: EditStaffProps, context?: any) {
         super(props, context);
@@ -53,8 +53,8 @@ export class EditStaffManager extends React.PureComponent<EditStaffProps, EditSt
             currentStaff: this.initialComponentData(),
         };
 
-        this.authorizationUpdate = this.props.authorizationHelper.authorizationUpdate;
-        this.authorizationGet = this.props.authorizationHelper.authorizationGet;
+        this.staffUpdate = this.props.staffHelper.staffUpdate;
+        this.staffGet = this.props.staffHelper.staffGet;
 
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
@@ -84,14 +84,15 @@ export class EditStaffManager extends React.PureComponent<EditStaffProps, EditSt
         }
     }
 
-    onOpen(authorizationId: any){
-        this.authorizationGet({
-            authorizationId:authorizationId
+    onOpen(staffId: number){
+        this.staffGet({
+            staffId: staffId
         }).then(() => {
-            let currentStaff = this.props.authorization.authorizationCurrent
-            this.formRef.current.setFieldsValue(Object.assign({}, currentStaff, {
-                useStatus: currentStaff.useStatus == "enable" ? true: false
-            })
+            let currentStaff = this.props.staff.staffCurrent
+            this.formRef.current.setFieldsValue(
+                Object.assign({}, currentStaff, {
+
+                })
             )
             this.setState({
                 visible: true,
@@ -102,13 +103,12 @@ export class EditStaffManager extends React.PureComponent<EditStaffProps, EditSt
 
     editStaff(){
         this.formRef.current.validateFields().then((values: any) => {
-            this.authorizationUpdate({
-                authorizationId: this.state.currentStaff.id,
+            this.staffUpdate({
+                staffId: this.state.currentStaff.id,
                 updateInfo: Object.assign({}, values, {
-                    useStatus: values.useStatus? "enable" : "forbidden"
                 })
             }).then(()=>{
-                this.props.father.resetStaff().then(() =>{
+                this.props.father.refreshStaff().then(() =>{
                     this.onClose()
                 })
             })
@@ -120,7 +120,7 @@ export class EditStaffManager extends React.PureComponent<EditStaffProps, EditSt
             <div>
                 <antd.Drawer
                     title="编辑员工"
-                    width={480}
+                    width={720}
                     onClose={this.onClose}
                     visible={this.state.visible}
                     bodyStyle={{ paddingBottom: 80 }}
@@ -149,32 +149,94 @@ export class EditStaffManager extends React.PureComponent<EditStaffProps, EditSt
                 >
                     <antd.Form 
                         ref={this.formRef}
-                        labelCol={{span:5 }}
-                        wrapperCol={{span:19 }}
+                        layout="vertical"
                         colon={true}
+                        hideRequiredMark
                     >
-                        <antd.Form.Item label="公司">
-                            <span className="ant-form-text">
-                                {this.state.currentStaff.companyName}
-                            </span> 
-                        </antd.Form.Item>
-                        <antd.Form.Item label="appkey">
-                            <span className="ant-form-text">
-                                {this.state.currentStaff.appkey}
-                            </span> 
-                        </antd.Form.Item>
-                        <antd.Form.Item name="useStatus" label="开启" valuePropName="checked">
-                            <antd.Switch />
-                        </antd.Form.Item>
-                        <antd.Form.Item
-                            name="remark"
-                            label="备注"
-                            rules={[{ required: false, message: '请输入备注' }]}
-                        >
-                            <antd.Input.TextArea 
-                                placeholder="请输入备注" 
-                            />
-                        </antd.Form.Item>
+                        <antd.Row gutter={16}>
+                            <antd.Col span={12}>
+                                <antd.Form.Item
+                                    name="name"
+                                    label="姓名"
+                                    rules={[{ required: true, message: '请输入姓名' }]}
+                                >
+                                    <antd.Input 
+                                        placeholder="请输入姓名" 
+                                    />
+                                </antd.Form.Item>
+                            </antd.Col>
+                            <antd.Col span={12}>
+                                <antd.Row>
+                                    <antd.Col span={8}>
+                                        <antd.Form.Item name="gender" label="性别">
+                                            <antd.Radio.Group>
+                                                <antd.Radio.Button value="man">男</antd.Radio.Button>
+                                                <antd.Radio.Button value="woman">女</antd.Radio.Button>
+                                            </antd.Radio.Group>
+                                         </antd.Form.Item>
+                                    </antd.Col>
+                                    <antd.Col span={16}>
+                                            <antd.Form.Item
+                                                name="birthday"
+                                                label="生日"
+                                                rules={[{ required: false, message: '请输入生日' }]}
+                                            >
+                                                <antd.DatePicker
+                                                    format="YYYY-MM-DD"
+                                                />
+                                            </antd.Form.Item>
+                                    </antd.Col>
+                                </antd.Row>
+                            </antd.Col>
+                        </antd.Row>
+                        <antd.Row gutter={16}>
+                            <antd.Col span={12}>
+                                <antd.Form.Item
+                                    name="email"
+                                    label="邮箱"
+                                    rules={[{ required: false, message: '请输入邮件' }]}
+                                >
+                                    <antd.Input 
+                                        placeholder="请输入邮箱" 
+                                    />
+                                </antd.Form.Item>
+                            </antd.Col>
+                            <antd.Col span={12}>
+                                <antd.Form.Item
+                                    name="phone"
+                                    label="手机号"
+                                    rules={[{ required: true, message: '请输入手机号' }]}
+                                >
+                                    <antd.Input 
+                                        placeholder="请输入手机号" 
+                                    />
+                                </antd.Form.Item>
+                            </antd.Col>
+                        </antd.Row>
+                        <antd.Row gutter={16}>
+                            <antd.Col span={12}>
+                                <antd.Form.Item
+                                    name="qq"
+                                    label="QQ"
+                                    rules={[{ required: false, message: '请输入QQ' }]}
+                                >
+                                    <antd.Input 
+                                        placeholder="请输入手机号" 
+                                    />
+                                </antd.Form.Item>
+                            </antd.Col>
+                            <antd.Col span={12}>
+                                <antd.Form.Item
+                                    name="wechat"
+                                    label="微信"
+                                    rules={[{ required: false, message: '请输入微信' }]}
+                                >
+                                    <antd.Input 
+                                        placeholder="请输入微信" 
+                                    />
+                                </antd.Form.Item>
+                            </antd.Col>
+                        </antd.Row>
                     </antd.Form>
                 </antd.Drawer>
             </div>

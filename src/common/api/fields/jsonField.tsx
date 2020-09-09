@@ -11,6 +11,9 @@ export class JsonField extends BaseField{
     }
 
     parse(value: any): any{
+        if(value == ""){
+            return ""
+        }
         return JSON.parse(value)
     }
 

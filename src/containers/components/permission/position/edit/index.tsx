@@ -23,14 +23,13 @@ export interface EditPositionProps {
 export interface EditPositionState {
     visible: boolean;
     currentPosition: any;
-    lastPosition: any;
 }
 
 export interface EditPositionEvent{
     positionFilter: any;
     positionGet: any;
     positionUpdate: any;
-    ruleGroupSearch: any;
+    ruleGroupFilter: any;
 }
 
 @connect(
@@ -50,26 +49,23 @@ export class EditPositionManager extends React.PureComponent<EditPositionProps, 
     positionFilter: any;
     positionUpdate: any;
     positionGet: any;
-    ruleGroupSearch: any;
+    ruleGroupFilter: any;
 
     constructor(props: EditPositionProps, context?: any) {
         super(props, context);
         this.state = { 
             visible: false,
             currentPosition: this.initialComponentData(),
-            lastPosition: this.initialComponentData(),
         };
 
         this.positionGet = this.props.permissionHelper.positionGet;
         this.positionFilter = this.props.permissionHelper.positionFilter;
         this.positionUpdate = this.props.permissionHelper.positionUpdate;
-        this.ruleGroupSearch = this.props.permissionHelper.ruleGroupSearch;
+        this.ruleGroupFilter = this.props.permissionHelper.ruleGroupFilter;
 
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
         this.editPosition = this.editPosition.bind(this);
-        this.searchPosition = this.searchPosition.bind(this);
-        this.searchRuleGroup = this.searchRuleGroup.bind(this);
         this.formRef = React.createRef();
     }
 
@@ -82,26 +78,6 @@ export class EditPositionManager extends React.PureComponent<EditPositionProps, 
             visible: false,
         });
     };
-
-    searchPosition(text: string){
-        return this.positionFilter({
-            appkey: config.permission.appkey,
-            currentPage: 1,
-            searchInfo:{
-                name: text
-            }
-        })
-    }
-
-    searchRuleGroup(text: string){
-        return this.ruleGroupSearch({
-            appkey: config.permission.appkey,
-            currentPage: 1,
-            searchInfo:{
-                name: text
-            }
-        })
-    }
 
     initialComponentData(){
         return {
@@ -117,48 +93,26 @@ export class EditPositionManager extends React.PureComponent<EditPositionProps, 
     }
 
     onOpen(positionId: any){
-        this.positionGet({
-            positionId: positionId
-        }).then(()=>{
-            let currentPosition = this.props.permission.positionCurrent
-            this.searchRuleGroup(
-                currentPosition.ruleGroupName
-            ).then(() => {
-                if( currentPosition.parentId > 0 ){
-                    this.positionGet({
-                        positionId: currentPosition.parentId
-                    }).then(() => {
-                        let lastPosition = this.props.permission.positionCurrent
-                        this.searchPosition(
-                            lastPosition.name
-                        ).then(() => {
-                            this.setState({
-                                visible: true,
-                                lastPosition: lastPosition,
-                                currentPosition: currentPosition,
-                            })
-                            this.formRef.current.setFieldsValue(
-                                Object.assign({}, currentPosition, {
-                                    parentId: lastPosition.id,
-                                    parentName: lastPosition.name,
-                                })
-                            )
-                        })
-                    })
-                } else {
-                    let lastPosition = this.initialComponentData() 
+        this.positionFilter({
+            appkey: config.permission.appkey,
+        }).then(() => {
+            this.ruleGroupFilter({
+                appkey: config.permission.appkey,
+            }).then(() => {
+                this.positionGet({
+                    positionId: positionId
+                }).then(()=>{
+                    let currentPosition = this.props.permission.positionCurrent
                     this.setState({
                         visible: true,
-                        lastPosition: lastPosition,
                         currentPosition: currentPosition,
                     })
                     this.formRef.current.setFieldsValue(
                         Object.assign({}, currentPosition, {
-                            parentId: lastPosition.id,
-                            parentName: lastPosition.name,
                         })
                     )
-                }
+                })
+                
             })
         })
     }
@@ -186,7 +140,7 @@ export class EditPositionManager extends React.PureComponent<EditPositionProps, 
                     </antd.Select.Option>
                 )
         });
-        const ruleGroupOptions = this.props.permission.ruleGroupSearch.dataList.map(
+        const ruleGroupOptions = this.props.permission.ruleGroupFilter.dataList.map(
             (record: any) => {
                 return (
                     <antd.Select.Option key={record.id} value={record.id}>
@@ -250,8 +204,9 @@ export class EditPositionManager extends React.PureComponent<EditPositionProps, 
                                 placeholder="请输入上级身份"
                                 defaultActiveFirstOption={true}
                                 showArrow={false}
-                                filterOption={false}
-                                onSearch={this.searchPosition}
+                                filterOption={(input, option) =>
+                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
                                 notFoundContent={null}
                             >
                                 {positionOptions}
@@ -259,7 +214,7 @@ export class EditPositionManager extends React.PureComponent<EditPositionProps, 
                         </antd.Form.Item>
                         <antd.Form.Item
                             label="权限组"
-                            name="ruleGroupId"
+                            name="positionIdList"
                             rules={[{ required: true, message: '请输入权限组' }]}
                         >
                             <antd.Select
@@ -267,8 +222,9 @@ export class EditPositionManager extends React.PureComponent<EditPositionProps, 
                                 placeholder="请输入权限组"
                                 defaultActiveFirstOption={true}
                                 showArrow={false}
-                                filterOption={false}
-                                onSearch={this.searchRuleGroup}
+                                filterOption={(input, option) =>
+                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
                                 notFoundContent={null}
                             >
                                 {ruleGroupOptions}

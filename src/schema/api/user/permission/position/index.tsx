@@ -136,6 +136,63 @@ export const positionApi: ApiInterface[] = [
         }
     },
     { 
+        name: "staff.permission.position.all", 
+        descriptions: "",
+        servers: ["controller-pc"],
+        type: api.ControllerApi,
+        request: {
+            appkey: {
+                transfer: "appkey",
+                type: fields.StringField
+            },
+        },
+        response:{
+            position_list: {
+                transfer: "dataList",
+                list:{
+                    id: {
+                        transfer: "id",
+                        type: fields.IntField
+                    },
+                    name: {
+                        transfer: "name",
+                        type: fields.StringField
+                    },
+                    description: {
+                        transfer: "description",
+                        type: fields.StringField
+                    },
+                    remark: {
+                        transfer: "remark",
+                        type: fields.StringField
+                    },
+                }
+            },
+        },
+        mock: {
+            success:{
+                data_list: [
+                    {
+                        id: 1,
+                        name: "总经理",
+                        description: "公司",
+                        remark: "公司最高职位",
+                    },
+                    {
+                        id: 2,
+                        name: "销售总监",
+                        description: "销售总监",
+                        remark: "最高职位",
+                    },
+                ],
+            },
+            failure:{
+                code: '9999',
+                msg: '获取数据失败',
+            }
+        }
+    },
+    { 
         name: "staff.permission.position.search", 
         descriptions: "",
         servers: ["controller-pc"],
@@ -216,7 +273,7 @@ export const positionApi: ApiInterface[] = [
         }
     },
     { 
-        name: "staff.permission.position.all", 
+        name: "staff.permission.position.tree", 
         descriptions: "",
         servers: ["controller-pc"],
         type: api.ControllerApi,
@@ -266,10 +323,6 @@ export const positionApi: ApiInterface[] = [
                     update_time: {
                         transfer: "updateTime",
                         type: fields.DatetimeField
-                    },
-                    children: {
-                        transfer: "children",
-                        type: fields.StringField
                     },
                 }
             },

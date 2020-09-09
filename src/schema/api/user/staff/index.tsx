@@ -14,6 +14,10 @@ export const staffApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
+            appkey: {
+                transfer: "appkey",
+                type: fields.StringField
+            },
             staffInfo: {
                 transfer: "staff_info",
                 json: true,
@@ -22,25 +26,37 @@ export const staffApi: ApiInterface[] = [
                         transfer: "name",
                         type: fields.StringField
                     },
-                    birthday: {
-                        transfer: "birthday",
-                        type: fields.DateField
-                    },
-                    gender: {
-                        transfer: "gender",
-                        type: fields.StringField
-                    },
                     phone: {
                         transfer: "phone",
                         type: fields.StringField
                     },
+                    organizationId: {
+                        transfer: "organization_id",
+                        type: fields.IntField
+                    },
+                    positionId: {
+                        transfer: "position_id",
+                        type: fields.IntField
+                    },
+                    birthday: {
+                        transfer: "birthday",
+                        type: fields.DateField,
+                        required: false,
+                    },
+                    gender: {
+                        transfer: "gender",
+                        type: fields.StringField,
+                        required: false,
+                    },
                     email: {
                         transfer: "email",
-                        type: fields.StringField
+                        type: fields.StringField,
+                        required: false,
                     },
                     remark: {
                         transfer: "remark",
-                        type: fields.StringField
+                        type: fields.StringField,
+                        required: false,
                     },
                 }
             },
@@ -85,7 +101,7 @@ export const staffApi: ApiInterface[] = [
         },
         response: {
             data_list:{
-                transfer: 'staffInfo',
+                transfer: 'dataList',
                 list:{
                     id: {
                         transfer: 'id',
@@ -127,12 +143,38 @@ export const staffApi: ApiInterface[] = [
                         transfer: "isAdmin",
                         type: fields.BooleanField
                     },
-                    create_time: {
-                        transfer: "createTime",
-                        type: fields.DatetimeField
+                    organization: {
+                        transfer: "organization",
+                        dict: {
+                            id: {
+                                transfer: "id",
+                                type: fields.IntField
+                            },
+                            name: {
+                                transfer: "name",
+                                type: fields.StringField
+                            },
+                        },
+                    },
+                    position: {
+                        transfer: "position",
+                        dict: {
+                            id: {
+                                transfer: "id",
+                                type: fields.IntField
+                            },
+                            name: {
+                                transfer: "name",
+                                type: fields.StringField
+                            },
+                        },
                     },
                     update_time: {
                         transfer: "updateTime",
+                        type: fields.DatetimeField
+                    },
+                    create_time: {
+                        transfer: "createTime",
                         type: fields.DatetimeField
                     },
                 },
@@ -179,6 +221,10 @@ export const staffApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
+            staffId: {
+                transfer: "staff_id",
+                type: fields.IntField
+            }
         },
         response: {
             staff_info:{
@@ -224,8 +270,34 @@ export const staffApi: ApiInterface[] = [
                         transfer: "isAdmin",
                         type: fields.BooleanField
                     },
+                    organization: {
+                        transfer: "organization",
+                        dict: {
+                            id: {
+                                transfer: "id",
+                                type: fields.IntField
+                            },
+                            name: {
+                                transfer: "name",
+                                type: fields.StringField
+                            },
+                        },
+                    },
+                    position: {
+                        transfer: "position",
+                        dict: {
+                            id: {
+                                transfer: "id",
+                                type: fields.IntField
+                            },
+                            name: {
+                                transfer: "name",
+                                type: fields.StringField
+                            },
+                        },
+                    },
                     update_time: {
-                        transfer: "updateTIme",
+                        transfer: "updateTime",
                         type: fields.DatetimeField
                     },
                     create_time: {
@@ -343,7 +415,7 @@ export const staffApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            stafId: {
+            staffId: {
                 transfer: "staff_id",
                 type: fields.IntField
             },
@@ -365,11 +437,13 @@ export const staffApi: ApiInterface[] = [
                     },
                     isAdmin: {
                         transfer: "is_admin",
-                        type: fields.BooleanField
+                        type: fields.BooleanField,
+                        required: false,
                     },
                     workNumber: {
                         transfer: "work_number",
-                        type: fields.BooleanField
+                        type: fields.BooleanField,
+                        required: false,
                     },
                     phone: {
                         transfer: "phone",
@@ -398,6 +472,40 @@ export const staffApi: ApiInterface[] = [
             failure:{
                 code: '9999',
                 msg: '更新客户信息失败',
+            }
+        }
+    },
+    { 
+        name: "staff.bind", 
+        descriptions: "",
+        servers: ["controller-pc"],
+        type: api.ControllerApi,
+        request: {
+            appkey: {
+                transfer: "appkey",
+                type: fields.StringField
+            },
+            staffId: {
+                transfer: "staff_id",
+                type: fields.IntField
+            },
+            organizationId: {
+                transfer: "organization_id",
+                type: fields.IntField
+            },
+            positionId: {
+                transfer: "position_id",
+                type: fields.IntField
+            },
+        },
+        response: {
+        },
+        mock: {
+            success:{
+            },
+            failure:{
+                code: '9999',
+                msg: '调岗失败',
             }
         }
     },
