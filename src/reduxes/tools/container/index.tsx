@@ -43,6 +43,7 @@ export abstract class BaseContainer implements BaseContainerInterface {
                 return apiRouter.router(serverFlag, api).request(params).catch(
                     (result: any)=>{
                         message.warn(result.msg);
+                        throw Error(result.msg)
                     }
                 );
             } catch (e) {
