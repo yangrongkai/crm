@@ -96,7 +96,8 @@ export abstract class BaseApi {
                 }
             ).then( 
                 (res) => {
-                    return this.receive(this.mockData.success);
+                    let success = JSON.stringify(this.mockData.success)
+                    return this.receive(JSON.parse(success));
                 }
             ).catch( 
                 (res) => {
