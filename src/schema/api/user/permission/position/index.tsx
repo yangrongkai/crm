@@ -171,7 +171,7 @@ export const positionApi: ApiInterface[] = [
         },
         mock: {
             success:{
-                data_list: [
+                position_list: [
                     {
                         id: 1,
                         name: "总经理",
@@ -329,7 +329,7 @@ export const positionApi: ApiInterface[] = [
         },
         mock: {
             success:{
-                data_list:[
+                position_list:[
                     {
                         id: 1,
                         name: "总经理",
@@ -338,8 +338,8 @@ export const positionApi: ApiInterface[] = [
                         rule_group_id: 0,
                         rule_group_name: "最高权限",
                         remark: "",
-                        updateTime: moment('1970-01-01', "YYYY-MM_DD"),
-                        createTime: moment('1970-01-01', "YYYY-MM_DD"),
+                        update_time: moment('1970-01-01', "YYYY-MM_DD"),
+                        create_time: moment('1970-01-01', "YYYY-MM_DD"),
                         children:[
                             {
                                 id: 2,
@@ -368,7 +368,7 @@ export const positionApi: ApiInterface[] = [
                             {
                                 id: 4,
                                 name: "运营主管",
-                                parent_id: 0,
+                                parent_id: 1,
                                 description: "",
                                 rule_group_id: 3,
                                 rule_group_name: "运营权限",
@@ -379,7 +379,7 @@ export const positionApi: ApiInterface[] = [
                             {
                                 id: 5,
                                 name: "财务主管",
-                                parent_id: 0,
+                                parent_id: 1,
                                 description: "",
                                 rule_group_id: 5,
                                 rule_group_name: "财务权限",

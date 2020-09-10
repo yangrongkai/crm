@@ -342,6 +342,8 @@ export class StaffManager extends React.PureComponent<StaffPageProps, StaffPageS
                             total: this.props.staff.staffSearch.total,
                             onChange: this.changePagination
                         }}
+                        rowKey={(record: any) => record.id}
+                        key={JSON.stringify(this.props.staff.staffSearch.dataList)}
                     >
                     </antd.Table>
                 </antd.Space>

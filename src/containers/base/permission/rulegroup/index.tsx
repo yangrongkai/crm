@@ -225,6 +225,8 @@ export class RuleGroupManager extends React.PureComponent<RuleGroupProps, RuleGr
                                             <antd.Popconfirm 
                                                 title="您确认要删除吗"
                                                 onConfirm={() => this.deleteRuleGroup(record.id)}
+                                                okText="确定"
+                                                cancelText="取消"
                                             >
                                                 <a>删除</a>
                                             </antd.Popconfirm>
@@ -239,6 +241,8 @@ export class RuleGroupManager extends React.PureComponent<RuleGroupProps, RuleGr
                             total: this.props.permission.ruleGroupSearch.total,
                             onChange: this.changePagination
                         }}
+                        rowKey={(record: any) => record.id}
+                        key={JSON.stringify(this.props.permission.ruleGroupSearch.dataList)}
                     >
                     </antd.Table>
                 </antd.Space>

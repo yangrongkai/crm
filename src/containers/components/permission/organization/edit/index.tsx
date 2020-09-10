@@ -108,6 +108,7 @@ export class EditOrganizationManager extends React.PureComponent<EditOrganizatio
                     })
                     this.formRef.current.setFieldsValue(
                         Object.assign({}, currentOrganization, {
+                            positionIdList: currentOrganization.positionList.map((obj) => obj.id)
                         })
                     )
                 })

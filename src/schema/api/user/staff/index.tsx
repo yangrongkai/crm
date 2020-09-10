@@ -212,6 +212,14 @@ export const staffApi: ApiInterface[] = [
                         email: '237818280@qq.com',
                         work_number: 'BQ0001',
                         is_admin: true,
+                        organization: {
+                            id: 1,
+                            name: "总经办"
+                        },
+                        position: {
+                            id: 1,
+                            name: "总经理"
+                        },
                         update_time: moment('2020-01-02 11:22', "YYYY-MM-DD hh:mm"),
                         create_time: moment('2020-01-02 3:21', "YYYY-MM-DD hh:mm"),
                     }
@@ -394,6 +402,14 @@ export const staffApi: ApiInterface[] = [
                     is_admin: true,
                     update_time: moment('2020-01-02 11:22', "YYYY-MM-DD hh:mm"),
                     create_time: moment('2020-01-02 3:21', "YYYY-MM-DD hh:mm"),
+                    organization: {
+                        id: 1,
+                        name: "总经办"
+                    },
+                    position: {
+                        id: 1,
+                        name: "总经理"
+                    },
                     account_info: {
                         nick: 'Roy',
                         head_url: '',

@@ -156,7 +156,10 @@ export class PositionManager extends React.PureComponent<PositionProps, Position
                                             </a>
                                             <antd.Popconfirm 
                                                 title="您确定要删除吗?"
-                                                onConfirm={() => this.deletePosition(record.id)}>
+                                                onConfirm={() => this.deletePosition(record.id)}
+                                                okText="确定"
+                                                cancelText="取消"
+                                            >
                                                 <a >
                                                     删除
                                                 </a>

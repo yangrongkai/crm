@@ -84,10 +84,6 @@ export const organizationApi: ApiInterface[] = [
                         transfer: "name",
                         type: fields.StringField
                     },
-                    position_id_list: {
-                        transfer: "positionIdList",
-                        type: fields.JsonField
-                    },
                     position_list: {
                         transfer: "positionList",
                         list: {
@@ -130,7 +126,12 @@ export const organizationApi: ApiInterface[] = [
                     id: 1,
                     name: "总经办",
                     parent_id: 1,
-                    position_list: "[1,2]",
+                    position_list: [
+                        {
+                            id: 1,
+                            name: "总经理"
+                        }
+                    ],
                     position_name_list: "['总经理', '总经理助理']",
                     description: "公司",
                     remark: "",
@@ -222,12 +223,24 @@ export const organizationApi: ApiInterface[] = [
                         name: "总经理",
                         description: "公司",
                         remark: "公司最高职位",
+                        position_list: [
+                            {
+                                id: 1,
+                                name: "总经理"
+                            }
+                        ],
                     },
                     {
                         id: 2,
                         name: "销售总监",
                         description: "销售总监",
                         remark: "最高职位",
+                        position_list: [
+                            {
+                                id: 2,
+                                name: "销售总监"
+                            }
+                        ],
                     },
                 ],
             },
@@ -289,15 +302,27 @@ export const organizationApi: ApiInterface[] = [
                 organization_list: [
                     {
                         id: 1,
-                        name: "总经理",
+                        name: "总经办",
                         description: "公司",
                         remark: "公司最高职位",
+                        position_list: [
+                            {
+                                id: 1,
+                                name: "总经理"
+                            }
+                        ],
                     },
                     {
                         id: 2,
-                        name: "销售总监",
+                        name: "销售部",
                         description: "销售总监",
                         remark: "最高职位",
+                        position_list: [
+                            {
+                                id: 2,
+                                name: "销售总监"
+                            }
+                        ],
                     },
                 ],
             },
@@ -369,37 +394,49 @@ export const organizationApi: ApiInterface[] = [
         },
         mock: {
             success:{
-                data_list:[
+                organization_list:[
                     {
                         id: 1,
-                        name: "总经理",
+                        name: "总经办",
                         parent_id: 0,
                         description: "",
-                        rule_group_id: 0,
-                        rule_group_name: "最高权限",
                         remark: "",
-                        updateTime: moment('1970-01-01', "YYYY-MM_DD"),
-                        createTime: moment('1970-01-01', "YYYY-MM_DD"),
+                        position_list: [
+                            {
+                                id: 1,
+                                name: "总经理"
+                            }
+                        ],
+                        update_time: moment('1970-01-01', "YYYY-MM_DD"),
+                        create_time: moment('1970-01-01', "YYYY-MM_DD"),
                         children:[
                             {
                                 id: 2,
-                                name: "销售主管",
+                                name: "销售部",
                                 parent_id: 1,
                                 description: "",
-                                rule_group_id: 1,
-                                rule_group_name: "销售权限",
                                 remark: "",
+                                position_list: [
+                                    {
+                                        id: 2,
+                                        name: "销售主管"
+                                    }
+                                ],
                                 update_time: moment('1970-01-01', "YYYY-MM_DD"),
                                 create_time: moment('1970-01-01', "YYYY-MM_DD"),
                                 children:[
                                     {
                                         id: 3,
-                                        name: "销售专员",
-                                        parent_id: 0,
+                                        name: "销售一组",
+                                        parent_id: 2,
                                         description: "",
                                         remark: "",
-                                        rule_group_id: 2,
-                                        rule_group_name: "主管权限",
+                                        position_list: [
+                                            {
+                                                id: 2,
+                                                name: "销售主管"
+                                            }
+                                        ],
                                         update_time: moment('1970-01-01', "YYYY-MM_DD"),
                                         create_time: moment('1970-01-01', "YYYY-MM_DD"),
                                     },
@@ -407,23 +444,31 @@ export const organizationApi: ApiInterface[] = [
                             },
                             {
                                 id: 4,
-                                name: "运营主管",
-                                parent_id: 0,
+                                name: "运营部",
+                                parent_id: 1,
                                 description: "",
-                                rule_group_id: 3,
-                                rule_group_name: "运营权限",
                                 remark: "",
+                                position_list: [
+                                    {
+                                        id: 3,
+                                        name: "运营主管"
+                                    }
+                                ],
                                 update_time: moment('1970-01-01', "YYYY-MM_DD"),
                                 create_time: moment('1970-01-01', "YYYY-MM_DD"),
                             },
                             {
                                 id: 5,
-                                name: "财务主管",
-                                parent_id: 0,
+                                name: "财务部",
+                                parent_id: 1,
                                 description: "",
-                                rule_group_id: 5,
-                                rule_group_name: "财务权限",
                                 remark: "",
+                                position_list: [
+                                    {
+                                        id: 4,
+                                        name: "财务主管"
+                                    }
+                                ],
                                 update_time: moment('1970-01-01', "YYYY-MM_DD"),
                                 create_time: moment('1970-01-01', "YYYY-MM_DD"),
                             },
