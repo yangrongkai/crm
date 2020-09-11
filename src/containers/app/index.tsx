@@ -52,7 +52,11 @@ class AppComponet extends React.Component<AppProps> implements AppEvent{
     }
 
     componentDidMount(){
-        this.getPerson()
+        if(!this.authorize()){
+            this.props.history.push("/login");
+        } else {
+            this.getPerson()
+        }
     }
 
     shouldComponentUpdate(nextProps: AppProps, nextState: any): boolean{
