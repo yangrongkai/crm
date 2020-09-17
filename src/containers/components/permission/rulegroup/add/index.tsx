@@ -1,7 +1,7 @@
 'use strict'
 
 
-import React from 'react';
+import React, {useState} from 'react';
 import  * as antd from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -21,10 +21,12 @@ export interface AddRuleGroupProps {
 
 export interface AddRuleGroupState {
     visible: boolean;
+    ruleSelectKeys: string[];
 }
 
 export interface AddRuleGroupEvent{
     ruleGroupAdd: any;
+    ruleAll: any;
 }
 
 @connect(
@@ -42,19 +44,23 @@ export interface AddRuleGroupEvent{
 export class AddRuleGroupManager extends React.PureComponent<AddRuleGroupProps, AddRuleGroupState>  implements AddRuleGroupEvent{
     private formRef: any;
     ruleGroupAdd: any;
+    ruleAll: any;
 
     constructor(props: AddRuleGroupProps, context?: any) {
         super(props, context);
         this.state = { 
             visible: false,
+            ruleSelectKeys: [],
         };
 
         this.ruleGroupAdd = this.props.permissionHelper.ruleGroupAdd;
+        this.ruleAll = this.props.permissionHelper.ruleAll;
 
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
         this.addRuleGroup = this.addRuleGroup.bind(this);
         this.formRef = React.createRef();
+        this.onCheck = this.onCheck.bind(this)
     }
 
     componentDidMount(){
@@ -64,19 +70,26 @@ export class AddRuleGroupManager extends React.PureComponent<AddRuleGroupProps, 
     onClose(){
         this.setState({
             visible: false,
+            ruleSelectKeys: []
         });
     };
 
-    onOpen(){
-        this.formRef.current.setFieldsValue({
-            name: "",
-            remark: "",
-            description: "",
-            content: "",
-        })
-        this.setState({
-            visible: true,
-        });
+    onOpen(platformId: number){
+        this.ruleAll({
+            appkey: config.permission.appkey
+        }).then(
+            () => {
+                this.formRef.current.setFieldsValue({
+                    name: "",
+                    remark: "",
+                    description: "",
+                })
+                this.setState({
+                    visible: true,
+                    ruleSelectKeys: []
+                });
+            }
+        )
     }
 
     addRuleGroup(){
@@ -84,6 +97,7 @@ export class AddRuleGroupManager extends React.PureComponent<AddRuleGroupProps, 
             this.ruleGroupAdd({
                 appkey: config.permission.appkey,
                 ruleGroupInfo: Object.assign({}, values, {
+                    content: this.state.ruleSelectKeys
                 })
             }).then(()=>{
                 this.props.father.refreshRuleGroup().then(() =>{
@@ -93,7 +107,14 @@ export class AddRuleGroupManager extends React.PureComponent<AddRuleGroupProps, 
         })
     }
 
+    onCheck(checkedKeys: any){
+        this.setState({
+            ruleSelectKeys: checkedKeys
+        })
+    }
+
     render(){
+        let ruleTree = this.props.permission.ruleFilter
         return (
             <div>
                 <antd.Drawer
@@ -130,6 +151,7 @@ export class AddRuleGroupManager extends React.PureComponent<AddRuleGroupProps, 
                         labelCol={{span:5 }}
                         wrapperCol={{span:19 }}
                         colon={true}
+                        style={{padding: "20px 10px"}}
                     >
                         <antd.Form.Item
                             name="name"
@@ -159,12 +181,14 @@ export class AddRuleGroupManager extends React.PureComponent<AddRuleGroupProps, 
                             />
                         </antd.Form.Item>
                         <antd.Form.Item
-                            name="content"
-                            label="权限设置"
-                            rules={[{ required: false, message: '请输入权限设置' }]}
+                            label="权限"
                         >
-                            <antd.Input.TextArea 
-                                placeholder="请输入权限设置" 
+                            <antd.Tree
+                                checkable
+                                height={480}
+                                onCheck={this.onCheck}
+                                treeData={ruleTree.dataList}
+                                defaultExpandAll
                             />
                         </antd.Form.Item>
                     </antd.Form>

@@ -22,6 +22,9 @@ export const personRedux = new PersonContainer({
         id: undefined,
         name: ""
     },
+    permission: {
+        content: []
+    },
     account: {
         username: "",
         nick: "",

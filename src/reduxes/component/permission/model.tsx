@@ -2,6 +2,7 @@
 
 
 import { SearchModel, AllModel } from 'reduxes/tools/model';
+import { RuleModel } from 'reduxes/component/authorization/model';
 
 export interface RuleGroupModel {
     id: number;
@@ -46,6 +47,7 @@ export type PermissionState = {
     ruleGroupSearch: SearchModel<Partial<RuleGroupModel>>;
     ruleGroupCurrent: Partial<RuleGroupModel>;
     ruleGroupFilter: SearchModel<Partial<RuleGroupModel>>;
+    ruleFilter: AllModel<Partial<RuleModel>>;
 
     positionSearch: AllModel<Partial<PositionModel>>;
     positionCurrent: Partial<PositionModel>;

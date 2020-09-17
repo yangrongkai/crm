@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators, Dispatch } from 'redux';
-import { Row, Col, Menu, Layout, Space } from 'antd';
+import { Row, Col, Menu, Layout } from 'antd';
 import * as icons from '@ant-design/icons';
 import { RootState, AppState, appRedux, PersonState, personRedux } from 'reduxes';
 import * as config from '&/config.js';

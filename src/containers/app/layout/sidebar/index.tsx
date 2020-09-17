@@ -10,8 +10,15 @@ import { Menu, Layout } from 'antd';
 
 import { sidebarMenu } from 'schema/menu';
 import { MenuElement, MenuElementHelper } from 'common/interface';
-import { RootState, AppState, appRedux } from 'reduxes';
-import * as globalConfig from '&/config.js';
+import { authorizePermission } from 'common/utils/permission';
+import {
+    RootState,
+    AppState, 
+    appRedux,
+    PersonState, 
+    personRedux,
+} from 'reduxes';
+import * as config from '&/config.js';
 import './index.less';
 
 
@@ -19,25 +26,27 @@ import './index.less';
 export interface SidebarProps {
     app: AppState;
     appHelper: any;
+    person: PersonState;
+    personHelper: any;
 }
 
 export interface SidebarState{
     openKeys: string[];
-    menuJSX: JSX.Element[];
     level1KeySet: any;
     level2KeyMap: any;
     menuHelper: MenuElementHelper;
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<SidebarProps, 'app'> => {
+    (state: RootState, ownProps): Pick<SidebarProps, 'app' | 'person'> => {
         console.log("sidebar 数据回流到这里-----》》》》》 ", state, ownProps)
-        return { app: state.app };
+        return { app: state.app, person: state.person };
     },
-    (dispatch: Dispatch): Pick<SidebarProps, 'appHelper'> => {
+    (dispatch: Dispatch): Pick<SidebarProps, 'appHelper' | 'personHelper'> => {
         console.log(" sidebar 数据绑定到这里-----》》》》》 ", dispatch) 
         return {
             appHelper: bindActionCreators(appRedux.actions(), dispatch),
+            personHelper: bindActionCreators(personRedux.actions(), dispatch),
         };
     }
 )
@@ -49,7 +58,6 @@ export class Sidebar extends React.PureComponent<SidebarProps, SidebarState> {
         let menuHelper = new MenuElementHelper(sidebarMenu);
         let firstKey: string = (menuHelper.root.getChild()[0]).path || "";
         let openKeys = firstKey === "" ? [] : [firstKey];
-        let menuJSX = this.establishMenu(menuHelper);
         let elementLevel1 = menuHelper.getElementByLevel(1);
         let level1KeySet = new Set(elementLevel1.map( (item: MenuElement) => item.path ));
         let level2KeyMap = new Map();
@@ -60,26 +68,29 @@ export class Sidebar extends React.PureComponent<SidebarProps, SidebarState> {
                     level2KeyMap.set(element2.path, element1.path);
                 }
             }
-
         }
         
         this.state = {
             openKeys,
-            menuJSX,
             level1KeySet,
             level2KeyMap,
             menuHelper
         };
     }
-  
+
     transFormMenuItem(obj: MenuElement) {
-        return (
-            <Menu.Item key={obj.path} style={{ margin: '0px' }}>
-                { obj.icon && <obj.icon /> }
-                { obj.level === 1 && !obj.icon && <span className="invisible-nav-text">{obj.name[0]}</span> }
-                <Link to={obj.router} style={{ display: 'inline' }}><span className="nav-text">{obj.name}</span></Link>
-            </Menu.Item>
-        );
+        return authorizePermission(
+            obj.auth,
+            this.props.person.permission,
+            (
+                <Menu.Item key={obj.path} style={{ margin: '0px' }}>
+                    { obj.icon && <obj.icon /> }
+                    { obj.level === 1 && !obj.icon && <span className="invisible-nav-text">{obj.name[0]}</span> }
+                    <Link to={obj.router} style={{ display: 'inline' }}><span className="nav-text">{obj.name}</span></Link>
+                </Menu.Item>
+            ),
+            config.debug
+        )
     };
 
 
@@ -95,27 +106,37 @@ export class Sidebar extends React.PureComponent<SidebarProps, SidebarState> {
                             return this.transFormMenuItem(level3);
                         });
             
-                        return (
-                            <Menu.SubMenu key={level2.path} title={level2.icon ? <span><level2.icon />{level2.name}</span> : level2.name}>
-                                {level3menu}
-                            </Menu.SubMenu>
-                        );
+                        return authorizePermission(
+                            level2.auth,
+                            this.props.person.permission,
+                            (
+                                <Menu.SubMenu key={level2.path} title={level2.icon ? <span><level2.icon />{level2.name}</span> : level2.name}>
+                                    {level3menu}
+                                </Menu.SubMenu>
+                            ),
+                            config.debug
+                        )
                     } else {
                         return this.transFormMenuItem(level2);
                     }
                 });
-        
+
                 let level1Title;
                 if (level1.icon) {
                     level1Title = (<span><level1.icon /><span className="nav-text">{level1.name}</span></span>);
                 } else {
                     level1Title = <span><span className="invisible-nav-text">{level1.name[0]}</span> <span className="nav-text">{level1.name}</span></span>;
                 }
-        
-                return (
-                    <Menu.SubMenu key={level1.path} title={level1Title}>
-                        {level2menu}
-                    </Menu.SubMenu>
+
+                return authorizePermission(
+                    level1.auth,
+                    this.props.person.permission,
+                    (
+                        <Menu.SubMenu key={level1.path} title={level1Title}>
+                            {level2menu}
+                        </Menu.SubMenu>
+                    ),
+                    config.debug
                 )
             }
             else {
@@ -123,11 +144,11 @@ export class Sidebar extends React.PureComponent<SidebarProps, SidebarState> {
                 return tmp;
             }
         })
-        return menuJSX;
+        return menuJSX.filter((element) => element != undefined)
     }
 
     handleOpenChange = (openKeys: string[]) => {
-        if (!globalConfig.sidebar.autoMenuSwitch) {
+        if (!config.sidebar.autoMenuSwitch) {
             this.setState({openKeys});
             return;
         }
@@ -153,12 +174,13 @@ export class Sidebar extends React.PureComponent<SidebarProps, SidebarState> {
     };
   
     handleSelect = (item: any) => {
-        if (globalConfig.sidebar.autoMenuSwitch && this.state.level1KeySet.has(item.key) && this.state.openKeys.length > 0) {
+        if (config.sidebar.autoMenuSwitch && this.state.level1KeySet.has(item.key) && this.state.openKeys.length > 0) {
             this.setState({openKeys: []});
         }
     };
   
     render() {
+        let menuJSX = this.establishMenu(this.state.menuHelper);
         return (
             <Layout.Sider trigger={null} collapsible collapsed={this.props.app.isCollapsed}>
                 <div className="logo" />
@@ -166,7 +188,7 @@ export class Sidebar extends React.PureComponent<SidebarProps, SidebarState> {
                     onOpenChange={this.handleOpenChange}
                     onSelect={this.handleSelect}
                     openKeys={this.props.app.isCollapsed ? [] : this.state.openKeys}>
-                    {this.state.menuJSX}
+                    {menuJSX}
                 </Menu>
             </Layout.Sider>
         );

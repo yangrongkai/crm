@@ -7,6 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { Layout } from 'antd';
 import { RootState, AppState, appRedux, PersonState, personRedux } from 'reduxes';
 import { wrapper } from 'containers/tools/wrapper';
+import * as config from '&/config.js';
 import { Header, Sidebar, Content, Footer } from 'containers/app/layout'
 import { TokenEnum, TokenConstant } from 'common/utils/persistence';
 import './index.less';
@@ -55,7 +56,9 @@ class AppComponet extends React.Component<AppProps> implements AppEvent{
         if(!this.authorize()){
             this.props.history.push("/login");
         } else {
-            this.getPerson()
+            this.getPerson({
+                appkey: config.permission.appkey
+            })
         }
     }
 

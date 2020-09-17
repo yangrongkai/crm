@@ -4,6 +4,7 @@
 export interface MenuElementInterface {
     key: string;
     name: string;
+    auth?: string;
     icon?: any;
     child?: MenuElementInterface[];
     router?: string;
@@ -15,6 +16,7 @@ export class MenuElement implements MenuElementInterface{
     key: string;
     name: string;
     path: string;
+    auth: string;
     level: number;
     icon?: any;
     parent?: MenuElement | null;
@@ -23,9 +25,10 @@ export class MenuElement implements MenuElementInterface{
     router?: string;
 
     constructor(key: string, name: string, path: string, level: number = 0, 
-        icon?: any, router?: string, url?: string){
+        icon?: any, router?: string, url?: string, auth?: string){
         this.key = key;
         this.name = name;
+        this.auth = auth;
         this.path = path;
         this.level = level;
         this.icon = icon || null;
@@ -92,7 +95,8 @@ export class MenuElementHelper {
                 level,
                 item.icon,
                 item.router,
-                item.url
+                item.url,
+                item.auth,
             );
             element.addChild(menuElement);
             menuElement.setParent(element);

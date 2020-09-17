@@ -22,9 +22,11 @@ export interface EditRuleGroupProps {
 export interface EditRuleGroupState {
     visible: boolean;
     ruleGroup: any;
+    ruleSelectKeys: string[];
 }
 
 export interface EditRuleGroupEvent{
+    ruleAll: any;
     ruleGroupGet: any;
     ruleGroupUpdate: any;
 }
@@ -43,6 +45,7 @@ export interface EditRuleGroupEvent{
 )
 export class EditRuleGroupManager extends React.PureComponent<EditRuleGroupProps, EditRuleGroupState>  implements EditRuleGroupEvent{
     private formRef: any;
+    ruleAll: any;
     ruleGroupGet: any;
     ruleGroupUpdate: any;
 
@@ -51,13 +54,16 @@ export class EditRuleGroupManager extends React.PureComponent<EditRuleGroupProps
         this.state = { 
             visible: false,
             ruleGroup: undefined,
+            ruleSelectKeys: []
         };
 
+        this.ruleAll = this.props.permissionHelper.ruleAll;
         this.ruleGroupGet = this.props.permissionHelper.ruleGroupGet;
         this.ruleGroupUpdate = this.props.permissionHelper.ruleGroupUpdate;
 
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
+        this.onCheck = this.onCheck.bind(this)
         this.editRuleGroup = this.editRuleGroup.bind(this);
         this.formRef = React.createRef();
     }
@@ -69,24 +75,32 @@ export class EditRuleGroupManager extends React.PureComponent<EditRuleGroupProps
     onClose(){
         this.setState({
             visible: false,
+            ruleSelectKeys: []
         });
     };
 
     onOpen(ruleGroupId: number){
-        this.ruleGroupGet({
-            appkey: config.permission.appkey,
-            ruleGroupId: ruleGroupId,
-        }).then(() => {
-            let ruleGroup = this.props.permission.ruleGroupCurrent
-            this.formRef.current.setFieldsValue(
-                ruleGroup
-            )
-            this.setState({
-                visible: true,
-                ruleGroup: ruleGroup
-            })
-        })
-
+        this.ruleAll({
+            appkey: config.permission.appkey
+        }).then(
+            () => {
+                this.ruleGroupGet({
+                    appkey: config.permission.appkey,
+                    ruleGroupId: ruleGroupId,
+                }).then(() => {
+                    let ruleGroup = this.props.permission.ruleGroupCurrent
+                    this.formRef.current.setFieldsValue(
+                        ruleGroup
+                    )
+                    console.log('~~~~~~~~~~>>>> ', ruleGroup.content)
+                    this.setState({
+                        visible: true,
+                        ruleGroup: ruleGroup,
+                        ruleSelectKeys: ruleGroup.content
+                    })
+                })
+            }
+        )
     }
 
     editRuleGroup(){
@@ -95,6 +109,7 @@ export class EditRuleGroupManager extends React.PureComponent<EditRuleGroupProps
                 appkey: config.permission.appkey,
                 ruleGroupId: this.state.ruleGroup.id,
                 updateInfo: Object.assign({}, values, {
+                    content: this.state.ruleSelectKeys
                 })
             }).then(()=>{
                 this.props.father.refreshRuleGroup().then(() =>{
@@ -104,7 +119,15 @@ export class EditRuleGroupManager extends React.PureComponent<EditRuleGroupProps
         })
     }
 
+    onCheck(checkedKeys: any){
+        this.setState({
+            ruleSelectKeys: checkedKeys
+        })
+    }
+
+
     render(){
+        let ruleTree = this.props.permission.ruleFilter
         return (
             <div>
                 <antd.Drawer
@@ -170,12 +193,15 @@ export class EditRuleGroupManager extends React.PureComponent<EditRuleGroupProps
                             />
                         </antd.Form.Item>
                         <antd.Form.Item
-                            name="content"
-                            label="权限设置"
-                            rules={[{ required: false, message: '请输入权限设置' }]}
+                            label="权限"
                         >
-                            <antd.Input.TextArea 
-                                placeholder="请输入权限设置" 
+                            <antd.Tree
+                                checkable
+                                height={480}
+                                onCheck={this.onCheck}
+                                treeData={ruleTree.dataList}
+                                checkedKeys={this.state.ruleSelectKeys}
+                                defaultExpandAll
                             />
                         </antd.Form.Item>
                     </antd.Form>

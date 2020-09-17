@@ -48,6 +48,7 @@ export interface PersonModel {
     company: CompanyModel;
     organization: OrganizationModel,
     position: PositionModel,
+    permission: string[],
 }
 
 

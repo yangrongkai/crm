@@ -52,7 +52,9 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
     }
 
     componentDidMount(){
-        this.personGet()
+        this.personGet({
+            appkey: config.permission.appkey
+        })
     }
 
     render(){

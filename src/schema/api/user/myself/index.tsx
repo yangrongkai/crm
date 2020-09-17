@@ -14,6 +14,10 @@ export const myselfApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
+            appkey: {
+                transfer: "appkey",
+                type: fields.StringField
+            }
         },
         response: {
             staff_info:{
@@ -58,6 +62,10 @@ export const myselfApi: ApiInterface[] = [
                     is_admin: {
                         transfer: "isAdmin",
                         type: fields.BooleanField
+                    },
+                    permission: {
+                        transfer: "permission",
+                        type: fields.JsonField
                     },
                     organization: {
                         transfer: "organization",
@@ -171,6 +179,8 @@ export const myselfApi: ApiInterface[] = [
                         id: 1,
                         name: "总经理",
                     },
+                    permission: [
+                    ],
                     account_info: {
                         nick: 'Roy',
                         head_url: '',

@@ -16,6 +16,10 @@ export const permissionRedux = new PermissionContainer({
         dataList: [],
         total: 0,
     },
+    ruleFilter: {
+        dataList: [],
+        total: 0,
+    },
 
     positionSearch: {
         dataList: [],

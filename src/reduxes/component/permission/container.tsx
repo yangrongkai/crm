@@ -13,6 +13,7 @@ export enum PermissionTypes {
     RULEGROUP_FILTER = "RULEGROUP_FILTER",
     RULEGROUP_UPDATE = "RULEGROUP_UPDATE",
     RULEGROUP_REMOVE = "RULEGROUP_REMOVE",
+    RULEGROUP_RULE_ALL = "RULEGROUP_RULE_ALL",
 
     POSITION_ADD = "POSITION_ADD",
     POSITION_GET = "POSITION_GET",
@@ -36,6 +37,7 @@ export class PermissionContainer extends BaseContainer {
     ruleGroupGet: any;
     ruleGroupSearch: any;
     ruleGroupFilter: any;
+    ruleAll: any;
     ruleGroupUpdate: any;
     ruleGroupRemove: any;
 
@@ -85,6 +87,11 @@ export class PermissionContainer extends BaseContainer {
             "staff.permission.rulegroup.remove",
             config.defaultFlag,
             PermissionTypes.RULEGROUP_REMOVE
+        );
+        this.ruleAll = this.createAsynchronizationAction(
+            "staff.permission.rulegroup.rule.all",
+            config.defaultFlag,
+            PermissionTypes.RULEGROUP_RULE_ALL
         );
 
         this.positionAdd = this.createAsynchronizationAction(
@@ -158,6 +165,7 @@ export class PermissionContainer extends BaseContainer {
             ruleGroupFilter: this.ruleGroupFilter,
             ruleGroupUpdate: this.ruleGroupUpdate,
             ruleGroupRemove: this.ruleGroupRemove,
+            ruleAll: this.ruleAll,
             positionAdd: this.positionAdd,
             positionGet: this.positionGet,
             positionFilter: this.positionFilter,
@@ -207,6 +215,14 @@ export class PermissionContainer extends BaseContainer {
             },
             [this.ruleGroupRemove.fulfilled.toString()]: (state: PermissionState, action: any) => {
                 return Object.assign({}, state, {
+                })
+            },
+            [this.ruleAll.fulfilled.toString()]: (state: PermissionState, action: any) => {
+                return Object.assign({}, state, {
+                    ruleFilter: {
+                        dataList: action.payload.dataList,
+                        total: action.payload.dataList.length,
+                    }
                 })
             },
 
