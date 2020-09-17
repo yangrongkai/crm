@@ -43,7 +43,13 @@ export abstract class BaseContainer implements BaseContainerInterface {
                 return apiRouter.router(serverFlag, api).request(params).catch(
                     (result: any)=>{
                         message.warn(result.msg);
-                        throw Error(result.msg)
+                        let business_codes = ["40001"]
+                        if(business_codes.indexOf(result.code) > -1){
+                            throw Error(result.msg)
+                        } else {
+                            console.error("[transfer error]：error msg = "+result.msg)
+                            throw result
+                        }
                     }
                 );
             } catch (e) {

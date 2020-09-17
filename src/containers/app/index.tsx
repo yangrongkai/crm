@@ -58,6 +58,13 @@ class AppComponet extends React.Component<AppProps> implements AppEvent{
         } else {
             this.getPerson({
                 appkey: config.permission.appkey
+            }).catch((rep: any) => {
+                if(rep.code == "30007"){
+                    // 重定向到登录
+                    this.props.history.push("/login");
+                } else if ( rep.code == "30008" ) {
+                    // 考虑续签
+                }
             })
         }
     }
