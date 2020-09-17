@@ -92,7 +92,6 @@ export class AddPositionManager extends React.PureComponent<AddPositionProps, Ad
 
     onOpen(positionId: number){
         this.ruleGroupFilter({
-            appkey: config.permission.appkey,
         }).then(() => {
             if( positionId !== 0 ){
                 this.positionGet({
@@ -122,7 +121,6 @@ export class AddPositionManager extends React.PureComponent<AddPositionProps, Ad
     addPosition(){
         this.formRef.current.validateFields().then((values: any) => {
             this.positionAdd({
-                appkey: config.permission.appkey,
                 positionInfo: Object.assign({}, values, {
                     parentId: this.state.lastPosition.id
                 })

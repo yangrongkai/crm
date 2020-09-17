@@ -91,7 +91,6 @@ export class BindStaffManager extends React.PureComponent<BindStaffProps, BindSt
 
     onOpen(staffId: number){
         this.organizationFilter({
-            appkey: config.permission.appkey
         }).then(() => {
             this.staffGet({
                 staffId: staffId
@@ -119,7 +118,6 @@ export class BindStaffManager extends React.PureComponent<BindStaffProps, BindSt
         this.formRef.current.validateFields().then((values: any) => {
             this.staffBind(
                 Object.assign({}, values, {
-                    appkey: config.permission.appkey,
                     staffId: this.state.staff.id
                 })
             ).then(()=>{

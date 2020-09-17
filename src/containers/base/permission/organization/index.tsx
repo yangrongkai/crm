@@ -61,7 +61,6 @@ export class OrganizationManager extends React.PureComponent<OrganizationProps, 
 
     refreshOrganization(){
         return this.organizationSearch({
-            appkey: config.permission.appkey
         })
     }
 

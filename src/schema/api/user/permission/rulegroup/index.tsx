@@ -14,10 +14,6 @@ export const ruleGroupApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey:{
-                transfer: "appkey",
-                type: fields.StringField
-            },
             ruleGroupInfo: {
                 transfer: "rule_group_info",
                 json: true,
@@ -127,10 +123,6 @@ export const ruleGroupApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.StringField
-            },
         },
         response:{
             rule_group_list: {
@@ -202,10 +194,6 @@ export const ruleGroupApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.StringField
-            },
             currentPage: {
                 transfer: "current_page",
                 type: fields.IntField
@@ -302,10 +290,6 @@ export const ruleGroupApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.StringField
-            },
         },
         response:{
             rule_list: {

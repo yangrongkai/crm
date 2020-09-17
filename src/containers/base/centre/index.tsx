@@ -53,7 +53,6 @@ export class PersonCentreManager extends React.PureComponent<PersonCentreProps, 
 
     componentDidMount(){
         this.personGet({
-            appkey: config.permission.appkey
         })
     }
 

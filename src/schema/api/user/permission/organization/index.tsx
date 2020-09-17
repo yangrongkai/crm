@@ -14,10 +14,6 @@ export const organizationApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.StringField
-            },
             organizationInfo: {
                 transfer: "organization_info",
                 json: true,
@@ -151,10 +147,6 @@ export const organizationApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.StringField
-            },
             currentPage: {
                 transfer: "current_page",
                 type: fields.IntField
@@ -256,10 +248,6 @@ export const organizationApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.StringField
-            },
         },
         response:{
             organization_list: {
@@ -338,10 +326,6 @@ export const organizationApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.BaseField
-            }
         },
         response:{
             organization_list: {

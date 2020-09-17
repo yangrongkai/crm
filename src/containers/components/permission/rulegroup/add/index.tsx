@@ -76,7 +76,6 @@ export class AddRuleGroupManager extends React.PureComponent<AddRuleGroupProps, 
 
     onOpen(platformId: number){
         this.ruleAll({
-            appkey: config.permission.appkey
         }).then(
             () => {
                 this.formRef.current.setFieldsValue({
@@ -95,7 +94,6 @@ export class AddRuleGroupManager extends React.PureComponent<AddRuleGroupProps, 
     addRuleGroup(){
         this.formRef.current.validateFields().then((values: any) => {
             this.ruleGroupAdd({
-                appkey: config.permission.appkey,
                 ruleGroupInfo: Object.assign({}, values, {
                     content: this.state.ruleSelectKeys
                 })

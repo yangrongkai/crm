@@ -93,10 +93,8 @@ export class EditOrganizationManager extends React.PureComponent<EditOrganizatio
 
     onOpen(organizationId: any){
         this.organizationFilter({
-            appkey: config.permission.appkey,
         }).then(() => {
             this.positionFilter({
-                appkey: config.permission.appkey,
             }).then(() => {
                 this.organizationGet({
                     organizationId: organizationId

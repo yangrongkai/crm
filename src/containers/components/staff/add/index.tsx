@@ -94,7 +94,6 @@ export class AddStaffManager extends React.PureComponent<AddStaffProps, AddStaff
 
     onOpen(){
         this.organizationFilter({
-            appkey: config.permission.appkey
         }).then(() => {
             let organizationList = this.props.permission.organizationFilter.dataList;
             if(organizationList.length > 0){
@@ -124,7 +123,6 @@ export class AddStaffManager extends React.PureComponent<AddStaffProps, AddStaff
     addStaff(){
         this.formRef.current.validateFields().then((values: any) => {
             this.staffAdd({
-                appkey: config.permission.appkey,
                 staffInfo: Object.assign({}, values, {
                 })
             }).then(()=>{

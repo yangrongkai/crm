@@ -89,7 +89,7 @@ export class Sidebar extends React.PureComponent<SidebarProps, SidebarState> {
                     <Link to={obj.router} style={{ display: 'inline' }}><span className="nav-text">{obj.name}</span></Link>
                 </Menu.Item>
             ),
-            config.debug
+            config.allowPermission
         )
     };
 
@@ -114,7 +114,7 @@ export class Sidebar extends React.PureComponent<SidebarProps, SidebarState> {
                                     {level3menu}
                                 </Menu.SubMenu>
                             ),
-                            config.debug
+                            config.allowPermission
                         )
                     } else {
                         return this.transFormMenuItem(level2);
@@ -136,7 +136,7 @@ export class Sidebar extends React.PureComponent<SidebarProps, SidebarState> {
                             {level2menu}
                         </Menu.SubMenu>
                     ),
-                    config.debug
+                    config.allowPermission
                 )
             }
             else {

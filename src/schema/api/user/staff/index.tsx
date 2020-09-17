@@ -14,10 +14,6 @@ export const staffApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.StringField
-            },
             staffInfo: {
                 transfer: "staff_info",
                 json: true,
@@ -507,10 +503,6 @@ export const staffApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.StringField
-            },
             staffId: {
                 transfer: "staff_id",
                 type: fields.IntField

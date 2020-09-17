@@ -14,10 +14,6 @@ export const positionApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.StringField
-            },
             positionInfo: {
                 transfer: "position_info",
                 json: true,
@@ -141,10 +137,6 @@ export const positionApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.StringField
-            },
         },
         response:{
             position_list: {
@@ -198,10 +190,6 @@ export const positionApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.StringField
-            },
             currentPage: {
                 transfer: "current_page",
                 type: fields.IntField
@@ -278,10 +266,6 @@ export const positionApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.BaseField
-            }
         },
         response:{
             position_list: {

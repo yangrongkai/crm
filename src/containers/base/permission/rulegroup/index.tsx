@@ -75,7 +75,6 @@ export class RuleGroupManager extends React.PureComponent<RuleGroupProps, RuleGr
     searchRuleGroup(){
         return this.formRef.current.validateFields().then((values: any) => {
             this.ruleGroupSearch({
-                appkey: config.permission.appkey,
                 currentPage: 1,
                 searchInfo: values,
             }).then(()=>{
@@ -89,7 +88,6 @@ export class RuleGroupManager extends React.PureComponent<RuleGroupProps, RuleGr
     refreshRuleGroup(){
         return this.formRef.current.validateFields().then((values: any) => {
             this.ruleGroupSearch({
-                appkey: config.permission.appkey,
                 currentPage: this.state.currentPage,
                 searchInfo: values,
             })
@@ -99,7 +97,6 @@ export class RuleGroupManager extends React.PureComponent<RuleGroupProps, RuleGr
     changePagination(index: number){
         return this.formRef.current.validateFields().then((values: any) => {
             this.ruleGroupSearch({
-                appkey: config.permission.appkey,
                 currentPage: index,
                 searchInfo: values,
             }).then(()=>{

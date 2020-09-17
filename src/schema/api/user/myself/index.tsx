@@ -14,10 +14,6 @@ export const myselfApi: ApiInterface[] = [
         servers: ["controller-pc"],
         type: api.ControllerApi,
         request: {
-            appkey: {
-                transfer: "appkey",
-                type: fields.StringField
-            }
         },
         response: {
             staff_info:{

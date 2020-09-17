@@ -120,7 +120,6 @@ export class AddOrganizationManager extends React.PureComponent<AddOrganizationP
 
     searchPosition(text: string){
         return this.positionFilter({
-            appkey: config.permission.appkey,
             currentPage: 1,
             searchInfo:{
                 name: text
@@ -131,7 +130,6 @@ export class AddOrganizationManager extends React.PureComponent<AddOrganizationP
     addOrganization(){
         this.formRef.current.validateFields().then((values: any) => {
             this.organizationAdd({
-                appkey: config.permission.appkey,
                 organizationInfo: Object.assign({}, values, {
                     parentId: this.state.lastOrganization.id
                 })

@@ -74,7 +74,6 @@ export class EditStaffManager extends React.PureComponent<EditStaffProps, EditSt
 
     initialComponentData(){
         return {
-            appkey: "",
             companyId: -1,
             companyName: "",
             useStatus: "",

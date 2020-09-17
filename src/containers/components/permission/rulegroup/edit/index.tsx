@@ -81,11 +81,9 @@ export class EditRuleGroupManager extends React.PureComponent<EditRuleGroupProps
 
     onOpen(ruleGroupId: number){
         this.ruleAll({
-            appkey: config.permission.appkey
         }).then(
             () => {
                 this.ruleGroupGet({
-                    appkey: config.permission.appkey,
                     ruleGroupId: ruleGroupId,
                 }).then(() => {
                     let ruleGroup = this.props.permission.ruleGroupCurrent
@@ -106,7 +104,6 @@ export class EditRuleGroupManager extends React.PureComponent<EditRuleGroupProps
     editRuleGroup(){
         this.formRef.current.validateFields().then((values: any) => {
             this.ruleGroupUpdate({
-                appkey: config.permission.appkey,
                 ruleGroupId: this.state.ruleGroup.id,
                 updateInfo: Object.assign({}, values, {
                     content: this.state.ruleSelectKeys

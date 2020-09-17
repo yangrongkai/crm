@@ -61,7 +61,6 @@ export class PositionManager extends React.PureComponent<PositionProps, Position
 
     refreshPosition(){
         return this.positionSearch({
-            appkey: config.permission.appkey
         })
     }
 

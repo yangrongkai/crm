@@ -94,10 +94,8 @@ export class EditPositionManager extends React.PureComponent<EditPositionProps, 
 
     onOpen(positionId: any){
         this.positionFilter({
-            appkey: config.permission.appkey,
         }).then(() => {
             this.ruleGroupFilter({
-                appkey: config.permission.appkey,
             }).then(() => {
                 this.positionGet({
                     positionId: positionId
