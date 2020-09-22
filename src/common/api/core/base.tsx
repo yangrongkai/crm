@@ -4,7 +4,6 @@
 import * as config from '&/config.js';
 import { message } from 'antd';
 import { HttpRequest } from 'common/utils/channel/http';
-import { TokenEnum, TokenConstant } from 'common/utils/persistence';
 import { signatureHelper } from 'common/api/tools';
 import { ApiFieldHelper, ApiFieldSet } from 'common/api/fieldSet';
 import { Server } from 'common/api/server'
@@ -67,21 +66,23 @@ export abstract class BaseApi {
         }
     }
 
-    _request(params: any, is_auth=true){
+    _postRequest(params: any, extraParams: any, hearders: any, isQs:boolean=true, isForm:boolean=false){
+        // 如果转换后的数据以下划线开头，则不进行签名，如： _uploadfiles
         let requestParms = this.parmsHelper.transfer(
             params,
             this.parmsHelper.fmt,
             false,
         )
         let header = this._generateProtocolHeader()
-        let other = {}
-        if(is_auth){
-            other = {
-                auth: TokenConstant.get()[TokenEnum.ACCESS_TOKEN]
+        let signParams: any = {}
+        for(let key in requestParms){
+            if(!key.startsWith("_")){
+                signParams[key] = requestParms[key]
             }
         }
-        let request = Object.assign({}, header, other, requestParms)
-        request['sign'] = signatureHelper.getSignature(request)
+        requestParms['sign'] = signatureHelper.getSignature(signParams)
+        let request = Object.assign({}, header, extraParams, requestParms)
+        console.log(" request ------------->>>>>>   ", request)
         if( config.debug ){
             return new Promise(
                 (resolve, reject) => {
@@ -110,7 +111,10 @@ export abstract class BaseApi {
         } else {
             return HttpRequest.post(
                 this.accessUrl,
-                request
+                request,
+                hearders,
+                isQs,
+                isForm
             ).then( (res) => {
                 let { isSuccess, result } = this._parseResponseHeader(res)
                 if( !isSuccess ){
@@ -123,7 +127,7 @@ export abstract class BaseApi {
         }
     }
     
-    request(params: any){
+    request(params: any, extraParams: any){
         throw new Error("need to implemented!");
     }
 

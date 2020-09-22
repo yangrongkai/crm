@@ -12,6 +12,7 @@ export interface RootState {
     enterprise: components.EnterpriseState;
     permission: components.PermissionState,
     authorization: components.AuthorizationState;
+    file: components.FileState;
     router?: any;
 }
 
@@ -23,5 +24,6 @@ export const rootReducer = combineReducers<RootState>({
     authorization: components.authorizationRedux.reducer(),
     permission: components.permissionRedux.reducer(),
     enterprise: components.enterpriseRedux.reducer(),
+    file: components.fileRedux.reducer(),
 });
 

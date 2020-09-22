@@ -8,3 +8,5 @@ export { BooleanField } from './booleanField';
 export { DateField } from './dateField';
 export { DatetimeField } from './datetimeField';
 export { JsonField } from './jsonField';
+export { FileField } from './fileField';
+export { KeyValueField } from './keyValueField';

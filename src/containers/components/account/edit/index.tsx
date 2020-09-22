@@ -5,13 +5,21 @@ import React from 'react';
 import * as antd from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { RootState, PersonState, personRedux } from 'reduxes';
+import { 
+    RootState,
+    FileState,
+    PersonState,
+    personRedux,
+    fileRedux
+} from 'reduxes';
 import './index.less';
 
 
 export interface EditAccountProps {
+    file: FileState;
     person: PersonState;
     personHelper: any;
+    fileHelper: any;
 }
 
 export interface EditAccountState {
@@ -21,15 +29,17 @@ export interface EditAccountState {
 export interface EditAccountEvent{
     accountUpdate: any;
     updateAccount: any;
+    fileUpload: any;
 }
 
 @connect(
-    (state: RootState, ownProps): Pick<EditAccountProps, 'person' > =>{
-        return { person: state.person };
+    (state: RootState, ownProps): Pick<EditAccountProps, 'person' | 'file' > =>{
+        return { person: state.person, file: state.file};
     },
-    (dispatch: Dispatch): Pick<EditAccountProps, 'personHelper' > => {
+    (dispatch: Dispatch): Pick<EditAccountProps, 'personHelper' | 'fileHelper' > => {
         return {
             personHelper: bindActionCreators(personRedux.actions(), dispatch),
+            fileHelper: bindActionCreators(fileRedux.actions(), dispatch),
         };
     }
 )
@@ -37,6 +47,7 @@ export class EditAccount extends React.PureComponent<EditAccountProps, EditAccou
     private formRef: any;
     accountUpdate: any;
     accountGet: any;
+    fileUpload: any;
 
     constructor(props: EditAccountProps, context?: any) {
         super(props, context);
@@ -46,10 +57,12 @@ export class EditAccount extends React.PureComponent<EditAccountProps, EditAccou
 
         this.accountUpdate = this.props.personHelper.accountUpdate;
         this.accountGet = this.props.personHelper.personGet;
+        this.fileUpload = this.props.fileHelper.fileUpload;
 
         this.onClose = this.onClose.bind(this);
         this.updateAccount = this.updateAccount.bind(this);
         this.formRef = React.createRef();
+        this.customRequest = this.customRequest.bind(this);
     }
 
     componentDidMount(){
@@ -88,7 +101,19 @@ export class EditAccount extends React.PureComponent<EditAccountProps, EditAccou
         });
     }
 
+    customRequest(e:any){
+        const file = e.file
+        let fileName = file.name
+        this.fileUpload({
+            role: "file",
+            storeType: "person",
+        },{
+            [fileName]: file
+        })
+    }
+
     render(){
+        let fileList = [this.props.person.account.headUrl]
         return (
             <div>
                 <antd.Drawer
@@ -120,6 +145,12 @@ export class EditAccount extends React.PureComponent<EditAccountProps, EditAccou
                         wrapperCol={{span:12 }}
                         colon={true}
                     >
+                        <antd.Upload
+            customRequest={this.customRequest}
+                            listType="picture-card"
+                          >
+        {fileList.length < 5 && '+ Upload'}
+      </antd.Upload>
                         <antd.Row >
                             <antd.Form.Item
                                 name="headUrl"

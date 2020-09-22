@@ -6,6 +6,7 @@ export interface ApiField{
     attr?: string;
     type?: any
     list?: ApiFieldSet;
+    listIter?: any;
     dict?: ApiFieldSet;
     iter?: ApiFieldSet;
     iterFlag?: string;
@@ -43,7 +44,7 @@ export class ApiFieldHelper{
         return value
     }
 
-    transfer(parms: any, fmt: ApiFieldSet, isTransfer: boolean){
+    transfer(parms: any, fmt: ApiFieldSet|any, isTransfer: boolean){
         let result: any = {}
         for(let attrKey in fmt){
             let apiField = fmt[attrKey];
@@ -89,6 +90,16 @@ export class ApiFieldHelper{
                 for(let index in response){
                     let item  = response[index]
                     let value = this.transfer(item, apiField.list, isTransfer) 
+                    value = isJSON ? JSON.stringify(value) : value 
+                    result[apiField.transfer][index] = value
+                }
+            } else if( apiField.hasOwnProperty('listIter') ){
+                result[apiField.transfer] = []
+                for(let index in response){
+                    let item  = response[index]
+                    let field = new apiField.listIter()
+                    let transfer = isTransfer? field.parse : field.format
+                    let value = transfer(item)
                     value = isJSON ? JSON.stringify(value) : value 
                     result[apiField.transfer][index] = value
                 }

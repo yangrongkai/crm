@@ -16,7 +16,15 @@ export class ApiRouter{
     }
 
     router(serverFlag: string, apiName: string): BaseApi{
-        return this.serverRegister.serverHelper[serverFlag].apiRegister.apiHelper[apiName]
+        let servers = this.serverRegister.serverHelper;
+        if( servers[serverFlag] == undefined ){
+            throw Error(`server is not existed! serverFlag = ${serverFlag}`)
+        }
+        let apis = servers[serverFlag].apiRegister.apiHelper;
+        if( apis[apiName] == undefined ){
+            throw Error(`api is not existed! serverFlag = ${serverFlag}, apiName = ${apiName}`)
+        }
+        return apis[apiName]
     }
 
     checkApi(api: any){

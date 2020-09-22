@@ -33,14 +33,12 @@ export abstract class BaseContainer implements BaseContainerInterface {
     }
 
     createAsynchronizationAction(api: string, serverFlag: string, actionType: string){
-        return createAsyncAction(actionType, (params: any):any => {
+        return createAsyncAction(actionType, (params: any, extraParams: any = undefined):any => {
             try {
                 console.info(
-                    "[request] api is requesting...... serverFlag="
-                    + serverFlag
-                    + " api="+api
+                    `[request] api is requesting...... serverFlag=${serverFlag}, api=${api}`
                 )
-                return apiRouter.router(serverFlag, api).request(params).catch(
+                return apiRouter.router(serverFlag, api).request(params, extraParams).catch(
                     (result: any)=>{
                         message.warn(result.msg);
                         let business_codes = ["40001"]

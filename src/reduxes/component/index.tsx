@@ -7,3 +7,4 @@ export { EnterpriseState, enterpriseRedux } from 'reduxes/component/enterprise';
 export { AuthorizationState, authorizationRedux } from 'reduxes/component/authorization';
 export { PermissionState, permissionRedux } from 'reduxes/component/permission';
 export { StaffState, staffRedux } from 'reduxes/component/staff';
+export { FileState, fileRedux } from 'reduxes/component/file';

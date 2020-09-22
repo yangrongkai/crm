@@ -21,10 +21,24 @@ export class HttpRequest {
             })
     }
 
-    static post(url: string, data: any, headers: any = {}, isqs: boolean = true, msg: string = '网络传输异常'){
+    static post(
+        url: string,
+        data: any,
+        headers: any = {},
+        isqs: boolean = true, 
+        isForm: boolean = false, 
+        msg: string = '网络传输异常'
+    ){
         let parameters: any = data;
         if( isqs ){
             parameters = qs.stringify(data);
+        }
+        if( isForm ){
+            let formData = new FormData()
+            for (let key in parameters) {
+                formData.append(key, parameters[key])
+            }
+            parameters = formData
         }
         return axios.post(url, parameters, headers)
             .then(( res: any ) => {
@@ -39,11 +53,6 @@ export class HttpRequest {
                 throw new Error(msg + "< " + err +" >");
             })
         
-    }
-
-    static file(url: string , formData: any, msg: string = '网络传输异常'){
-        let headers: any = {'Content-Type': 'multipart/form-data'}
-        return this.post(url, formData, headers, false)
     }
 
 }
