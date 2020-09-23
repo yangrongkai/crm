@@ -24,6 +24,7 @@ export interface EditAccountProps {
 
 export interface EditAccountState {
     visible: boolean;
+    fileList: any[];
 }
 
 export interface EditAccountEvent{
@@ -52,7 +53,8 @@ export class EditAccount extends React.PureComponent<EditAccountProps, EditAccou
     constructor(props: EditAccountProps, context?: any) {
         super(props, context);
         this.state = { 
-            visible: false 
+            visible: false,
+            fileList: [],
         };
 
         this.accountUpdate = this.props.personHelper.accountUpdate;
@@ -63,6 +65,7 @@ export class EditAccount extends React.PureComponent<EditAccountProps, EditAccou
         this.updateAccount = this.updateAccount.bind(this);
         this.formRef = React.createRef();
         this.customRequest = this.customRequest.bind(this);
+        this.uploadChange = this.uploadChange.bind(this);
     }
 
     componentDidMount(){
@@ -76,10 +79,21 @@ export class EditAccount extends React.PureComponent<EditAccountProps, EditAccou
     };
 
     editAccount(){
+        const { person } = this.props
         this.setState({
             visible: true,
+            fileList: [],
         });
-        const { person } = this.props
+        if(person.account.headUrl != undefined && person.account.headUrl != ""){
+            this.setState({
+                fileList: [{
+                    uid: person.account.headUrl,
+                    name: "",
+                    status: "done",
+                    url: person.account.headUrl,
+                }],
+            });
+        }
         this.formRef.current.setFieldsValue(
             Object.assign({}, person.account, {
             })
@@ -88,9 +102,12 @@ export class EditAccount extends React.PureComponent<EditAccountProps, EditAccou
 
     updateAccount(){
         let fields = this.formRef.current.getFieldsValue()
+        let params = Object.assign({}, fields, {
+            headUrl: this.state.fileList.length > 0 ? this.state.fileList[0].url : ""
+        })
         this.accountUpdate(
             {
-                updateInfo: fields 
+                updateInfo: params 
             }
         ).then(() => {
             this.accountGet().then(
@@ -109,11 +126,32 @@ export class EditAccount extends React.PureComponent<EditAccountProps, EditAccou
             storeType: "person",
         },{
             [fileName]: file
+        }).then(() => {
+            let fileList = []
+            for(let index in this.props.file.filePaths){
+                let cur = this.props.file.filePaths[index]
+                fileList.push({
+                    uid: cur,
+                    name: "",
+                    status: "done",
+                    url: cur
+                })
+            }
+            this.setState({
+                fileList:  [
+                    ...this.state.fileList,
+                    ...fileList
+                ]
+            })
         })
     }
 
+    uploadChange(e: any){
+        let fileList = this.state.fileList.filter((obj) => obj.uid !== e.uid)
+        this.setState({ fileList: fileList })
+    };
+
     render(){
-        let fileList = [this.props.person.account.headUrl]
         return (
             <div>
                 <antd.Drawer
@@ -145,29 +183,21 @@ export class EditAccount extends React.PureComponent<EditAccountProps, EditAccou
                         wrapperCol={{span:12 }}
                         colon={true}
                     >
-                        <antd.Upload
-            customRequest={this.customRequest}
-                            listType="picture-card"
-                          >
-        {fileList.length < 5 && '+ Upload'}
-      </antd.Upload>
-                        <antd.Row >
-                            <antd.Form.Item
-                                name="headUrl"
-                                label="头像"
-                                rules={[{ required: false, message: '请输入头像地址' }]}
+                        <antd.Row style={{textAlign: "center"}}>
+                            <antd.Upload
+                                customRequest={this.customRequest}
+                                listType="picture-card"
+                                fileList={this.state.fileList}
+                                onRemove={this.uploadChange}
                             >
-                                <antd.Input 
-                                    style={{width:"360px"}}
-                                    placeholder="请输入头像地址" 
-                                />
-                            </antd.Form.Item>
-                        </antd.Row>
+                                {this.state.fileList.length < 1 && '+ 头像'}
+                            </antd.Upload>
+                        </antd.Row >
                         <antd.Row >
                             <antd.Form.Item
                                 name="nick"
                                 label="昵称"
-                                rules={[{ required: true, message: '请输入昵称' }]}
+                                rules={[{ required: false, message: '请输入昵称' }]}
                             >
                                 <antd.Input 
                                     style={{width:"360px"}}

@@ -82,7 +82,6 @@ export abstract class BaseApi {
         }
         requestParms['sign'] = signatureHelper.getSignature(signParams)
         let request = Object.assign({}, header, extraParams, requestParms)
-        console.log(" request ------------->>>>>>   ", request)
         if( config.debug ){
             return new Promise(
                 (resolve, reject) => {

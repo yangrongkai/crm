@@ -31,10 +31,7 @@ export const fileUploadApi: ApiInterface[] = [
         mock: {
             success:{
                 file_paths: [
-                    {
-                        id: 1,
-                        name: "必圈信息技术湖北有限公司",
-                    },
+                    "http://a0.att.hudong.com/70/91/01300000261284122542917592865.jpg"
                 ],
             },
             failure:{
