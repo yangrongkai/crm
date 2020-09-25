@@ -26,6 +26,7 @@ npm start
 
 
 #### 代码结构
+```
 .
 ├── build                                                                  // webpack 构建目录
 ├── dist                                                                   // 生产环境生成目录 
@@ -95,3 +96,4 @@ npm start
 │       │   └── sidebar                                                    // 左侧栏菜单配置 
 │       └── server                                                         // 远程服务器配置 
 └── types                                                                  // 全局生命类型（typescript使用） 
+```
