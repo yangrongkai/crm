@@ -35,8 +35,10 @@ npm install
 npm start
 ```
 
-# 框架原理
+#### 框架原理
+<div style="text-align:center;width:25%;height:25%;">
 ![WORKFLOW](./doc/image/workflow-data.png)
+</div>
 
 
 #### 代码结构
