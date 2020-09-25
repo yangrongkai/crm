@@ -10,7 +10,7 @@ const config = {
     footer: '<a target="_blank" href="http://www.baidu.com">foolbear</a>版权所有 © 2015-2099',
 
     // 是否开启debug模式, 不会请求后端接口, 使用mock的数据
-    debug: false,
+    debug: true,
     // 是否开启debug模式, 不会请求后端接口, 使用mock的数据
     allowPermission: true,
     // 是否开启debug模式, 不会请求后端接口, 使用mock的数据
