@@ -10,9 +10,9 @@ import { apiConfig } from "schema/api";
 export class ApiRouter{
     serverRegister: ServerRegister;
 
-    constructor(apiConfig: any){
+    constructor(apiList: any){
         this.serverRegister = new ServerRegister()
-        this.loadApi(apiConfig)
+        this.loadApi(apiList)
     }
 
     router(serverFlag: string, apiName: string): BaseApi{
@@ -39,8 +39,8 @@ export class ApiRouter{
         return loseFields;
     }
 
-    loadApi(apiConfig: any){
-        for(let api of apiConfig){
+    loadApi(apiList: any){
+        for(let api of apiList){
             let loseFields = this.checkApi(api);
             if(loseFields.length){
                 throw new Error(`[ notes ] api losed paramter !!! -> ${loseFields.toString()}`)

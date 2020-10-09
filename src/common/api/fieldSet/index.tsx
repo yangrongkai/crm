@@ -76,8 +76,8 @@ export class ApiFieldHelper{
                 let value: any = []
                 for(let index in response){
                     let current = response[index]
-                    let result = this._iterField(current, apiField, isTransfer)
-                    value.push(result)
+                    let item = this._iterField(current, apiField, isTransfer)
+                    value.push(item)
                 }
                 value = isJSON ? JSON.stringify(value) : value 
                 result[apiField.transfer] = value

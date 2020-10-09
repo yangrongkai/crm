@@ -25,13 +25,13 @@ export class ServerHelper {
 
     serverMap: Map<string, Server>;
 
-    constructor(serverConfig: ServerInterface[]){
-        this.serverMap = this.initializeServerMap(serverConfig)
+    constructor(serverList: ServerInterface[]){
+        this.serverMap = this.initializeServerMap(serverList)
     }
 
-    initializeServerMap(serverConfig: ServerInterface[]){
+    initializeServerMap(serverList: ServerInterface[]){
         let serverMap = new Map();
-        for(let server of serverConfig){
+        for(let server of serverList){
             serverMap.set(server.flag, new Server(server));
         }
         return serverMap; 

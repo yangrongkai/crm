@@ -10,3 +10,4 @@ export { DatetimeField } from './datetimeField';
 export { JsonField } from './jsonField';
 export { FileField } from './fileField';
 export { KeyValueField } from './keyValueField';
+export { Md5StringField } from './md5StringField';
